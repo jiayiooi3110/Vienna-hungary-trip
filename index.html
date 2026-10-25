@@ -230,669 +230,6 @@ body{
 .trip-ov-arr{color:var(--muted);font-size:10px}
 .trip-ov-dates{margin-left:auto;font-weight:500}
 
-/* leaflet 1.9.4 */
-/* required styles */
-
-.leaflet-pane,
-.leaflet-tile,
-.leaflet-marker-icon,
-.leaflet-marker-shadow,
-.leaflet-tile-container,
-.leaflet-pane > svg,
-.leaflet-pane > canvas,
-.leaflet-zoom-box,
-.leaflet-image-layer,
-.leaflet-layer {
-	position: absolute;
-	left: 0;
-	top: 0;
-	}
-.leaflet-container {
-	overflow: hidden;
-	}
-.leaflet-tile,
-.leaflet-marker-icon,
-.leaflet-marker-shadow {
-	-webkit-user-select: none;
-	   -moz-user-select: none;
-	        user-select: none;
-	  -webkit-user-drag: none;
-	}
-/* Prevents IE11 from highlighting tiles in blue */
-.leaflet-tile::selection {
-	background: transparent;
-}
-/* Safari renders non-retina tile on retina better with this, but Chrome is worse */
-.leaflet-safari .leaflet-tile {
-	image-rendering: -webkit-optimize-contrast;
-	}
-/* hack that prevents hw layers "stretching" when loading new tiles */
-.leaflet-safari .leaflet-tile-container {
-	width: 1600px;
-	height: 1600px;
-	-webkit-transform-origin: 0 0;
-	}
-.leaflet-marker-icon,
-.leaflet-marker-shadow {
-	display: block;
-	}
-/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
-/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
-.leaflet-container .leaflet-overlay-pane svg {
-	max-width: none !important;
-	max-height: none !important;
-	}
-.leaflet-container .leaflet-marker-pane img,
-.leaflet-container .leaflet-shadow-pane img,
-.leaflet-container .leaflet-tile-pane img,
-.leaflet-container img.leaflet-image-layer,
-.leaflet-container .leaflet-tile {
-	max-width: none !important;
-	max-height: none !important;
-	width: auto;
-	padding: 0;
-	}
-
-.leaflet-container img.leaflet-tile {
-	/* See: https://bugs.chromium.org/p/chromium/issues/detail?id=600120 */
-	mix-blend-mode: plus-lighter;
-}
-
-.leaflet-container.leaflet-touch-zoom {
-	-ms-touch-action: pan-x pan-y;
-	touch-action: pan-x pan-y;
-	}
-.leaflet-container.leaflet-touch-drag {
-	-ms-touch-action: pinch-zoom;
-	/* Fallback for FF which doesn't support pinch-zoom */
-	touch-action: none;
-	touch-action: pinch-zoom;
-}
-.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
-	-ms-touch-action: none;
-	touch-action: none;
-}
-.leaflet-container {
-	-webkit-tap-highlight-color: transparent;
-}
-.leaflet-container a {
-	-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
-}
-.leaflet-tile {
-	filter: inherit;
-	visibility: hidden;
-	}
-.leaflet-tile-loaded {
-	visibility: inherit;
-	}
-.leaflet-zoom-box {
-	width: 0;
-	height: 0;
-	-moz-box-sizing: border-box;
-	     box-sizing: border-box;
-	z-index: 800;
-	}
-/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
-.leaflet-overlay-pane svg {
-	-moz-user-select: none;
-	}
-
-.leaflet-pane         { z-index: 400; }
-
-.leaflet-tile-pane    { z-index: 200; }
-.leaflet-overlay-pane { z-index: 400; }
-.leaflet-shadow-pane  { z-index: 500; }
-.leaflet-marker-pane  { z-index: 600; }
-.leaflet-tooltip-pane   { z-index: 650; }
-.leaflet-popup-pane   { z-index: 700; }
-
-.leaflet-map-pane canvas { z-index: 100; }
-.leaflet-map-pane svg    { z-index: 200; }
-
-.leaflet-vml-shape {
-	width: 1px;
-	height: 1px;
-	}
-.lvml {
-	behavior: url(#default#VML);
-	display: inline-block;
-	position: absolute;
-	}
-
-
-/* control positioning */
-
-.leaflet-control {
-	position: relative;
-	z-index: 800;
-	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
-	pointer-events: auto;
-	}
-.leaflet-top,
-.leaflet-bottom {
-	position: absolute;
-	z-index: 1000;
-	pointer-events: none;
-	}
-.leaflet-top {
-	top: 0;
-	}
-.leaflet-right {
-	right: 0;
-	}
-.leaflet-bottom {
-	bottom: 0;
-	}
-.leaflet-left {
-	left: 0;
-	}
-.leaflet-control {
-	float: left;
-	clear: both;
-	}
-.leaflet-right .leaflet-control {
-	float: right;
-	}
-.leaflet-top .leaflet-control {
-	margin-top: 10px;
-	}
-.leaflet-bottom .leaflet-control {
-	margin-bottom: 10px;
-	}
-.leaflet-left .leaflet-control {
-	margin-left: 10px;
-	}
-.leaflet-right .leaflet-control {
-	margin-right: 10px;
-	}
-
-
-/* zoom and fade animations */
-
-.leaflet-fade-anim .leaflet-popup {
-	opacity: 0;
-	-webkit-transition: opacity 0.2s linear;
-	   -moz-transition: opacity 0.2s linear;
-	        transition: opacity 0.2s linear;
-	}
-.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
-	opacity: 1;
-	}
-.leaflet-zoom-animated {
-	-webkit-transform-origin: 0 0;
-	    -ms-transform-origin: 0 0;
-	        transform-origin: 0 0;
-	}
-svg.leaflet-zoom-animated {
-	will-change: transform;
-}
-
-.leaflet-zoom-anim .leaflet-zoom-animated {
-	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
-	   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
-	        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);
-	}
-.leaflet-zoom-anim .leaflet-tile,
-.leaflet-pan-anim .leaflet-tile {
-	-webkit-transition: none;
-	   -moz-transition: none;
-	        transition: none;
-	}
-
-.leaflet-zoom-anim .leaflet-zoom-hide {
-	visibility: hidden;
-	}
-
-
-/* cursors */
-
-.leaflet-interactive {
-	cursor: pointer;
-	}
-.leaflet-grab {
-	cursor: -webkit-grab;
-	cursor:    -moz-grab;
-	cursor:         grab;
-	}
-.leaflet-crosshair,
-.leaflet-crosshair .leaflet-interactive {
-	cursor: crosshair;
-	}
-.leaflet-popup-pane,
-.leaflet-control {
-	cursor: auto;
-	}
-.leaflet-dragging .leaflet-grab,
-.leaflet-dragging .leaflet-grab .leaflet-interactive,
-.leaflet-dragging .leaflet-marker-draggable {
-	cursor: move;
-	cursor: -webkit-grabbing;
-	cursor:    -moz-grabbing;
-	cursor:         grabbing;
-	}
-
-/* marker & overlays interactivity */
-.leaflet-marker-icon,
-.leaflet-marker-shadow,
-.leaflet-image-layer,
-.leaflet-pane > svg path,
-.leaflet-tile-container {
-	pointer-events: none;
-	}
-
-.leaflet-marker-icon.leaflet-interactive,
-.leaflet-image-layer.leaflet-interactive,
-.leaflet-pane > svg path.leaflet-interactive,
-svg.leaflet-image-layer.leaflet-interactive path {
-	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
-	pointer-events: auto;
-	}
-
-/* visual tweaks */
-
-.leaflet-container {
-	background: #ddd;
-	outline-offset: 1px;
-	}
-.leaflet-container a {
-	color: #0078A8;
-	}
-.leaflet-zoom-box {
-	border: 2px dotted #38f;
-	background: rgba(255,255,255,0.5);
-	}
-
-
-/* general typography */
-.leaflet-container {
-	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	font-size: 0.75rem;
-	line-height: 1.5;
-	}
-
-
-/* general toolbar styles */
-
-.leaflet-bar {
-	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
-	border-radius: 4px;
-	}
-.leaflet-bar a {
-	background-color: #fff;
-	border-bottom: 1px solid #ccc;
-	width: 26px;
-	height: 26px;
-	line-height: 26px;
-	display: block;
-	text-align: center;
-	text-decoration: none;
-	color: black;
-	}
-.leaflet-bar a,
-.leaflet-control-layers-toggle {
-	background-position: 50% 50%;
-	background-repeat: no-repeat;
-	display: block;
-	}
-.leaflet-bar a:hover,
-.leaflet-bar a:focus {
-	background-color: #f4f4f4;
-	}
-.leaflet-bar a:first-child {
-	border-top-left-radius: 4px;
-	border-top-right-radius: 4px;
-	}
-.leaflet-bar a:last-child {
-	border-bottom-left-radius: 4px;
-	border-bottom-right-radius: 4px;
-	border-bottom: none;
-	}
-.leaflet-bar a.leaflet-disabled {
-	cursor: default;
-	background-color: #f4f4f4;
-	color: #bbb;
-	}
-
-.leaflet-touch .leaflet-bar a {
-	width: 30px;
-	height: 30px;
-	line-height: 30px;
-	}
-.leaflet-touch .leaflet-bar a:first-child {
-	border-top-left-radius: 2px;
-	border-top-right-radius: 2px;
-	}
-.leaflet-touch .leaflet-bar a:last-child {
-	border-bottom-left-radius: 2px;
-	border-bottom-right-radius: 2px;
-	}
-
-/* zoom control */
-
-.leaflet-control-zoom-in,
-.leaflet-control-zoom-out {
-	font: bold 18px 'Lucida Console', Monaco, monospace;
-	text-indent: 1px;
-	}
-
-.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {
-	font-size: 22px;
-	}
-
-
-/* layers control */
-
-.leaflet-control-layers {
-	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
-	background: #fff;
-	border-radius: 5px;
-	}
-.leaflet-control-layers-toggle {
-	background-image: url(images/layers.png);
-	width: 36px;
-	height: 36px;
-	}
-.leaflet-retina .leaflet-control-layers-toggle {
-	background-image: url(images/layers-2x.png);
-	background-size: 26px 26px;
-	}
-.leaflet-touch .leaflet-control-layers-toggle {
-	width: 44px;
-	height: 44px;
-	}
-.leaflet-control-layers .leaflet-control-layers-list,
-.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
-	display: none;
-	}
-.leaflet-control-layers-expanded .leaflet-control-layers-list {
-	display: block;
-	position: relative;
-	}
-.leaflet-control-layers-expanded {
-	padding: 6px 10px 6px 6px;
-	color: #333;
-	background: #fff;
-	}
-.leaflet-control-layers-scrollbar {
-	overflow-y: scroll;
-	overflow-x: hidden;
-	padding-right: 5px;
-	}
-.leaflet-control-layers-selector {
-	margin-top: 2px;
-	position: relative;
-	top: 1px;
-	}
-.leaflet-control-layers label {
-	display: block;
-	font-size: 13px;
-	font-size: 1.08333em;
-	}
-.leaflet-control-layers-separator {
-	height: 0;
-	border-top: 1px solid #ddd;
-	margin: 5px -10px 5px -6px;
-	}
-
-/* Default icon URLs */
-.leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
-	background-image: url(images/marker-icon.png);
-	}
-
-
-/* attribution and scale controls */
-
-.leaflet-container .leaflet-control-attribution {
-	background: #fff;
-	background: rgba(255, 255, 255, 0.8);
-	margin: 0;
-	}
-.leaflet-control-attribution,
-.leaflet-control-scale-line {
-	padding: 0 5px;
-	color: #333;
-	line-height: 1.4;
-	}
-.leaflet-control-attribution a {
-	text-decoration: none;
-	}
-.leaflet-control-attribution a:hover,
-.leaflet-control-attribution a:focus {
-	text-decoration: underline;
-	}
-.leaflet-attribution-flag {
-	display: inline !important;
-	vertical-align: baseline !important;
-	width: 1em;
-	height: 0.6669em;
-	}
-.leaflet-left .leaflet-control-scale {
-	margin-left: 5px;
-	}
-.leaflet-bottom .leaflet-control-scale {
-	margin-bottom: 5px;
-	}
-.leaflet-control-scale-line {
-	border: 2px solid #777;
-	border-top: none;
-	line-height: 1.1;
-	padding: 2px 5px 1px;
-	white-space: nowrap;
-	-moz-box-sizing: border-box;
-	     box-sizing: border-box;
-	background: rgba(255, 255, 255, 0.8);
-	text-shadow: 1px 1px #fff;
-	}
-.leaflet-control-scale-line:not(:first-child) {
-	border-top: 2px solid #777;
-	border-bottom: none;
-	margin-top: -2px;
-	}
-.leaflet-control-scale-line:not(:first-child):not(:last-child) {
-	border-bottom: 2px solid #777;
-	}
-
-.leaflet-touch .leaflet-control-attribution,
-.leaflet-touch .leaflet-control-layers,
-.leaflet-touch .leaflet-bar {
-	box-shadow: none;
-	}
-.leaflet-touch .leaflet-control-layers,
-.leaflet-touch .leaflet-bar {
-	border: 2px solid rgba(0,0,0,0.2);
-	background-clip: padding-box;
-	}
-
-
-/* popup */
-
-.leaflet-popup {
-	position: absolute;
-	text-align: center;
-	margin-bottom: 20px;
-	}
-.leaflet-popup-content-wrapper {
-	padding: 1px;
-	text-align: left;
-	border-radius: 12px;
-	}
-.leaflet-popup-content {
-	margin: 13px 24px 13px 20px;
-	line-height: 1.3;
-	font-size: 13px;
-	font-size: 1.08333em;
-	min-height: 1px;
-	}
-.leaflet-popup-content p {
-	margin: 17px 0;
-	margin: 1.3em 0;
-	}
-.leaflet-popup-tip-container {
-	width: 40px;
-	height: 20px;
-	position: absolute;
-	left: 50%;
-	margin-top: -1px;
-	margin-left: -20px;
-	overflow: hidden;
-	pointer-events: none;
-	}
-.leaflet-popup-tip {
-	width: 17px;
-	height: 17px;
-	padding: 1px;
-
-	margin: -10px auto 0;
-	pointer-events: auto;
-
-	-webkit-transform: rotate(45deg);
-	   -moz-transform: rotate(45deg);
-	    -ms-transform: rotate(45deg);
-	        transform: rotate(45deg);
-	}
-.leaflet-popup-content-wrapper,
-.leaflet-popup-tip {
-	background: white;
-	color: #333;
-	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
-	}
-.leaflet-container a.leaflet-popup-close-button {
-	position: absolute;
-	top: 0;
-	right: 0;
-	border: none;
-	text-align: center;
-	width: 24px;
-	height: 24px;
-	font: 16px/24px Tahoma, Verdana, sans-serif;
-	color: #757575;
-	text-decoration: none;
-	background: transparent;
-	}
-.leaflet-container a.leaflet-popup-close-button:hover,
-.leaflet-container a.leaflet-popup-close-button:focus {
-	color: #585858;
-	}
-.leaflet-popup-scrolled {
-	overflow: auto;
-	}
-
-.leaflet-oldie .leaflet-popup-content-wrapper {
-	-ms-zoom: 1;
-	}
-.leaflet-oldie .leaflet-popup-tip {
-	width: 24px;
-	margin: 0 auto;
-
-	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
-	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
-	}
-
-.leaflet-oldie .leaflet-control-zoom,
-.leaflet-oldie .leaflet-control-layers,
-.leaflet-oldie .leaflet-popup-content-wrapper,
-.leaflet-oldie .leaflet-popup-tip {
-	border: 1px solid #999;
-	}
-
-
-/* div icon */
-
-.leaflet-div-icon {
-	background: #fff;
-	border: 1px solid #666;
-	}
-
-
-/* Tooltip */
-/* Base styles for the element that has a tooltip */
-.leaflet-tooltip {
-	position: absolute;
-	padding: 6px;
-	background-color: #fff;
-	border: 1px solid #fff;
-	border-radius: 3px;
-	color: #222;
-	white-space: nowrap;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	pointer-events: none;
-	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
-	}
-.leaflet-tooltip.leaflet-interactive {
-	cursor: pointer;
-	pointer-events: auto;
-	}
-.leaflet-tooltip-top:before,
-.leaflet-tooltip-bottom:before,
-.leaflet-tooltip-left:before,
-.leaflet-tooltip-right:before {
-	position: absolute;
-	pointer-events: none;
-	border: 6px solid transparent;
-	background: transparent;
-	content: "";
-	}
-
-/* Directions */
-
-.leaflet-tooltip-bottom {
-	margin-top: 6px;
-}
-.leaflet-tooltip-top {
-	margin-top: -6px;
-}
-.leaflet-tooltip-bottom:before,
-.leaflet-tooltip-top:before {
-	left: 50%;
-	margin-left: -6px;
-	}
-.leaflet-tooltip-top:before {
-	bottom: 0;
-	margin-bottom: -12px;
-	border-top-color: #fff;
-	}
-.leaflet-tooltip-bottom:before {
-	top: 0;
-	margin-top: -12px;
-	margin-left: -6px;
-	border-bottom-color: #fff;
-	}
-.leaflet-tooltip-left {
-	margin-left: -6px;
-}
-.leaflet-tooltip-right {
-	margin-left: 6px;
-}
-.leaflet-tooltip-left:before,
-.leaflet-tooltip-right:before {
-	top: 50%;
-	margin-top: -6px;
-	}
-.leaflet-tooltip-left:before {
-	right: 0;
-	margin-right: -12px;
-	border-left-color: #fff;
-	}
-.leaflet-tooltip-right:before {
-	left: 0;
-	margin-left: -12px;
-	border-right-color: #fff;
-	}
-
-/* Printing */
-
-@media print {
-	/* Prevent printers from removing background-images of controls. */
-	.leaflet-control {
-		-webkit-print-color-adjust: exact;
-		print-color-adjust: exact;
-		}
-	}
-
 /* ── map tab ─────────────────────────────────────────────── */
 .nav-tab-map .nav-tab-day{font-size:12px;letter-spacing:.04em}
 .map-wrap{max-width:900px}
@@ -906,14 +243,16 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .map-day-ttl{font:700 20px/1.25 'Playfair Display',Georgia,serif;margin:4px 0 2px;text-wrap:balance}
 .map-day-sub{color:var(--muted);font-size:13px;margin-bottom:12px}
 .map-box{position:relative;height:min(62vh,540px);min-height:320px;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--card)}
-#tripmap{position:absolute;inset:0;background:var(--accent-light)}
-.map-note{position:absolute;left:10px;right:10px;bottom:10px;z-index:500;background:var(--card);color:var(--muted);
-  border:1px solid var(--border);border-radius:10px;padding:8px 10px;font-size:12px;line-height:1.4}
+.gmap{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent}
+.map-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;color:var(--muted);font-size:13px;background:var(--accent-light)}
+.map-help{font-size:12px;color:var(--muted);margin:8px 0 22px;line-height:1.5}
+.map-help a{color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap}
+.map-list-head{font:700 20px/1.25 'Playfair Display',Georgia,serif;margin-bottom:10px}
 .map-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:12px 0 4px;font-size:12px;color:var(--muted)}
 .map-legend span{display:inline-flex;align-items:center;gap:6px}
 .map-legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
 .stop-list{list-style:none;margin-top:10px;border-top:1px solid var(--border)}
-.stop{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:10px 4px;border-bottom:1px solid var(--border);cursor:pointer}
+.stop{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:10px 4px;border-bottom:1px solid var(--border)}
 .stop:hover{background:var(--accent-light)}
 .stop-n{width:26px;height:26px;border-radius:50%;color:#fff;font:700 12px/26px 'Inter',sans-serif;text-align:center}
 .stop-main{min-width:0}
@@ -924,19 +263,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .flag{font-size:11px;color:var(--accent);font-weight:600}
 .c-transit{background:var(--accent)}.c-see{background:var(--see)}.c-eat{background:var(--eat)}
 .c-shop{background:var(--shop)}.c-hotel{background:var(--hotel)}.c-night{background:#B8862E}
-.pin{width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid var(--card);
-  box-shadow:0 2px 6px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center}
-.pin b{transform:rotate(45deg);color:#fff;font:700 12px/1 'Inter',sans-serif}
-.pin.sel{outline:3px solid var(--fg);outline-offset:1px}
-.leaflet-container{font-family:'Inter',sans-serif;background:var(--accent-light)}
-.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:var(--card);color:var(--fg)}
-.leaflet-popup-content{margin:12px 14px;font-size:13px;line-height:1.4}
-.pop-n{font-weight:700;margin-bottom:2px}
-.pop-m{color:var(--muted);font-size:12px;margin-bottom:6px}
-.pop-a{display:inline-block;font-weight:600;color:var(--accent)!important;text-decoration:none}
-.leaflet-bar a{background:var(--card);color:var(--fg);border-color:var(--border)}
-.leaflet-control-attribution{background:var(--card)!important;color:var(--muted)}
-.leaflet-control-attribution a{color:var(--muted)}
 
 </style>
 </head><body>
@@ -2199,10 +1525,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
     <div class="header-eyebrow">Central Europe Trip · 29 Oct – 8 Nov 2026</div>
     <h1 class="header-title" style="font:700 28px/1.2 'Playfair Display',Georgia,serif">Trip Map</h1>
   </div>
+  <div class="map-box"><div class="map-ph">Loading Google map…<br>If it stays blank, use “Open full map in Google Maps” below.</div><iframe class="gmap" src="https://www.google.com/maps/d/embed?mid=18FnV3ESOBb8pG0v3UoYT2UbRfSUC-hc" title="Eurotrip 2026 map — Google My Maps" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+  <div class="map-help">Tap the legend icon at the top-left of the map to switch days on and off. <a href="https://www.google.com/maps/d/viewer?mid=18FnV3ESOBb8pG0v3UoYT2UbRfSUC-hc" target="_blank" rel="noopener">Open full map in Google Maps ↗</a></div>
+  <div class="map-list-head">Stops by day</div>
   <div class="map-chips" id="mapChips" role="tablist" aria-label="Choose day"></div>
   <div class="map-day-ttl" id="mapTtl"></div>
   <div class="map-day-sub" id="mapSub"></div>
-  <div class="map-box"><div id="tripmap" aria-label="Map of stops"></div><div class="map-note" id="mapNote" hidden></div></div>
   <div class="map-legend">
     <span><i class="c-transit"></i>Transit</span><span><i class="c-see"></i>Sights</span><span><i class="c-eat"></i>Food options</span>
     <span><i class="c-shop"></i>Shopping</span><span><i class="c-night"></i>Evening</span><span><i class="c-hotel"></i>Stay</span>
@@ -2211,15 +1539,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
 </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 var TRIPMAP=(function(){
   var DATA={"1":[{"id":"ChIJdxrowjsHbUcRumznVyJE1PI","n":"DECENTRAL (Café Central stand-in)","t":"10:30","c":"eat","lat":48.211487,"lng":16.365292,"u":"https://www.google.com/maps/search/?api=1&query=DECENTRAL%2C+Freyung+3%2C+1010+Wien&query_place_id=ChIJdxrowjsHbUcRumznVyJE1PI","a":"Freyung 3/1, 1010 Wien","k":false},{"id":"ChIJz-w_Ip8HbUcRWTHc-vNXlxc","n":"St. Stephen's Cathedral","t":"~12:00","c":"see","lat":48.208411,"lng":16.373471,"u":"https://www.google.com/maps/search/?api=1&query=St.+Stephen%27s+Cathedral%2C+Stephansplatz+3%2C+1010+Wien&query_place_id=ChIJz-w_Ip8HbUcRWTHc-vNXlxc","a":"Stephansplatz 3, 1010 Wien","k":false},{"id":"ChIJ3wYgv5kHbUcRX0LEFIAWhYY","n":"Hofburg","t":"~13:30","c":"see","lat":48.205658,"lng":16.36478,"u":"https://www.google.com/maps/search/?api=1&query=Hofburg%2C+1010+Wien&query_place_id=ChIJ3wYgv5kHbUcRX0LEFIAWhYY","a":"1010 Wien","k":false},{"id":"ChIJMdeh6A4HbUcRsRDkF9suL-E","n":"The Coffee Stephansplatz","t":"~15:00","c":"eat","lat":48.209207,"lng":16.370489,"u":"https://www.google.com/maps/search/?api=1&query=The+Coffee+Stephansplatz%2C+Goldschmiedgasse+10%2C+1010+Wien&query_place_id=ChIJMdeh6A4HbUcRsRDkF9suL-E","a":"Goldschmiedgasse 10, 1010 Wien","k":false},{"id":"ChIJ30yEHwAHbUcRVITH_8Wzj4s","n":"Pærle Schmuckcafé","t":"~15:00","c":"eat","lat":48.19866,"lng":16.360248,"u":"https://www.google.com/maps/search/?api=1&query=P%C3%A6rle+Schmuckcaf%C3%A9%2C+Laimgrubengasse+12%2C+1060+Wien&query_place_id=ChIJ30yEHwAHbUcRVITH_8Wzj4s","a":"Laimgrubengasse 12, 1060 Wien","k":false},{"id":"ChIJZ9WPQQAHbUcR_C3lwSIkMVA","n":"Hiiich Teddy Cafe","t":"~15:00","c":"eat","lat":48.203855,"lng":16.370585,"u":"https://www.google.com/maps/search/?api=1&query=Hiiich+Teddy+Cafe%2C+K%C3%A4rntner+Str.+47%2C+1010+Wien&query_place_id=ChIJZ9WPQQAHbUcR_C3lwSIkMVA","a":"Kärntner Str. 47, 1010 Wien","k":false},{"id":"ChIJx2oWgoIHbUcRMvVm3Lylq84","n":"Karlskirche (St. Charles's Church)","t":"~15:30","c":"see","lat":48.198563,"lng":16.3717,"u":"https://www.google.com/maps/search/?api=1&query=Karlskirche%2C+Karlsplatz+10%2C+1040+Wien&query_place_id=ChIJx2oWgoIHbUcRMvVm3Lylq84","a":"Karlsplatz 10, 1040 Wien","k":false},{"id":"ChIJUwyiX4QHbUcRvmyFdrjAugU","n":"Naschmarkt","t":"~16:30","c":"shop","lat":48.198618,"lng":16.363649,"u":"https://www.google.com/maps/search/?api=1&query=Naschmarkt%2C+Naschmarkt%2C+Wien&query_place_id=ChIJUwyiX4QHbUcRvmyFdrjAugU","a":"Naschmarkt, Wien","k":false},{"id":"ChIJKec9CyqobUcRi1qOUsVdfOM","n":"Mittersteig","t":"~17:00","c":"shop","lat":48.190945,"lng":16.362996,"u":"https://www.google.com/maps/search/?api=1&query=Mittersteig%2C+Mittersteig%2C+Wien&query_place_id=ChIJKec9CyqobUcRi1qOUsVdfOM","a":"Mittersteig, Wien","k":false},{"id":"ChIJbU-Egp8HbUcRDZ_dZN6qW34","n":"Figlmüller – Bäckerstraße","t":"~19:00","c":"eat","lat":48.209312,"lng":16.375577,"u":"https://www.google.com/maps/search/?api=1&query=Figlm%C3%BCller+%E2%80%93+B%C3%A4ckerstra%C3%9Fe%2C+B%C3%A4ckerstra%C3%9Fe+6%2C+1010+Wien&query_place_id=ChIJbU-Egp8HbUcRDZ_dZN6qW34","a":"Bäckerstraße 6, 1010 Wien","k":false},{"id":"ChIJp324WJ4HbUcRb3WRtwYb7Dc","n":"Gasthaus Pöschl","t":"~19:00","c":"eat","lat":48.20669,"lng":16.373828,"u":"https://www.google.com/maps/search/?api=1&query=Gasthaus+P%C3%B6schl%2C+Weihburggasse+17%2C+1010+Wien&query_place_id=ChIJp324WJ4HbUcRb3WRtwYb7Dc","a":"Weihburggasse 17, 1010 Wien","k":false},{"id":"ChIJ9zkxBIwHbUcRJYN0SNOPjgo","n":"Neubaugasse (U3 station)","t":"~19:00","c":"eat","lat":48.19912,"lng":16.352088,"u":"https://www.google.com/maps/search/?api=1&query=Neubaugasse%2C+Neubau%2C+1070+Wien&query_place_id=ChIJ9zkxBIwHbUcRJYN0SNOPjgo","a":"Neubau, 1070 Wien","k":false},{"id":"ChIJPySTC40HbUcRD9iS-bDdz0I","n":"mani im vierten","t":"~19:00","c":"eat","lat":48.196818,"lng":16.365706,"u":"https://www.google.com/maps/search/?api=1&query=mani+im+vierten%2C+Schleifm%C3%BChlgasse+7%2C+1040+Wien&query_place_id=ChIJPySTC40HbUcRD9iS-bDdz0I","a":"Schleifmühlgasse 7, 1040 Wien","k":false},{"id":"ChIJbWztNIwHbUcRKRH37_cpOLU","n":"Zollergasse","t":"~21:00","c":"night","lat":48.200441,"lng":16.350639,"u":"https://www.google.com/maps/search/?api=1&query=Zollergasse%2C+Zollergasse%2C+1070+Wien&query_place_id=ChIJbWztNIwHbUcRKRH37_cpOLU","a":"Zollergasse, 1070 Wien","k":false},{"id":"ChIJYVTcYdepbUcRmN7UhYEEt1g","n":"ibis Wien Hauptbahnhof","t":"Late","c":"hotel","lat":48.185704,"lng":16.378674,"u":"https://www.google.com/maps/search/?api=1&query=ibis+Wien+Hauptbahnhof%2C+Canettistra%C3%9Fe+8%2C+1100+Wien&query_place_id=ChIJYVTcYdepbUcRmN7UhYEEt1g","a":"Canettistraße 8, 1100 Wien","k":false}],"2":[{"id":"ChIJv3zAHAmobUcRyYvq5F26aU4","n":"Schönbrunn Palace","t":"09:00","c":"see","lat":48.185812,"lng":16.312764,"u":"https://www.google.com/maps/search/?api=1&query=Sch%C3%B6nbrunn+Palace%2C+Sch%C3%B6nbrunner+Schlo%C3%9Fstra%C3%9Fe+47%2C+1130+Wien&query_place_id=ChIJv3zAHAmobUcRyYvq5F26aU4","a":"Schönbrunner Schloßstraße 47, 1130 Wien","k":false},{"id":"ChIJtyTF8lqpbUcRgncv_koB670","n":"Gloriette Schönbrunn","t":"~11:00","c":"see","lat":48.178269,"lng":16.308742,"u":"https://www.google.com/maps/search/?api=1&query=Gloriette+Sch%C3%B6nbrunn%2C+Gloriettestra%C3%9Fe%2C+1130+Wien&query_place_id=ChIJtyTF8lqpbUcRgncv_koB670","a":"Gloriettestraße, 1130 Wien","k":false},{"id":"ChIJwxTM7BOpbUcRPW4JBOIxrzM","n":"Aufzug Café","t":"~12:30","c":"eat","lat":48.18836,"lng":16.380414,"u":"https://www.google.com/maps/search/?api=1&query=Aufzug+Caf%C3%A9%2C+Wiedner+G%C3%BCrtel+4%2C+1040+Wien&query_place_id=ChIJwxTM7BOpbUcRPW4JBOIxrzM","a":"Wiedner Gürtel 4, 1040 Wien","k":false},{"id":"ChIJwbDyoByobUcRvdlHTwmOZ30","n":"GOTA Coffee Experts","t":"~12:30","c":"eat","lat":48.191421,"lng":16.326909,"u":"https://www.google.com/maps/search/?api=1&query=GOTA+Coffee+Experts%2C+Mariahilfer+Str.+192%2C+1150+Wien&query_place_id=ChIJwbDyoByobUcRvdlHTwmOZ30","a":"Mariahilfer Str. 192, 1150 Wien","k":false},{"id":"ChIJpZ4LAn0HbUcRB3aToFL8ZUo","n":"Belvedere Palace","t":"~14:00","c":"see","lat":48.191475,"lng":16.380932,"u":"https://www.google.com/maps/search/?api=1&query=Belvedere+Palace%2C+1030+Wien&query_place_id=ChIJpZ4LAn0HbUcRB3aToFL8ZUo","a":"1030 Wien","k":false},{"id":"ChIJXWQAVpwHbUcRVEWlweA4xVw","n":"SiL – coffee breakfast & more","t":"~16:30","c":"eat","lat":48.203195,"lng":16.362884,"u":"https://www.google.com/maps/search/?api=1&query=SiL+%E2%80%93+coffee+breakfast+%26+more%2C+Babenbergerstra%C3%9Fe+5%2C+1010+Wien&query_place_id=ChIJXWQAVpwHbUcRVEWlweA4xVw","a":"Babenbergerstraße 5, 1010 Wien","k":false},{"id":"ChIJ1b8dhpwHbUcRVn03JY0mWf0","n":"Vienna State Opera (on the Ringstraße)","t":"~18:00","c":"see","lat":48.203431,"lng":16.369203,"u":"https://www.google.com/maps/search/?api=1&query=Vienna+State+Opera%2C+Opernring+2%2C+1010+Wien&query_place_id=ChIJ1b8dhpwHbUcRVn03JY0mWf0","a":"Opernring 2, 1010 Wien","k":true},{"id":"ChIJyUHiB5EHbUcReYQd2GSG7kg","n":"Figlmüller – Wollzeile","t":"~18:30","c":"eat","lat":48.209367,"lng":16.374634,"u":"https://www.google.com/maps/search/?api=1&query=Figlm%C3%BCller+%E2%80%93+Wollzeile%2C+Wollzeile+5%2C+1010+Wien&query_place_id=ChIJyUHiB5EHbUcReYQd2GSG7kg","a":"Wollzeile 5, 1010 Wien","k":false},{"id":"ChIJIxZwdW4HbUcR5E5mkfJrxto","n":"El Gaucho at the Rochusmarkt","t":"~18:30","c":"eat","lat":48.202682,"lng":16.391567,"u":"https://www.google.com/maps/search/?api=1&query=El+Gaucho+at+the+Rochusmarkt%2C+Rochusplatz+1%2C+1030+Wien&query_place_id=ChIJIxZwdW4HbUcR5E5mkfJrxto","a":"Rochusplatz 1, 1030 Wien","k":true},{"id":"ChIJQRR7i5sHbUcRA1cK2H2VnwE","n":"Bitzinger Würstelstand","t":"~18:30","c":"eat","lat":48.204096,"lng":16.368503,"u":"https://www.google.com/maps/search/?api=1&query=Bitzinger+W%C3%BCrstelstand%2C+Albertinaplatz+1%2C+1010+Wien&query_place_id=ChIJQRR7i5sHbUcRA1cK2H2VnwE","a":"Albertinaplatz 1, 1010 Wien","k":false},{"id":"ChIJx-raUZ0HbUcRT4MxN8ArwYI","n":"Musikverein Wien","t":"20:00","c":"night","lat":48.200544,"lng":16.372359,"u":"https://www.google.com/maps/search/?api=1&query=Musikverein+Wien%2C+Musikvereinsplatz+1%2C+1010+Wien&query_place_id=ChIJx-raUZ0HbUcRT4MxN8ArwYI","a":"Musikvereinsplatz 1, 1010 Wien","k":false},{"id":"ChIJYVTcYdepbUcRmN7UhYEEt1g","n":"ibis Wien Hauptbahnhof","t":"Late","c":"hotel","lat":48.185704,"lng":16.378674,"u":"https://www.google.com/maps/search/?api=1&query=ibis+Wien+Hauptbahnhof%2C+Canettistra%C3%9Fe+8%2C+1100+Wien&query_place_id=ChIJYVTcYdepbUcRmN7UhYEEt1g","a":"Canettistraße 8, 1100 Wien","k":false}],"3":[{"id":"ChIJUU071tupbUcRyFdx20Nwgqg","n":"Wien Hauptbahnhof","t":"09:30","c":"transit","lat":48.185187,"lng":16.376597,"u":"https://www.google.com/maps/search/?api=1&query=Wien+Hauptbahnhof%2C+Am+Hauptbahnhof+1%2C+1100+Wien&query_place_id=ChIJUU071tupbUcRyFdx20Nwgqg","a":"Am Hauptbahnhof 1, 1100 Wien","k":false},{"id":"ChIJT2PH83iQdkcRnEDVqlb-Avs","n":"Salzburg Hauptbahnhof","t":"09:30","c":"transit","lat":47.813027,"lng":13.045039,"u":"https://www.google.com/maps/search/?api=1&query=Salzburg+Hauptbahnhof%2C+5020+Salzburg&query_place_id=ChIJT2PH83iQdkcRnEDVqlb-Avs","a":"5020 Salzburg","k":false},{"id":"ChIJgb3GhICQdkcRDEnPmqioKEU","n":"Vogelweiderstraße 33","t":"~12:30","c":"hotel","lat":47.810449,"lng":13.054322,"u":"https://www.google.com/maps/search/?api=1&query=Vogelweiderstra%C3%9Fe+33%2C+Vogelweiderstra%C3%9Fe+33%2C+5020+Salzburg&query_place_id=ChIJgb3GhICQdkcRDEnPmqioKEU","a":"Vogelweiderstraße 33, 5020 Salzburg","k":false},{"id":"ChIJCymTk7PEdkcRk2e9_wpDY8k","n":"Burg Hohenwerfen","t":"~13:30","c":"see","lat":47.483176,"lng":13.18895,"u":"https://www.google.com/maps/search/?api=1&query=Burg+Hohenwerfen%2C+Burgstra%C3%9Fe+2%2C+5450+Werfen&query_place_id=ChIJCymTk7PEdkcRk2e9_wpDY8k","a":"Burgstraße 2, 5450 Werfen","k":false},{"id":"ChIJvQMhJ2CQdkcRa1Xs6dO-dys","n":"Fortress Hohensalzburg","t":"~13:30","c":"see","lat":47.794948,"lng":13.047658,"u":"https://www.google.com/maps/search/?api=1&query=Fortress+Hohensalzburg%2C+M%C3%B6nchsberg+34%2C+5020+Salzburg&query_place_id=ChIJvQMhJ2CQdkcRa1Xs6dO-dys","a":"Mönchsberg 34, 5020 Salzburg","k":false},{"id":"ChIJZ8whB2SQdkcRwk0_h9TXh5Q","n":"Getreidegasse","t":"~15:30","c":"see","lat":47.800032,"lng":13.042427,"u":"https://www.google.com/maps/search/?api=1&query=Getreidegasse%2C+Getreidegasse%2C+5020+Salzburg&query_place_id=ChIJZ8whB2SQdkcRwk0_h9TXh5Q","a":"Getreidegasse, 5020 Salzburg","k":false},{"id":"ChIJiYA55GOQdkcRi7885u5bbJ4","n":"Mozart's Birthplace","t":"~15:30","c":"see","lat":47.800008,"lng":13.043559,"u":"https://www.google.com/maps/search/?api=1&query=Mozart%27s+Birthplace%2C+Getreidegasse+9%2C+5020+Salzburg&query_place_id=ChIJiYA55GOQdkcRi7885u5bbJ4","a":"Getreidegasse 9, 5020 Salzburg","k":false},{"id":"ChIJ_66AlGGQdkcRUrowN7UxVUE","n":"Residenzplatz","t":"~15:30","c":"see","lat":47.798265,"lng":13.045901,"u":"https://www.google.com/maps/search/?api=1&query=Residenzplatz%2C+Residenzplatz%2C+5020+Salzburg&query_place_id=ChIJ_66AlGGQdkcRUrowN7UxVUE","a":"Residenzplatz, 5020 Salzburg","k":false},{"id":"ChIJxWcjzGSQdkcRN1WEyql2-Uk","n":"Mirabell Gardens","t":"~17:30","c":"see","lat":47.804585,"lng":13.04231,"u":"https://www.google.com/maps/search/?api=1&query=Mirabell+Gardens%2C+Mirabellplatz+3%2C+5020+Salzburg&query_place_id=ChIJxWcjzGSQdkcRN1WEyql2-Uk","a":"Mirabellplatz 3, 5020 Salzburg","k":false},{"id":"ChIJFagkZWSQdkcR8hzfB_pWdXQ","n":"Marko-Feingold-Steg","t":"~18:00","c":"see","lat":47.801732,"lng":13.042174,"u":"https://www.google.com/maps/search/?api=1&query=Marko-Feingold-Steg%2C+Marko-Feingold-Steg%2C+5020+Salzburg&query_place_id=ChIJFagkZWSQdkcR8hzfB_pWdXQ","a":"Marko-Feingold-Steg, 5020 Salzburg","k":false},{"id":"ChIJd9cDjn2QdkcR6yWqMTTtHP8","n":"Die Weisse","t":"~19:30","c":"eat","lat":47.806898,"lng":13.051725,"u":"https://www.google.com/maps/search/?api=1&query=Die+Weisse%2C+Rupertgasse+10%2C+5020+Salzburg&query_place_id=ChIJd9cDjn2QdkcR6yWqMTTtHP8","a":"Rupertgasse 10, 5020 Salzburg","k":false},{"id":"ChIJLYtD-GOQdkcRoZys-k2xBrE","n":"Café Mozart","t":"~19:30","c":"eat","lat":47.800093,"lng":13.042769,"u":"https://www.google.com/maps/search/?api=1&query=Caf%C3%A9+Mozart%2C+Getreidegasse+22%2C+5020+Salzburg&query_place_id=ChIJLYtD-GOQdkcRoZys-k2xBrE","a":"Getreidegasse 22, 5020 Salzburg","k":false}],"4":[{"id":"ChIJT2PH83iQdkcRnEDVqlb-Avs","n":"Salzburg Hauptbahnhof","t":"07:30","c":"transit","lat":47.813027,"lng":13.045039,"u":"https://www.google.com/maps/search/?api=1&query=Salzburg+Hauptbahnhof%2C+5020+Salzburg&query_place_id=ChIJT2PH83iQdkcRnEDVqlb-Avs","a":"5020 Salzburg","k":false},{"id":"ChIJY0ZBbm82cUcRrcEmalllwRY","n":"Hallstatt","t":"07:30","c":"transit","lat":47.562234,"lng":13.649262,"u":"https://www.google.com/maps/search/?api=1&query=Hallstatt%2C+Hallstatt&query_place_id=ChIJY0ZBbm82cUcRrcEmalllwRY","a":"Hallstatt","k":false},{"id":"ChIJJWh1Tm02cUcRMIiqBctIRhU","n":"Marktplatz Hallstatt","t":"09:30","c":"see","lat":47.562384,"lng":13.649028,"u":"https://www.google.com/maps/search/?api=1&query=Marktplatz+Hallstatt%2C+Marktplatz%2C+4830+Hallstatt&query_place_id=ChIJJWh1Tm02cUcRMIiqBctIRhU","a":"Marktplatz, 4830 Hallstatt","k":false},{"id":"ChIJq7oizVA3cUcR4irrtZxljUk","n":"Hallstatt Skywalk","t":"10:30","c":"see","lat":47.56132,"lng":13.643614,"u":"https://www.google.com/maps/search/?api=1&query=Hallstatt+Skywalk%2C+Salzberg+21%2C+4830+Hallstatt&query_place_id=ChIJq7oizVA3cUcR4irrtZxljUk","a":"Salzberg 21, 4830 Hallstatt","k":false},{"id":"kapelle","n":"Die Kapelle (search)","t":"~12:00","c":"eat","lat":47.563037,"lng":13.648791,"u":"https://www.google.com/maps/search/?api=1&query=Die+Kapelle+Hallstatt","a":"Hallstatt","k":true},{"id":"ChIJb6x8KAM2cUcR8gBKwDPdb2c","n":"Hallstätter See","t":"~12:00","c":"see","lat":47.578608,"lng":13.662877,"u":"https://www.google.com/maps/search/?api=1&query=Hallst%C3%A4tter+See%2C+Hallst%C3%A4tter+See&query_place_id=ChIJb6x8KAM2cUcR8gBKwDPdb2c","a":"Hallstätter See","k":false},{"id":"ChIJHQk3Xw02cUcRBO05NLajENc","n":"Beinhaus (Hallstatt Charnel House)","t":"14:30","c":"see","lat":47.563628,"lng":13.648724,"u":"https://www.google.com/maps/search/?api=1&query=Beinhaus%2C+Friedhof+164%2C+4830+Hallstatt&query_place_id=ChIJHQk3Xw02cUcRBO05NLajENc","a":"Friedhof 164, 4830 Hallstatt","k":false},{"id":"ChIJd9cDjn2QdkcR6yWqMTTtHP8","n":"Die Weisse","t":"~19:00","c":"eat","lat":47.806898,"lng":13.051725,"u":"https://www.google.com/maps/search/?api=1&query=Die+Weisse%2C+Rupertgasse+10%2C+5020+Salzburg&query_place_id=ChIJd9cDjn2QdkcR6yWqMTTtHP8","a":"Rupertgasse 10, 5020 Salzburg","k":false},{"id":"ChIJLYtD-GOQdkcRoZys-k2xBrE","n":"Café Mozart","t":"~19:00","c":"eat","lat":47.800093,"lng":13.042769,"u":"https://www.google.com/maps/search/?api=1&query=Caf%C3%A9+Mozart%2C+Getreidegasse+22%2C+5020+Salzburg&query_place_id=ChIJLYtD-GOQdkcRoZys-k2xBrE","a":"Getreidegasse 22, 5020 Salzburg","k":false}],"5":[{"id":"ChIJ6R6cMzqRdkcRiFyJj2CZ4X0","n":"Hellbrunn Palace","t":"~09:00","c":"see","lat":47.762131,"lng":13.06013,"u":"https://www.google.com/maps/search/?api=1&query=Hellbrunn+Palace%2C+F%C3%BCrstenweg+37%2C+5020+Salzburg&query_place_id=ChIJ6R6cMzqRdkcRiFyJj2CZ4X0","a":"Fürstenweg 37, 5020 Salzburg","k":false},{"id":"ChIJ5Wur8ueTdkcRTQ-DLbWBpMY","n":"Untersbergbahn","t":"~09:00","c":"see","lat":47.725716,"lng":13.042192,"u":"https://www.google.com/maps/search/?api=1&query=Untersbergbahn%2C+Dr.-Friedrich-Oedl-Weg+2%2C+5083+Gr%C3%B6dig&query_place_id=ChIJ5Wur8ueTdkcRTQ-DLbWBpMY","a":"Dr.-Friedrich-Oedl-Weg 2, 5083 Grödig","k":false},{"id":"ChIJT2PH83iQdkcRnEDVqlb-Avs","n":"Salzburg Hauptbahnhof","t":"~11:00","c":"transit","lat":47.813027,"lng":13.045039,"u":"https://www.google.com/maps/search/?api=1&query=Salzburg+Hauptbahnhof%2C+5020+Salzburg&query_place_id=ChIJT2PH83iQdkcRnEDVqlb-Avs","a":"5020 Salzburg","k":false},{"id":"ChIJUU071tupbUcRyFdx20Nwgqg","n":"Wien Hauptbahnhof","t":"~11:00","c":"transit","lat":48.185187,"lng":16.376597,"u":"https://www.google.com/maps/search/?api=1&query=Wien+Hauptbahnhof%2C+Am+Hauptbahnhof+1%2C+1100+Wien&query_place_id=ChIJUU071tupbUcRyFdx20Nwgqg","a":"Am Hauptbahnhof 1, 1100 Wien","k":false},{"id":"ChIJYVTcYdepbUcRmN7UhYEEt1g","n":"ibis Wien Hauptbahnhof","t":"~14:00","c":"hotel","lat":48.185704,"lng":16.378674,"u":"https://www.google.com/maps/search/?api=1&query=ibis+Wien+Hauptbahnhof%2C+Canettistra%C3%9Fe+8%2C+1100+Wien&query_place_id=ChIJYVTcYdepbUcRmN7UhYEEt1g","a":"Canettistraße 8, 1100 Wien","k":false},{"id":"ChIJ3wYgv5kHbUcRf_qQCrZSEa8","n":"Imperial Treasury (Hofburg)","t":"~15:00","c":"see","lat":48.206739,"lng":16.365773,"u":"https://www.google.com/maps/search/?api=1&query=Imperial+Treasury%2C+Schweizerhof%2C+Hofburg%2C+1010+Wien&query_place_id=ChIJ3wYgv5kHbUcRf_qQCrZSEa8","a":"Schweizerhof, Hofburg, 1010 Wien","k":false},{"id":"ChIJp324WJ4HbUcRb3WRtwYb7Dc","n":"Gasthaus Pöschl","t":"~18:00","c":"eat","lat":48.20669,"lng":16.373828,"u":"https://www.google.com/maps/search/?api=1&query=Gasthaus+P%C3%B6schl%2C+Weihburggasse+17%2C+1010+Wien&query_place_id=ChIJp324WJ4HbUcRb3WRtwYb7Dc","a":"Weihburggasse 17, 1010 Wien","k":false},{"id":"ChIJRa2wNPUHbUcRV6Wy9zJRnew","n":"Gasthaus Zum Wohl","t":"~18:00","c":"eat","lat":48.195673,"lng":16.342414,"u":"https://www.google.com/maps/search/?api=1&query=Gasthaus+Zum+Wohl%2C+Stumpergasse+61%2C+1060+Wien&query_place_id=ChIJRa2wNPUHbUcRV6Wy9zJRnew","a":"Stumpergasse 61, 1060 Wien","k":false},{"id":"ChIJlQG-Z5AHbUcRKjR3T99KRFQ","n":"Café im Kunsthistorischen Museum","t":"~18:00","c":"eat","lat":48.203911,"lng":16.361545,"u":"https://www.google.com/maps/search/?api=1&query=Caf%C3%A9+im+Kunsthistorischen+Museum%2C+Maria-Theresien-Platz+1%2C+1010+Wien&query_place_id=ChIJlQG-Z5AHbUcRKjR3T99KRFQ","a":"Maria-Theresien-Platz 1, 1010 Wien","k":false},{"id":"ChIJx-raUZ0HbUcRT4MxN8ArwYI","n":"Musikverein Wien","t":"20:00","c":"night","lat":48.200544,"lng":16.372359,"u":"https://www.google.com/maps/search/?api=1&query=Musikverein+Wien%2C+Musikvereinsplatz+1%2C+1010+Wien&query_place_id=ChIJx-raUZ0HbUcRT4MxN8ArwYI","a":"Musikvereinsplatz 1, 1010 Wien","k":false}],"6":[{"id":"ChIJY6GrTT8HbUcR9LGo6Zxp5_w","n":"Prater","t":"09:30","c":"see","lat":48.215465,"lng":16.400174,"u":"https://www.google.com/maps/search/?api=1&query=Prater%2C+1020+Wien&query_place_id=ChIJY6GrTT8HbUcR9LGo6Zxp5_w","a":"1020 Wien","k":false},{"id":"ChIJJYWNjA8HbUcRBlfleWeh1qw","n":"Wiener Riesenrad","t":"09:30","c":"see","lat":48.216699,"lng":16.395901,"u":"https://www.google.com/maps/search/?api=1&query=Wiener+Riesenrad%2C+Gaudeegasse+1%2C+1020+Wien&query_place_id=ChIJJYWNjA8HbUcRBlfleWeh1qw","a":"Gaudeegasse 1, 1020 Wien","k":false},{"id":"ChIJUU071tupbUcRyFdx20Nwgqg","n":"Wien Hauptbahnhof","t":"~10:00","c":"transit","lat":48.185187,"lng":16.376597,"u":"https://www.google.com/maps/search/?api=1&query=Wien+Hauptbahnhof%2C+Am+Hauptbahnhof+1%2C+1100+Wien&query_place_id=ChIJUU071tupbUcRyFdx20Nwgqg","a":"Am Hauptbahnhof 1, 1100 Wien","k":false},{"id":"ChIJn2oLxYncQUcRDTkAlLx_Ako","n":"Budapest-Keleti","t":"~10:00","c":"transit","lat":47.500442,"lng":19.083988,"u":"https://www.google.com/maps/search/?api=1&query=Budapest-Keleti%2C+Kerepesi+%C3%BAt+2-4%2C+1087+Budapest&query_place_id=ChIJn2oLxYncQUcRDTkAlLx_Ako","a":"Kerepesi út 2-4, 1087 Budapest","k":false},{"id":"ChIJ9bafsGfcQUcRq9TxHoKuWK0","n":"Akácfa u. 12-14","t":"~13:00","c":"hotel","lat":47.498124,"lng":19.068009,"u":"https://www.google.com/maps/search/?api=1&query=Ak%C3%A1cfa+u.+12-14%2C+Ak%C3%A1cfa+u.+12-14%2C+1072+Budapest&query_place_id=ChIJ9bafsGfcQUcRq9TxHoKuWK0","a":"Akácfa u. 12-14, 1072 Budapest","k":false},{"id":"ChIJ32QtdBbcQUcR1mrLvmwZjvY","n":"Shoes on the Danube Bank","t":"15:00","c":"see","lat":47.503927,"lng":19.044801,"u":"https://www.google.com/maps/search/?api=1&query=Shoes+on+the+Danube+Bank%2C+1054+Budapest&query_place_id=ChIJ32QtdBbcQUcR1mrLvmwZjvY","a":"1054 Budapest","k":false},{"id":"ChIJKRqatz_cQUcRpMnQhdf-QB4","n":"Széchenyi Chain Bridge","t":"~16:00","c":"see","lat":47.498993,"lng":19.043699,"u":"https://www.google.com/maps/search/?api=1&query=Sz%C3%A9chenyi+Chain+Bridge%2C+Sz%C3%A9chenyi+L%C3%A1nch%C3%ADd%2C+1051+Budapest&query_place_id=ChIJKRqatz_cQUcRpMnQhdf-QB4","a":"Széchenyi Lánchíd, 1051 Budapest","k":false},{"id":"ChIJK72q4yLcQUcRmRgchz9iepc","n":"Castle Hill (Buda)","t":"18:00","c":"see","lat":47.501493,"lng":19.033604,"u":"https://www.google.com/maps/search/?api=1&query=Castle+Hill%2C+Castle+Hill%2C+Budapest&query_place_id=ChIJK72q4yLcQUcRmRgchz9iepc","a":"Castle Hill, Budapest","k":false},{"id":"ChIJnam0fyLcQUcRRl4jRKg8Ji8","n":"Fisherman's Bastion","t":"18:00","c":"see","lat":47.502183,"lng":19.034781,"u":"https://www.google.com/maps/search/?api=1&query=Fisherman%27s+Bastion%2C+1014+Budapest&query_place_id=ChIJnam0fyLcQUcRRl4jRKg8Ji8","a":"1014 Budapest","k":false},{"id":"ChIJ2cIAf0PdQUcReG6rO0niG4k","n":"Forni di Napoli Bazilika","t":"~20:00","c":"eat","lat":47.501841,"lng":19.050992,"u":"https://www.google.com/maps/search/?api=1&query=Forni+di+Napoli+Bazilika%2C+Okt%C3%B3ber+6.+u.+19%2C+1051+Budapest&query_place_id=ChIJ2cIAf0PdQUcReG6rO0niG4k","a":"Október 6. u. 19, 1051 Budapest","k":true},{"id":"ChIJmeeg4mbcQUcRIOHu3gDTJDs","n":"New York Café","t":"~20:00","c":"eat","lat":47.498726,"lng":19.070456,"u":"https://www.google.com/maps/search/?api=1&query=New+York+Caf%C3%A9%2C+Erzs%C3%A9bet+krt.+9-11%2C+1074+Budapest&query_place_id=ChIJmeeg4mbcQUcRIOHu3gDTJDs","a":"Erzsébet krt. 9-11, 1074 Budapest","k":false}],"7":[{"id":"ChIJPaPURhDcQUcRbg-P_7giITQ","n":"Hungarian Parliament Building","t":"10:00","c":"see","lat":47.507121,"lng":19.045669,"u":"https://www.google.com/maps/search/?api=1&query=Hungarian+Parliament+Building%2C+Kossuth+Lajos+t%C3%A9r+1-3%2C+1055+Budapest&query_place_id=ChIJPaPURhDcQUcRbg-P_7giITQ","a":"Kossuth Lajos tér 1-3, 1055 Budapest","k":false},{"id":"ChIJ982jOl7BQUcRy7x_rqz8Qt0","n":"St. Stephen's Basilica","t":"11:00","c":"see","lat":47.50089,"lng":19.053989,"u":"https://www.google.com/maps/search/?api=1&query=St.+Stephen%27s+Basilica%2C+Szent+Istv%C3%A1n+t%C3%A9r+1%2C+1051+Budapest&query_place_id=ChIJ982jOl7BQUcRy7x_rqz8Qt0","a":"Szent István tér 1, 1051 Budapest","k":false},{"id":"ChIJ98Kx4k_cQUcRzC66ex41jKA","n":"Central Market Hall","t":"~12:30","c":"see","lat":47.487085,"lng":19.058493,"u":"https://www.google.com/maps/search/?api=1&query=Central+Market+Hall%2C+F%C5%91v%C3%A1m+t%C3%A9r%2C+1093+Budapest&query_place_id=ChIJ98Kx4k_cQUcRzC66ex41jKA","a":"Fővám tér, 1093 Budapest","k":false},{"id":"ChIJ2TgQAvTdQUcRr4yHYs1pmYo","n":"Szabadság híd (Liberty Bridge)","t":"~12:30","c":"see","lat":47.485913,"lng":19.055144,"u":"https://www.google.com/maps/search/?api=1&query=Szabads%C3%A1g+h%C3%ADd%2C+Szabads%C3%A1g+h%C3%ADd%2C+1056+Budapest&query_place_id=ChIJ2TgQAvTdQUcRr4yHYs1pmYo","a":"Szabadság híd, 1056 Budapest","k":false},{"id":"ChIJiXQRTVrcQUcRd_BsnojC1Ds","n":"Metropolitan Ervin Szabó Library","t":"~13:30","c":"see","lat":47.489486,"lng":19.064838,"u":"https://www.google.com/maps/search/?api=1&query=Metropolitan+Ervin+Szab%C3%B3+Library%2C+Reviczky+u.+1%2C+1088+Budapest&query_place_id=ChIJiXQRTVrcQUcRd_BsnojC1Ds","a":"Reviczky u. 1, 1088 Budapest","k":false},{"id":"ChIJK72q4yLcQUcRmRgchz9iepc","n":"Castle Hill (Buda)","t":"13:00","c":"see","lat":47.501493,"lng":19.033604,"u":"https://www.google.com/maps/search/?api=1&query=Castle+Hill%2C+Castle+Hill%2C+Budapest&query_place_id=ChIJK72q4yLcQUcRmRgchz9iepc","a":"Castle Hill, Budapest","k":false},{"id":"ChIJnam0fyLcQUcRRl4jRKg8Ji8","n":"Fisherman's Bastion","t":"13:00","c":"see","lat":47.502183,"lng":19.034781,"u":"https://www.google.com/maps/search/?api=1&query=Fisherman%27s+Bastion%2C+1014+Budapest&query_place_id=ChIJnam0fyLcQUcRRl4jRKg8Ji8","a":"1014 Budapest","k":false},{"id":"ChIJ2cIAf0PdQUcReG6rO0niG4k","n":"Forni di Napoli Bazilika","t":"~18:30","c":"eat","lat":47.501841,"lng":19.050992,"u":"https://www.google.com/maps/search/?api=1&query=Forni+di+Napoli+Bazilika%2C+Okt%C3%B3ber+6.+u.+19%2C+1051+Budapest&query_place_id=ChIJ2cIAf0PdQUcReG6rO0niG4k","a":"Október 6. u. 19, 1051 Budapest","k":true},{"id":"ChIJd1VnBYbbQUcREiSNtgjDwMs","n":"Széchenyi Thermal Bath","t":"19:00","c":"night","lat":47.518657,"lng":19.082379,"u":"https://www.google.com/maps/search/?api=1&query=Sz%C3%A9chenyi+Thermal+Bath%2C+%C3%81llatkerti+krt.+9-11%2C+1146+Budapest&query_place_id=ChIJd1VnBYbbQUcREiSNtgjDwMs","a":"Állatkerti krt. 9-11, 1146 Budapest","k":false}],"8":[{"id":"ChIJz0F9UELcQUcRCIZQ0GOvKEE","n":"Dohány Street Synagogue","t":"10:00","c":"see","lat":47.495907,"lng":19.060614,"u":"https://www.google.com/maps/search/?api=1&query=Doh%C3%A1ny+Street+Synagogue%2C+Doh%C3%A1ny+u.+2%2C+1074+Budapest&query_place_id=ChIJz0F9UELcQUcRCIZQ0GOvKEE","a":"Dohány u. 2, 1074 Budapest","k":false},{"id":"ChIJMSwV53HcQUcRCwP5HvIgKfw","n":"Andrássy út","t":"11:30","c":"see","lat":47.50249,"lng":19.059289,"u":"https://www.google.com/maps/search/?api=1&query=Andr%C3%A1ssy+%C3%BAt%2C+Andr%C3%A1ssy+%C3%BAt%2C+Budapest&query_place_id=ChIJMSwV53HcQUcRCwP5HvIgKfw","a":"Andrássy út, Budapest","k":false},{"id":"ChIJaSHx-YfbQUcRPylIurx8QTQ","n":"Heroes' Square","t":"13:00","c":"see","lat":47.514943,"lng":19.077863,"u":"https://www.google.com/maps/search/?api=1&query=Heroes%27+Square%2C+H%C5%91s%C3%B6k+tere%2C+1146+Budapest&query_place_id=ChIJaSHx-YfbQUcRPylIurx8QTQ","a":"Hősök tere, 1146 Budapest","k":false},{"id":"ChIJoaLtEYfbQUcRjp9d1Wfk97w","n":"Vajdahunyad Castle","t":"13:00","c":"see","lat":47.51489,"lng":19.083059,"u":"https://www.google.com/maps/search/?api=1&query=Vajdahunyad+Castle%2C+Vajdahunyad+stny.%2C+1146+Budapest&query_place_id=ChIJoaLtEYfbQUcRjp9d1Wfk97w","a":"Vajdahunyad stny., 1146 Budapest","k":false},{"id":"ChIJmeeg4mbcQUcRIOHu3gDTJDs","n":"New York Café","t":"~14:00","c":"eat","lat":47.498726,"lng":19.070456,"u":"https://www.google.com/maps/search/?api=1&query=New+York+Caf%C3%A9%2C+Erzs%C3%A9bet+krt.+9-11%2C+1074+Budapest&query_place_id=ChIJmeeg4mbcQUcRIOHu3gDTJDs","a":"Erzsébet krt. 9-11, 1074 Budapest","k":false},{"id":"ChIJ2cIAf0PdQUcReG6rO0niG4k","n":"Forni di Napoli Bazilika","t":"~14:00","c":"eat","lat":47.501841,"lng":19.050992,"u":"https://www.google.com/maps/search/?api=1&query=Forni+di+Napoli+Bazilika%2C+Okt%C3%B3ber+6.+u.+19%2C+1051+Budapest&query_place_id=ChIJ2cIAf0PdQUcReG6rO0niG4k","a":"Október 6. u. 19, 1051 Budapest","k":true},{"id":"ChIJl5kv2EHcQUcRuS4JTWMULac","n":"Retrock","t":"15:00","c":"shop","lat":47.498257,"lng":19.05561,"u":"https://www.google.com/maps/search/?api=1&query=Retrock%2C+Anker+k%C3%B6z+2-4%2C+1061+Budapest&query_place_id=ChIJl5kv2EHcQUcRuS4JTWMULac","a":"Anker köz 2-4, 1061 Budapest","k":false},{"id":"ChIJ43_IPWHcQUcRcdq9SS1HqvU","n":"Háda – Rákóczi út 68","t":"15:00","c":"shop","lat":47.49843,"lng":19.074595,"u":"https://www.google.com/maps/search/?api=1&query=H%C3%A1da+%E2%80%93+R%C3%A1k%C3%B3czi+%C3%BAt+68%2C+R%C3%A1k%C3%B3czi+%C3%BAt+68%2C+1074+Budapest&query_place_id=ChIJ43_IPWHcQUcRcdq9SS1HqvU","a":"Rákóczi út 68, 1074 Budapest","k":true},{"id":"ChIJA2EDAGrcQUcROmfH3Sr5PHs","n":"Ludovika","t":"15:00","c":"shop","lat":47.49788,"lng":19.058342,"u":"https://www.google.com/maps/search/?api=1&query=Ludovika%2C+Rumbach+Sebesty%C3%A9n+u.+15%2C+1075+Budapest&query_place_id=ChIJA2EDAGrcQUcROmfH3Sr5PHs","a":"Rumbach Sebestyén u. 15, 1075 Budapest","k":false},{"id":"ChIJHwX3-fndQUcRaN20Cwomdkw","n":"Komondors Vintage","t":"15:00","c":"shop","lat":47.49786,"lng":19.064403,"u":"https://www.google.com/maps/search/?api=1&query=Komondors+Vintage%2C+Wessel%C3%A9nyi+utca+21%2C+1077+Budapest&query_place_id=ChIJHwX3-fndQUcRaN20Cwomdkw","a":"Wesselényi utca 21, 1077 Budapest","k":false},{"id":"ChIJ_SzcNgDdQUcRPkoYXiq7710","n":"Primark (Arena Mall)","t":"15:00","c":"shop","lat":47.498393,"lng":19.093468,"u":"https://www.google.com/maps/search/?api=1&query=Primark%2C+Kerepesi+%C3%BAt+9%2C+1087+Budapest&query_place_id=ChIJ_SzcNgDdQUcRPkoYXiq7710","a":"Kerepesi út 9, 1087 Budapest","k":false},{"id":"ChIJWbhyQnzcQUcRnaM3dxRlZTo","n":"Budai Zsibvásár","t":"15:00","c":"shop","lat":47.461938,"lng":18.993501,"u":"https://www.google.com/maps/search/?api=1&query=Budai+Zsibv%C3%A1s%C3%A1r%2C+Buda%C3%B6rsi+%C3%BAt+172-178%2C+1112+Budapest&query_place_id=ChIJWbhyQnzcQUcRnaM3dxRlZTo","a":"Budaörsi út 172-178, 1112 Budapest","k":false},{"id":"ChIJtdlZSf3DQUcRLfDWo1cHVtw","n":"Bakancsos Piac","t":"15:00","c":"shop","lat":47.476686,"lng":19.242348,"u":"https://www.google.com/maps/search/?api=1&query=Bakancsos+Piac%2C+Mad%C3%A1rdomb+k%C3%B6z%2C+1173+Budapest&query_place_id=ChIJtdlZSf3DQUcRLfDWo1cHVtw","a":"Madárdomb köz, 1173 Budapest","k":false},{"id":"ChIJibrLEzbcQUcRDpPMb5am4qw","n":"Gellért Hill","t":"17:30","c":"see","lat":47.486389,"lng":19.041111,"u":"https://www.google.com/maps/search/?api=1&query=Gell%C3%A9rt+Hill%2C+Gell%C3%A9rt+Hill%2C+1016+Budapest&query_place_id=ChIJibrLEzbcQUcRDpPMb5am4qw","a":"Gellért Hill, 1016 Budapest","k":false},{"id":"ChIJ5Q3SoELcQUcRpB0x-9NCdyY","n":"Szimpla Kert","t":"~19:00","c":"eat","lat":47.496965,"lng":19.063346,"u":"https://www.google.com/maps/search/?api=1&query=Szimpla+Kert%2C+Kazinczy+u.+14%2C+1075+Budapest&query_place_id=ChIJ5Q3SoELcQUcRpB0x-9NCdyY","a":"Kazinczy u. 14, 1075 Budapest","k":false}],"9":[{"id":"ChIJ9bafsGfcQUcRq9TxHoKuWK0","n":"Akácfa u. 12-14","t":"09:00","c":"hotel","lat":47.498124,"lng":19.068009,"u":"https://www.google.com/maps/search/?api=1&query=Ak%C3%A1cfa+u.+12-14%2C+Ak%C3%A1cfa+u.+12-14%2C+1072+Budapest&query_place_id=ChIJ9bafsGfcQUcRq9TxHoKuWK0","a":"Akácfa u. 12-14, 1072 Budapest","k":false},{"id":"ChIJKRqatz_cQUcRpMnQhdf-QB4","n":"Széchenyi Chain Bridge","t":"~10:00","c":"see","lat":47.498993,"lng":19.043699,"u":"https://www.google.com/maps/search/?api=1&query=Sz%C3%A9chenyi+Chain+Bridge%2C+Sz%C3%A9chenyi+L%C3%A1nch%C3%ADd%2C+1051+Budapest&query_place_id=ChIJKRqatz_cQUcRpMnQhdf-QB4","a":"Széchenyi Lánchíd, 1051 Budapest","k":false},{"id":"ChIJibrLEzbcQUcRDpPMb5am4qw","n":"Gellért Hill","t":"~10:00","c":"see","lat":47.486389,"lng":19.041111,"u":"https://www.google.com/maps/search/?api=1&query=Gell%C3%A9rt+Hill%2C+Gell%C3%A9rt+Hill%2C+1016+Budapest&query_place_id=ChIJibrLEzbcQUcRDpPMb5am4qw","a":"Gellért Hill, 1016 Budapest","k":false},{"id":"ChIJn2oLxYncQUcRDTkAlLx_Ako","n":"Budapest-Keleti","t":"~12:00","c":"transit","lat":47.500442,"lng":19.083988,"u":"https://www.google.com/maps/search/?api=1&query=Budapest-Keleti%2C+Kerepesi+%C3%BAt+2-4%2C+1087+Budapest&query_place_id=ChIJn2oLxYncQUcRDTkAlLx_Ako","a":"Kerepesi út 2-4, 1087 Budapest","k":false},{"id":"ChIJUU071tupbUcRyFdx20Nwgqg","n":"Wien Hauptbahnhof","t":"~12:00","c":"transit","lat":48.185187,"lng":16.376597,"u":"https://www.google.com/maps/search/?api=1&query=Wien+Hauptbahnhof%2C+Am+Hauptbahnhof+1%2C+1100+Wien&query_place_id=ChIJUU071tupbUcRyFdx20Nwgqg","a":"Am Hauptbahnhof 1, 1100 Wien","k":false},{"id":"ChIJYVTcYdepbUcRmN7UhYEEt1g","n":"ibis Wien Hauptbahnhof","t":"~15:00","c":"hotel","lat":48.185704,"lng":16.378674,"u":"https://www.google.com/maps/search/?api=1&query=ibis+Wien+Hauptbahnhof%2C+Canettistra%C3%9Fe+8%2C+1100+Wien&query_place_id=ChIJYVTcYdepbUcRmN7UhYEEt1g","a":"Canettistraße 8, 1100 Wien","k":false},{"id":"ChIJ8XfPY5oHbUcRQbimbLVSYG8","n":"Kunsthistorisches Museum Wien","t":"15:30","c":"see","lat":48.203802,"lng":16.361787,"u":"https://www.google.com/maps/search/?api=1&query=Kunsthistorisches+Museum+Wien%2C+Maria-Theresien-Platz%2C+1010+Wien&query_place_id=ChIJ8XfPY5oHbUcRQbimbLVSYG8","a":"Maria-Theresien-Platz, 1010 Wien","k":false},{"id":"ChIJgcJpPp8HbUcR3h-qVsFjBQI","n":"Stephansplatz","t":"~18:00","c":"see","lat":48.208733,"lng":16.373676,"u":"https://www.google.com/maps/search/?api=1&query=Stephansplatz%2C+Stephansplatz%2C+1010+Wien&query_place_id=ChIJgcJpPp8HbUcR3h-qVsFjBQI","a":"Stephansplatz, 1010 Wien","k":false},{"id":"ChIJp324WJ4HbUcRb3WRtwYb7Dc","n":"Gasthaus Pöschl","t":"19:30","c":"eat","lat":48.20669,"lng":16.373828,"u":"https://www.google.com/maps/search/?api=1&query=Gasthaus+P%C3%B6schl%2C+Weihburggasse+17%2C+1010+Wien&query_place_id=ChIJp324WJ4HbUcRb3WRtwYb7Dc","a":"Weihburggasse 17, 1010 Wien","k":false},{"id":"ChIJRa2wNPUHbUcRV6Wy9zJRnew","n":"Gasthaus Zum Wohl","t":"19:30","c":"eat","lat":48.195673,"lng":16.342414,"u":"https://www.google.com/maps/search/?api=1&query=Gasthaus+Zum+Wohl%2C+Stumpergasse+61%2C+1060+Wien&query_place_id=ChIJRa2wNPUHbUcRV6Wy9zJRnew","a":"Stumpergasse 61, 1060 Wien","k":false},{"id":"ChIJlQG-Z5AHbUcRKjR3T99KRFQ","n":"Café im Kunsthistorischen Museum","t":"19:30","c":"eat","lat":48.203911,"lng":16.361545,"u":"https://www.google.com/maps/search/?api=1&query=Caf%C3%A9+im+Kunsthistorischen+Museum%2C+Maria-Theresien-Platz+1%2C+1010+Wien&query_place_id=ChIJlQG-Z5AHbUcRKjR3T99KRFQ","a":"Maria-Theresien-Platz 1, 1010 Wien","k":false}],"10":[{"id":"ChIJYVTcYdepbUcRmN7UhYEEt1g","n":"ibis Wien Hauptbahnhof","t":"05:30","c":"hotel","lat":48.185704,"lng":16.378674,"u":"https://www.google.com/maps/search/?api=1&query=ibis+Wien+Hauptbahnhof%2C+Canettistra%C3%9Fe+8%2C+1100+Wien&query_place_id=ChIJYVTcYdepbUcRmN7UhYEEt1g","a":"Canettistraße 8, 1100 Wien","k":false},{"id":"ChIJUU071tupbUcRyFdx20Nwgqg","n":"Wien Hauptbahnhof","t":"06:15","c":"transit","lat":48.185187,"lng":16.376597,"u":"https://www.google.com/maps/search/?api=1&query=Wien+Hauptbahnhof%2C+Am+Hauptbahnhof+1%2C+1100+Wien&query_place_id=ChIJUU071tupbUcRyFdx20Nwgqg","a":"Am Hauptbahnhof 1, 1100 Wien","k":false},{"id":"ChIJm74aR6tVbEcRS5vSjRBSeiQ","n":"Vienna International Airport (VIE)","t":"06:15","c":"transit","lat":48.117948,"lng":16.566258,"u":"https://www.google.com/maps/search/?api=1&query=Vienna+International+Airport%2C+1300+Schwechat&query_place_id=ChIJm74aR6tVbEcRS5vSjRBSeiQ","a":"1300 Schwechat","k":false},{"id":"ChIJ1XgwjIk82jER3GYMUrMC4RM","n":"Singapore Changi Airport T1","t":"09:35","c":"transit","lat":1.361858,"lng":103.990327,"u":"https://www.google.com/maps/search/?api=1&query=Singapore+Changi+Airport+T1%2C+Terminal+1%2C+Singapore&query_place_id=ChIJ1XgwjIk82jER3GYMUrMC4RM","a":"Terminal 1, Singapore","k":false}]}, DAYS={"1": ["Thu 29 Oct", "Vienna"], "2": ["Fri 30 Oct", "Vienna"], "3": ["Sat 31 Oct", "Salzburg"], "4": ["Sun 1 Nov", "Hallstatt"], "5": ["Mon 2 Nov", "Salzburg → Vienna"], "6": ["Tue 3 Nov", "Vienna → Budapest"], "7": ["Wed 4 Nov", "Budapest"], "8": ["Thu 5 Nov", "Budapest"], "9": ["Fri 6 Nov", "Budapest → Vienna"], "10": ["Sat 7 Nov", "Vienna → Singapore"]};
   var CAT={transit:'Transit',see:'Sights',eat:'Food option',shop:'Shopping',hotel:'Stay',night:'Evening'};
-  var map=null, layer=null, markers=[], tilesOk=false, tileErr=0, cur=null;
+  var cur=null;
   var chips=document.getElementById('mapChips'), list=document.getElementById('stopList');
   function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-  function dark(){var r=document.documentElement.getAttribute('data-theme');if(r)return r==='dark';return window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches;}
   // chips
   var keys=Object.keys(DAYS);
   keys.forEach(function(d){var b=document.createElement('button');b.className='map-chip';b.dataset.d=d;
@@ -2233,20 +1559,6 @@ var TRIPMAP=(function(){
       var o=Object.assign({days:[+k]},s);o.t='';seen[s.id]=o;out.push(o);});});
     return out;
   }
-  function init(){
-    if(map||!window.L) return;
-    map=L.map('tripmap',{zoomControl:true,scrollWheelZoom:false,tap:true});
-    var url='https://{s}.basemaps.cartocdn.com/'+(dark()?'dark_all':'rastertiles/voyager')+'/{z}/{x}/{y}{r}.png';
-    var t=L.tileLayer(url,{maxZoom:19,subdomains:'abcd',attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" target="_blank">CARTO</a>'}).addTo(map);
-    t.on('tileload',function(){tilesOk=true;document.getElementById('mapNote').hidden=true;});
-    t.on('tileerror',function(){tileErr++;if(!tilesOk&&tileErr>2){var n=document.getElementById('mapNote');n.textContent='The street map can\u2019t load in this preview, but the pins and Google Maps links still work. The full street map shows on your GitHub Pages site.';n.hidden=false;}});
-    layer=L.layerGroup().addTo(map);
-  }
-  function pinIcon(s,label){return L.divIcon({className:'',html:'<div class="pin c-'+s.c+'"><b>'+label+'</b></div>',iconSize:[28,28],iconAnchor:[14,28],popupAnchor:[0,-26]});}
-  function popup(s){
-    var meta=(s.t?esc(s.t)+' · ':'')+CAT[s.c]+(s.days.length>1||cur==='all'?' · Day '+s.days.join(', '):'');
-    return '<div class="pop-n">'+esc(s.n)+'</div><div class="pop-m">'+meta+'</div>'+(s.k?'<div class="pop-m">Location to confirm</div>':'')+'<a class="pop-a" href="'+esc(s.u)+'" target="_blank" rel="noopener">Open in Google Maps ↗</a>';
-  }
   function sel(d){
     d=String(d);cur=d;
     try{localStorage.setItem('et_mapday',d);}catch(e){}
@@ -2254,28 +1566,16 @@ var TRIPMAP=(function(){
     var ac=chips.querySelector('.active');if(ac)ac.scrollIntoView({block:'nearest',inline:'center'});
     var ss=stops(d);
     document.getElementById('mapTtl').textContent=d==='all'?'All 10 days':'Day '+d+' — '+DAYS[d][1];
-    document.getElementById('mapSub').textContent=d==='all'?ss.length+' places · numbers show the first day you visit':DAYS[d][0]+' · '+ss.length+' stops · numbered in itinerary order';
+    document.getElementById('mapSub').textContent=d==='all'?ss.length+' places · numbers show the first day you visit':DAYS[d][0]+' · '+ss.length+' stops · numbers match the pins on the map';
     // list
     list.innerHTML='';
     ss.forEach(function(s,i){
       var label=d==='all'?s.days[0]:i+1;
       var li=document.createElement('li');li.className='stop';
       li.innerHTML='<span class="stop-n c-'+s.c+'">'+label+'</span><span class="stop-main"><a class="stop-name" href="'+esc(s.u)+'" target="_blank" rel="noopener">'+esc(s.n)+'</a><div class="stop-meta">'+CAT[s.c]+(d==='all'?' · Day '+s.days.join(', '):'')+(s.k?' · <span class="flag">to confirm</span>':'')+'</div></span><span class="stop-t">'+esc(s.t||'')+'</span>';
-      li.addEventListener('click',function(e){if(e.target.closest('a'))return;focus(i);document.getElementById('tripmap').scrollIntoView({block:'center',behavior:'smooth'});});
       list.appendChild(li);
     });
-    if(!window.L){var n=document.getElementById('mapNote');n.textContent='The map couldn\u2019t load. Tap a place in the list to open it in Google Maps.';n.hidden=false;return;}
-    init();layer.clearLayers();markers=[];
-    var pts=[];
-    ss.forEach(function(s,i){
-      var label=d==='all'?s.days[0]:i+1;
-      var m=L.marker([s.lat,s.lng],{icon:pinIcon(s,label),title:s.n,riseOnHover:true}).bindPopup(popup(s));
-      m.addTo(layer);markers.push(m);if(!(d==='all'&&s.lng>60))pts.push([s.lat,s.lng]);
-    });
-    map.invalidateSize();
-    if(pts.length===1)map.setView(pts[0],15);else map.fitBounds(pts,{padding:[36,36],maxZoom:16});
   }
-  function focus(i){var m=markers[i];if(!m)return;map.setView(m.getLatLng(),Math.max(map.getZoom(),15),{animate:true});m.openPopup();}
   return {show:function(){var d=cur;if(!d){try{d=localStorage.getItem('et_mapday');}catch(e){} if(!d||!(d in DAYS||d==='all'))d='1';}
     setTimeout(function(){sel(d);},30);}};
 })();
