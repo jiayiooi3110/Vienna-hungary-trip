@@ -1,0 +1,1530 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Central Europe · Oct–Nov 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── tokens ─────────────────────────────────────────────── */
+:root{
+  --bg:#FAF8F5;--card:#fff;--border:#E8E2D9;--fg:#1A1714;
+  --muted:#7A7168;--accent:#8B4A2F;--accent-light:#F5EDE8;
+  --eat:#2A5C45;--eat-light:#E8F2ED;
+  --see:#1A3A6B;--see-light:#E8EEF7;
+  --shop:#6B3A8B;--shop-light:#F0E8F7;
+  --hotel:#4A4A2F;--hotel-light:#F2F2E8;
+  --time-line:#D4C9BC;
+  --nav-h:56px;
+  color-scheme:light;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){
+  --bg:#1A1714;--card:#252018;--border:#3A3328;
+  --fg:#F0EAE0;--muted:#9A8F82;--accent:#C87A55;--accent-light:#2A1E18;
+  --eat:#5AAA80;--eat-light:#152418;
+  --see:#6A9ADB;--see-light:#101828;
+  --shop:#B07ADB;--shop-light:#1E1028;
+  --hotel:#9A9A6A;--hotel-light:#1E1E0E;
+  --time-line:#3A3328;color-scheme:dark;
+}}
+:root[data-theme=dark]{
+  --bg:#1A1714;--card:#252018;--border:#3A3328;
+  --fg:#F0EAE0;--muted:#9A8F82;--accent:#C87A55;--accent-light:#2A1E18;
+  --eat:#5AAA80;--eat-light:#152418;
+  --see:#6A9ADB;--see-light:#101828;
+  --shop:#B07ADB;--shop-light:#1E1028;
+  --hotel:#9A9A6A;--hotel-light:#1E1E0E;
+  --time-line:#3A3328;color-scheme:dark;
+}
+
+/* ── reset ───────────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:'Inter',sans-serif;font-size:14px;line-height:1.5;
+  padding-top:var(--nav-h);
+}
+
+/* ── sticky nav ──────────────────────────────────────────── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:var(--bg);border-bottom:1px solid var(--border);
+  height:var(--nav-h);
+  display:flex;align-items:center;
+  overflow-x:auto;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  gap:0;
+  padding:0 max(12px,env(safe-area-inset-left,0px));
+  padding-right:max(12px,env(safe-area-inset-right,0px));
+}
+.nav::-webkit-scrollbar{display:none}
+.nav-tab{
+  flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;
+  padding:6px 10px;border-radius:8px;cursor:pointer;
+  border:none;background:transparent;color:var(--muted);
+  font-family:'Inter',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.04em;text-transform:uppercase;
+  transition:background .15s,color .15s;
+  white-space:nowrap;line-height:1.3;
+  min-width:52px;
+}
+.nav-tab:hover{background:var(--accent-light);color:var(--accent)}
+.nav-tab.active{background:var(--accent);color:#fff}
+.nav-tab-day{font-size:13px;font-weight:700;letter-spacing:0}
+.nav-tab-city{font-size:9px;opacity:.8;margin-top:1px}
+
+/* ── page wrapper ────────────────────────────────────────── */
+.page{display:none}
+.page.active{display:block}
+
+/* ── trip header (top of each day) ───────────────────────── */
+.day-wrap{
+  max-width:680px;margin:0 auto;
+  padding:24px max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-bottom:48px;
+}
+/* ── shared header classes ───────────────────────────────── */
+/* Day 1 verbose names */
+.header{margin-bottom:28px}
+.header-eyebrow,.eye{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.header-title,.ttl{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--fg);line-height:1.2}
+.header-sub,.sub{color:var(--muted);font-size:13px;margin-top:6px}
+.header-divider,.div{width:40px;height:3px;background:var(--accent);border-radius:2px;margin-top:14px}
+/* Day 2–10 short names */
+.hdr{margin-bottom:28px}
+
+/* ── legend ──────────────────────────────────────────────── */
+.legend,.leg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.legend-item,.li{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:var(--muted)}
+.legend-dot,.ld{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ── timeline ────────────────────────────────────────────── */
+.timeline,.tl{position:relative;padding-left:72px}
+.timeline::before,.tl::before{
+  content:'';position:absolute;left:52px;top:8px;bottom:8px;
+  width:2px;background:var(--time-line);
+}
+
+/* ── block ───────────────────────────────────────────────── */
+.block,.bl{position:relative;margin-bottom:16px}
+.block-time,.bt{
+  position:absolute;left:-72px;top:12px;
+  font-size:10px;font-weight:600;color:var(--muted);
+  font-variant-numeric:tabular-nums;line-height:1.2;
+  text-align:right;width:44px;
+}
+.block-dot,.bd{
+  position:absolute;left:-24px;top:14px;
+  width:12px;height:12px;border-radius:50%;
+  border:2px solid var(--bg);z-index:1;
+}
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:14px 16px;
+}
+.card-label,.cl{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.card-title,.ct{font-size:15px;font-weight:600;color:var(--fg);margin-bottom:4px}
+.card-note,.cn{font-size:12px;color:var(--muted);line-height:1.5}
+.card-note strong,.cn strong{color:var(--fg);font-weight:500}
+.card a{color:var(--accent);text-decoration:none;font-weight:500}
+
+/* ── cluster / location tag ──────────────────────────────── */
+.cluster-tag,.tag{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:10px;font-weight:600;letter-spacing:.06em;
+  background:var(--accent-light);color:var(--accent);
+  border-radius:4px;padding:2px 7px;margin-bottom:8px;
+}
+
+/* ── section label ───────────────────────────────────────── */
+.section-label,.sec{
+  font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin:22px 0 12px -72px;
+  padding-left:72px;border-top:1px solid var(--border);padding-top:18px;
+}
+
+/* ── type colors — Day 1 verbose ─────────────────────────── */
+.type-arrive .card-label{color:var(--accent)}
+.type-arrive .block-dot{background:var(--accent)}
+.type-see .card-label{color:var(--see)}
+.type-see .block-dot{background:var(--see)}
+.type-eat .card-label{color:var(--eat)}
+.type-eat .block-dot{background:var(--eat)}
+.type-shop .card-label{color:var(--shop)}
+.type-shop .block-dot{background:var(--shop)}
+.type-hotel .card-label{color:var(--hotel)}
+.type-hotel .block-dot{background:var(--hotel)}
+.type-night .card-label{color:var(--accent)}
+.type-night .block-dot{background:var(--accent)}
+
+/* ── type colors — Day 2–10 short ────────────────────────── */
+.ta .cl{color:var(--accent)}.ta .bd{background:var(--accent)}
+.ts .cl{color:var(--see)}.ts .bd{background:var(--see)}
+.te .cl{color:var(--eat)}.te .bd{background:var(--eat)}
+.th .cl{color:var(--hotel)}.th .bd{background:var(--hotel)}
+.tn .cl{color:var(--accent)}.tn .bd{background:var(--accent)}
+.tsh .cl{color:var(--shop)}.tsh .bd{background:var(--shop)}
+
+/* ── eat / options grid ──────────────────────────────────── */
+.options-label,.ol{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--eat);margin-bottom:8px}
+.options-grid,.og{display:flex;flex-direction:column;gap:8px}
+.option-card,.oc{
+  background:var(--eat-light);border:1px solid var(--border);
+  border-radius:8px;padding:10px 12px;
+  display:flex;justify-content:space-between;align-items:flex-start;gap:8px;
+}
+.option-name,.on{font-size:13px;font-weight:600;color:var(--fg)}
+.option-note,.oo{font-size:11px;color:var(--muted);margin-top:2px}
+.option-tag,.ot{
+  font-size:10px;font-weight:600;color:var(--eat);
+  background:var(--eat-light);border:1px solid var(--eat);
+  border-radius:4px;padding:2px 6px;white-space:nowrap;flex-shrink:0;opacity:.8;
+}
+.on a{color:var(--eat);text-decoration:none}
+
+/* ── shop grid (Day 8) ───────────────────────────────────── */
+.sog{display:flex;flex-direction:column;gap:8px}
+.soc{background:var(--shop-light);border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+.son{font-size:13px;font-weight:600;color:var(--fg)}
+.soo{font-size:11px;color:var(--muted);margin-top:2px}
+.son a{color:var(--shop);text-decoration:none}
+
+/* ── note / warning banners ──────────────────────────────── */
+.note-banner,.nb{
+  background:var(--accent-light);border-left:3px solid var(--accent);
+  border-radius:0 6px 6px 0;padding:10px 12px;
+  font-size:12px;color:var(--muted);margin-top:16px;
+}
+.note-banner strong,.nb strong{color:var(--accent)}
+.wb{
+  background:#FFFBEA;border-left:3px solid #B7791F;
+  border-radius:0 6px 6px 0;padding:10px 12px;
+  font-size:12px;color:#7D5D1A;margin-top:16px;
+}
+.wb strong{color:#B7791F}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .wb{background:#2A2310;border-color:#D4A030;color:#C8A050}}
+:root[data-theme=dark] .wb{background:#2A2310;border-color:#D4A030;color:#C8A050}
+
+/* ── arrival card (Day 10) ───────────────────────────────── */
+.arr{
+  background:var(--accent-light);border:2px solid var(--accent);
+  border-radius:12px;padding:20px;margin-top:24px;text-align:center;
+}
+.arr-ttl{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--fg);margin-bottom:6px}
+.arr-sub{font-size:12px;color:var(--muted)}
+.arr-big{font-size:32px;margin:10px 0}
+
+/* ── trip overview banner ────────────────────────────────── */
+.trip-overview{
+  max-width:680px;margin:0 auto;
+  padding:16px max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px;
+  font-size:11px;color:var(--muted);
+  border-bottom:1px solid var(--border);
+  background:var(--bg);
+}
+.trip-ov-cities{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.trip-ov-city{font-weight:600;color:var(--fg)}
+.trip-ov-arr{color:var(--muted);font-size:10px}
+.trip-ov-dates{margin-left:auto;font-weight:500}
+</style>
+</head><body>
+
+<!-- sticky day nav -->
+<nav class="nav" id="nav" role="tablist" aria-label="Day navigation">
+  <button class="nav-tab" data-day="1" role="tab"><span class="nav-tab-day">1</span><span class="nav-tab-city">Thu · VIE</span></button>
+  <button class="nav-tab" data-day="2" role="tab"><span class="nav-tab-day">2</span><span class="nav-tab-city">Fri · VIE</span></button>
+  <button class="nav-tab" data-day="3" role="tab"><span class="nav-tab-day">3</span><span class="nav-tab-city">Sat · SZG</span></button>
+  <button class="nav-tab" data-day="4" role="tab"><span class="nav-tab-day">4</span><span class="nav-tab-city">Sun · HLT</span></button>
+  <button class="nav-tab" data-day="5" role="tab"><span class="nav-tab-day">5</span><span class="nav-tab-city">Mon · VIE</span></button>
+  <button class="nav-tab" data-day="6" role="tab"><span class="nav-tab-day">6</span><span class="nav-tab-city">Tue · BUD</span></button>
+  <button class="nav-tab" data-day="7" role="tab"><span class="nav-tab-day">7</span><span class="nav-tab-city">Wed · BUD</span></button>
+  <button class="nav-tab" data-day="8" role="tab"><span class="nav-tab-day">8</span><span class="nav-tab-city">Thu · BUD</span></button>
+  <button class="nav-tab" data-day="9" role="tab"><span class="nav-tab-day">9</span><span class="nav-tab-city">Fri · VIE</span></button>
+  <button class="nav-tab" data-day="10" role="tab"><span class="nav-tab-day">10</span><span class="nav-tab-city">Sat · FLY</span></button>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════
+     DAY 1  Thu 29 Oct · Vienna arrival
+═══════════════════════════════════════════════════════════ -->
+<div class="page" id="day1">
+<div class="day-wrap">
+
+<div class="header">
+  <div class="header-eyebrow">Central Europe Trip · Thu 29 Oct 2026</div>
+  <div class="header-title">Day 1 — Vienna</div>
+  <div class="header-sub">Arrival day · 1st District &amp; Naschmarkt area</div>
+  <div class="header-divider"></div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div> Transit / Arrive</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--see)"></div> Sights</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--eat)"></div> Food options</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--shop)"></div> Shopping / Browse</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--hotel)"></div> Hotel</div>
+</div>
+
+<div class="timeline">
+
+  <div class="block type-arrive">
+    <div class="block-time">08:20</div>
+    <div class="block-dot"></div>
+    <div class="card">
+      <div class="card-label">Arrive</div>
+      <div class="card-title">Vienna Airport → City</div>
+      <div class="card-note">S-Bahn from Terminal 3 to Wien Mitte (~25 min, EUR 4). Buy ticket at machine before boarding. Check in and drop bags.</div>
+    </div>
+  </div>
+
+  <div class="section-label">Morning · 1st District</div>
+
+  <div class="block type-eat">
+    <div class="block-time">10:30</div>
+    <div class="block-dot"></div>
+    <div class="card">
+      <div class="cluster-tag">📍 Petersplatz, 1st District</div>
+      <div class="card-label">Breakfast / Coffee</div>
+      <div class="card-title">Café Central</div>
+      <div class="card-note">Neo-Gothic interior, once frequented by Sigmund Freud. Order a Melange coffee and Apfelstrudel. <strong>Go early to avoid queues.</strong></div>
+    </div>
+  </div>
+
+  <div class="block type-see">
+    <div class="block-time">~12:00</div>
+    <div class="block-dot"></div>
+    <div class="card">
+      <div class="cluster-tag">📍 1st District — all within 20 min walk</div>
+      <div class="card-label">Sights</div>
+      <div class="card-title">St. Stephen's Cathedral + Graben + Kärntner Str.</div>
+      <div class="card-note">Walk the 1st district. <strong>Stephansdom</strong> Gothic cathedral → <strong>Graben</strong> pedestrian street → <strong>Kärntner Str.</strong> main shopping strip → <strong>Palais Equitable</strong> (Instagram-worthy arcade interior).</div>
+    </div>
+  </div>
+
+  <div class="block type-see">
+    <div class="block-time">~13:30</div>
+    <div class="block-dot"></div>
+    <div class="card">
+      <div class="cluster-tag">📍 5 min walk from Stephansdom</div>
+      <div class="card-label">Sights</div>
+      <div class="card-title">Hofburg Palace + Heldenplatz</div>
+      <div class="card-note">Exterior walk through Hofburg, out to Heldenplatz square. Imperial scale. En route to the Ring.</div>
+    </div>
+  </div>
+
+  <div class="block type-eat">
+    <div class="block-time">~15:00</div>
+    <div class="block-dot"></div>
+    <div class="card">
+      <div class="card-label">Coffee stop — pick one</div>
+      <div class="options-label">Options near Stephansplatz / 1st district</div>
+      <div class="options-grid">
+        <div class="option-card">
+          <div><div class="option-name">The Coffee Stephansplatz</div><div class="option-note">Right on Stephansplatz. Your saved place.</div></div>
+          <div class="option-tag">Café</div>
+        </div>
+        <div class="option-card">
+          <div><div class="option-name">Pærle Schmuckcafé</div><div class="option-note">1st district. Quirky jewellery café, your saved place.</div></div>
+          <div class="option-tag">Café</div>
+        </div>
+        <div class="option-card">
+          <div><div class="option-name">Hiiich Teddy Cafe</div><div class="option-note">Teddy bear themed café, your saved place.</div></div>
+          <div class="option-tag">Teddy cafe</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Afternoon · Naschmarkt &amp; surrounds</div>
+
+  <div class="block type-see">
+    <div class="block-time">~15:30</div>
+    <div class="block-dot"></div>
+    <div class="card">
+      <div class="cluster-tag">📍 4th District — 15 min walk / tram from 1st</div>
+      <div class="card-label">Sights</div>
+      <div class="card-title">St. Charles's Church (Karlskirche)</div>
+      <div class="card-note">Baroque masterpiece. Your saved place. Evening concerts held here — if you booked the Karlskirche concert, check if it's tonight.</div>
+    </div>
+  </div>
+
+  <div class="block type-shop">
+    <div class="block-time">~16:30</div>
+    <div class="block-dot"></div>
+    <div class="card">
+      <div class="cluster-tag">📍 Naschmarkt area</div>
+      <div class="card-label">Browse</div>
+      <div class="card-title">Naschmarkt + Flea Market Wild im West</div>
+      <div class="card-note">Vienna's famous open-air market. <strong>Flea Market Wild im West</strong> (your saved place) is just behind Naschmarkt — vintage and antiques. <strong>Note: Naschmarkt stalls CLOSED Sundays</strong> — but today is Thursday, so fully open.</div>
+    </div>
+  </div>
+
+  <div class="block type-shop">
+    <div class="block-time">~17:00</div>
+    <div class="block-dot"></div>
+    <div class="card">
+      <div class="cluster-tag">📍 6th District — 10 min walk from Naschmarkt</div>
+      <div class="card-label">Browse</div>
+      <div class="card-title">carla Mittersteig (secondhand) · Ramsch und Rosen</div>
+      <div class="card-note">Both your saved places. Secondhand / thrift shops in the Mittersteig street. Good for a wander before dinner.</div>
+    </div>
+  </div>
+
+  <div class="section-label">Evening · Dinner</div>
+
+  <div class="block type-eat">
+    <div class="block-time">~19:00</div>
+    <div class="block-dot"></div>
+    <div class="card">
+      <div class="card-label">Dinner — pick one</div>
+      <div class="options-label">Options from your saved places</div>
+      <div class="options-grid">
+        <div class="option-card">
+          <div><div class="option-name">Figlmüller – Bäckerstraße</div><div class="option-note">1st district. Famous Wiener schnitzel. Your saved place. <strong>⚠ Reserve ahead at figlmueller.at</strong></div></div>
+          <div class="option-tag">Book ahead</div>
+        </div>
+        <div class="option-card">
+          <div><div class="option-name">Gasthaus Pöschl</div><div class="option-note">1st district. Traditional Austrian. Your saved place.</div></div>
+          <div class="option-tag">Traditional</div>
+        </div>
+        <div class="option-card">
+          <div><div class="option-name">Neubaugasse / Spittelberggasse area</div><div class="option-note">7th district. Both your saved places — Vienna's hippest neighbourhood for independent restaurants.</div></div>
+          <div class="option-tag">Neighbourhood</div>
+        </div>
+        <div class="option-card">
+          <div><div class="option-name">mani im vierten</div><div class="option-note">4th district, near Naschmarkt. Your saved place.</div></div>
+          <div class="option-tag">Restaurant</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block type-night">
+    <div class="block-time">~21:00</div>
+    <div class="block-dot"></div>
+    <div class="card">
+      <div class="card-label">Night (optional)</div>
+      <div class="card-title">Zollergasse nightlife strip</div>
+      <div class="card-note">Your saved place — noted as "nightlife street." 7th district. Short walk from Neubaugasse. Cocktail bars and late venues.</div>
+    </div>
+  </div>
+
+  <div class="block type-hotel">
+    <div class="block-time">Late</div>
+    <div class="block-dot"></div>
+    <div class="card">
+      <div class="card-label">Hotel</div>
+      <div class="card-title">ibis / Premier Inn / Novotel — Wien Hauptbahnhof</div>
+      <div class="card-note">All three are your saved hotel options at Wien Hauptbahnhof. Booked: ibis Wien Hauptbahnhof.</div>
+    </div>
+  </div>
+
+</div>
+<div class="note-banner" style="margin-top:24px">
+  <strong>Not on today:</strong> Schönbrunn Palace, Belvedere, Ringstrasse, KHM — all on Day 2 or Day 9. Aufzug Café and GOTA Coffee are in outer districts, better saved for another day.
+</div>
+
+</div></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     DAY 2  Fri 30 Oct · Vienna
+═══════════════════════════════════════════════════════════ -->
+<div class="page" id="day2">
+<div class="day-wrap">
+
+<div class="hdr">
+  <div class="eye">Central Europe Trip · Fri 30 Oct 2026</div>
+  <div class="ttl">Day 2 — Vienna</div>
+  <div class="sub">Schönbrunn · Belvedere · Ringstrasse · Mozart Concert</div>
+  <div class="div"></div>
+</div>
+<div class="leg">
+  <div class="li"><div class="ld" style="background:var(--see)"></div>Sights</div>
+  <div class="li"><div class="ld" style="background:var(--eat)"></div>Food options</div>
+  <div class="li"><div class="ld" style="background:var(--accent)"></div>Evening / Concert</div>
+  <div class="li"><div class="ld" style="background:var(--hotel)"></div>Hotel</div>
+</div>
+<div class="tl">
+
+  <div class="sec">Morning · Schönbrunn</div>
+
+  <div class="bl ts">
+    <div class="bt">09:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Sch%C3%B6nbrunn+Palace/data=!4m2!3m1!1s0x476da878401f46b9:0xb5d0cef3de7f7048" target="_blank">Schönbrunn Palace</a> · 13th District</div>
+      <div class="cl">Sights ✅ Booked</div>
+      <div class="ct">Schönbrunn Palace — Grand Tour</div>
+      <div class="cn">40-room Grand Tour (~50 min). Habsburg imperial apartments. Pre-booked ✅. <strong>Arrive 10 min early</strong> — timed entry. Skip the queues at the machine.</div>
+    </div>
+  </div>
+
+  <div class="bl ts">
+    <div class="bt">~11:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Gloriette/data=!4m2!3m1!1s0x476da869ca1abc3b:0xaee2e1c636d44c06" target="_blank">Gloriette</a> · Schönbrunn hilltop</div>
+      <div class="cl">Sights</div>
+      <div class="ct">Gloriette — hilltop views over Vienna</div>
+      <div class="cn">Walk up behind the palace to the <strong>Gloriette</strong> triumphal arch. Best elevated view over the city. Free to walk up; café inside costs extra. About 15 min uphill walk.</div>
+    </div>
+  </div>
+
+  <div class="bl te">
+    <div class="bt">~12:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="cl">Lunch — pick one</div>
+      <div class="ol">Options</div>
+      <div class="og">
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Aufzug+Caf%C3%A9/data=!4m2!3m1!1s0x476da861f57af021:0x5b6f3fdf5fabb3df" target="_blank">Aufzug Café</a></div><div class="oo">Your saved place. Near Schönbrunn, unique lift-themed café.</div></div>
+          <div class="ot">Café</div>
+        </div>
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/GOTA+Coffee+Experts/data=!4m2!3m1!1s0x476da868d20a9f31:0x53c0a26be2562ba1" target="_blank">GOTA Coffee Experts</a></div><div class="oo">Your saved place. Specialty coffee roaster near Schönbrunn.</div></div>
+          <div class="ot">Coffee</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">Afternoon · Belvedere</div>
+
+  <div class="bl ts">
+    <div class="bt">~14:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Upper+Belvedere/data=!4m2!3m1!1s0x476da836c1b1f2cd:0x500ddf2d4e47e00" target="_blank">Belvedere Palace</a> · 3rd District</div>
+      <div class="cl">Sights</div>
+      <div class="ct">Upper Belvedere — Klimt's The Kiss</div>
+      <div class="cn">Austria's most-visited museum. <strong>Klimt's The Kiss</strong> is here — it's the reason to visit. Also Egon Schiele. EUR 16pp for Upper Belvedere. Allow ~1.5h. Gardens free to enter.</div>
+    </div>
+  </div>
+
+  <div class="bl te">
+    <div class="bt">~16:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="cl">Coffee stop</div>
+      <div class="ol">Options</div>
+      <div class="og">
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/SiL+coffee/data=!4m2!3m1!1s0x476d07a07a6d3cef:0x7f94413c52b42e7b" target="_blank">SiL coffee</a></div><div class="oo">Your saved place. Specialty coffee, 1st district.</div></div>
+          <div class="ot">Coffee</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bl ts">
+    <div class="bt">~18:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Ringstrasse — 1st District</div>
+      <div class="cl">Sights</div>
+      <div class="ct">Ringstrasse at dusk</div>
+      <div class="cn">Walk the grand boulevard at golden hour. <strong>Vienna State Opera, Parliament, City Hall, Burgtheater</strong> — all illuminated at dusk. Best light of the day.</div>
+    </div>
+  </div>
+
+  <div class="sec">Evening · Dinner + Concert</div>
+
+  <div class="bl te">
+    <div class="bt">~18:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="cl">Dinner — pick one</div>
+      <div class="ol">Options from your saved places</div>
+      <div class="og">
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Figlm%C3%BCller+Wollzeile/data=!4m2!3m1!1s0x476d079e2d3a8761:0xd7d44d0a1e4d14ca" target="_blank">Figlmüller – Wollzeile</a></div><div class="oo">1st district. The schnitzel place. Your saved place.</div></div>
+          <div class="ot">Schnitzel</div>
+        </div>
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/El+Gaucho+Schwarzenbergplatz/data=!4m2!3m1!1s0x476d079b2a0fc1b1:0x2dc41e1b24c14d2d" target="_blank">El Gaucho Schwarzenbergplatz</a></div><div class="oo">Your saved place. Argentine steakhouse, near Belvedere.</div></div>
+          <div class="ot">Steak</div>
+        </div>
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Bitzinger+Würstelstand+am+Albertinaplatz/data=!4m2!3m1!1s0x476d079e93be5155:0x8dbec7e59ddf65e9" target="_blank">Bitzinger Würstelstand</a></div><div class="oo">Your saved place. Vienna sausage stand at the Opera — iconic late-night snack.</div></div>
+          <div class="ot">Sausage</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bl tn">
+    <div class="bt">20:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Musikverein/data=!4m2!3m1!1s0x476d079a8e668f97:0x4d1028b9f37a75f" target="_blank">Musikverein</a> · Golden Hall</div>
+      <div class="cl">Concert ✅ Booked</div>
+      <div class="ct">Mozart &amp; Strauss Concert — Golden Hall</div>
+      <div class="cn">One of the world's great concert halls. Gilded interior. Concert booked ✅. <strong>Arrive 20 min early</strong> — door closes at curtain. Smart casual dress.</div>
+    </div>
+  </div>
+
+  <div class="bl th">
+    <div class="bt">Late</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 ibis Wien Hauptbahnhof</div>
+      <div class="cl">Hotel</div>
+      <div class="ct">Return to ibis — pack Salzburg bag tonight</div>
+      <div class="cn"><strong>Pack a carry-on for Salzburg</strong> (Days 3–4) tonight. Main luggage stays at ibis. Day 3 train departs early — bag should be ready.</div>
+    </div>
+  </div>
+
+</div>
+</div></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     DAY 3  Sat 31 Oct · Vienna → Salzburg
+═══════════════════════════════════════════════════════════ -->
+<div class="page" id="day3">
+<div class="day-wrap">
+
+<div class="hdr">
+  <div class="eye">Central Europe Trip · Sat 31 Oct 2026 🎃</div>
+  <div class="ttl">Day 3 — Salzburg</div>
+  <div class="sub">Wien → Salzburg · Option A: Werfen day hike · Option B: Old Town</div>
+  <div class="div"></div>
+</div>
+<div class="leg">
+  <div class="li"><div class="ld" style="background:var(--accent)"></div>Transit</div>
+  <div class="li"><div class="ld" style="background:var(--see)"></div>Sights</div>
+  <div class="li"><div class="ld" style="background:var(--eat)"></div>Food options</div>
+  <div class="li"><div class="ld" style="background:var(--hotel)"></div>Accommodation</div>
+</div>
+<div class="tl">
+
+  <div class="sec">Morning · Vienna → Salzburg</div>
+
+  <div class="bl ta">
+    <div class="bt">09:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Wien Hbf → Salzburg Hbf</div>
+      <div class="cl">Train ✅ Booked</div>
+      <div class="ct">Railjet — direct, ~2h52</div>
+      <div class="cn">Depart Wien Hbf 09:30. Arrive Salzburg ~12:22. Ticket booked ✅. Collect from GDrive. <strong>Travel with carry-on only</strong> — main luggage stored at ibis Wien Hbf.</div>
+    </div>
+  </div>
+
+  <div class="bl th">
+    <div class="bt">~12:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Vogelweiderstraße 33, Salzburg</div>
+      <div class="cl">Check In</div>
+      <div class="ct">Salzburg Airbnb — 2 nights</div>
+      <div class="cn">Check in, drop bags, grab a quick lunch nearby. 2 nights (31 Oct – 2 Nov). <strong>Note: Day 4 is a day trip — back here evening.</strong></div>
+    </div>
+  </div>
+
+  <div class="sec">Afternoon — choose one option</div>
+
+  <div class="wb"><strong>⚠ Two options below — pick one for the afternoon.</strong> Option A is a full-day hike commitment; Option B is Salzburg old town at a relaxed pace. They are mutually exclusive.</div>
+
+  <div class="bl ts" style="margin-top:16px">
+    <div class="bt">~13:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">🅐 Option A · Werfen day hike</div>
+      <div class="cl">Sights — full afternoon</div>
+      <div class="ct">Werfen — Hohenwerfen Castle + gorge</div>
+      <div class="cn">~45 min train from Salzburg Hbf (EUR 8pp return). <strong>Hohenwerfen Castle</strong> — medieval fortress on a cliff above the Salzach gorge. Falconry shows. Walk up the hill (~20 min). Return to Salzburg by 18:00. <strong>Book castle entry online.</strong></div>
+    </div>
+  </div>
+
+  <div class="bl ts">
+    <div class="bt">~13:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">🅑 Option B · Hohensalzburg Fortress</div>
+      <div class="cl">Sights</div>
+      <div class="ct">Hohensalzburg Fortress — funicular up</div>
+      <div class="cn">Europe's best-preserved medieval castle, looming above the old town. Funicular from Festungsgasse (~EUR 15pp return with entry). Views across the Alps. Allow ~1.5h.</div>
+    </div>
+  </div>
+
+  <div class="bl ts">
+    <div class="bt">~15:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">🅑 Option B continues</div>
+      <div class="cl">Sights</div>
+      <div class="ct">Getreidegasse · Mozart Birthplace · Residenzplatz</div>
+      <div class="cn"><strong>Getreidegasse</strong> — the old town's main street with iconic guild signs. <strong>Mozart's Birthplace</strong> (No. 9, EUR 12pp). <strong>Residenzplatz</strong> baroque square. All within 10 min walk.</div>
+    </div>
+  </div>
+
+  <div class="sec">Evening · Mirabell + Dinner</div>
+
+  <div class="bl ts">
+    <div class="bt">~17:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Mirabell+Palace+and+Gardens/data=!4m2!3m1!1s0x4776910640ee0045:0xeebcdd6bbf71dc7c" target="_blank">Mirabell Palace Gardens</a></div>
+      <div class="cl">Sights</div>
+      <div class="ct">Mirabell Gardens at dusk</div>
+      <div class="cn">Free gardens, beautiful at golden hour. <strong>Sound of Music filming location.</strong> Hedge maze and fountains. Views of Hohensalzburg Fortress from the gardens.</div>
+    </div>
+  </div>
+
+  <div class="bl ts">
+    <div class="bt">~18:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Makartsteg+bridge/data=!4m2!3m1!1s0x47769109a5d0b735:0x7d3b8e3f4f2a3c89" target="_blank">Marko-Feingold-Steg bridge</a></div>
+      <div class="cl">Sights</div>
+      <div class="ct">Love lock bridge over the Salzach</div>
+      <div class="cn">Pedestrian bridge with padlocks. Views of the old town and fortress. Short evening walk from Mirabell.</div>
+    </div>
+  </div>
+
+  <div class="bl te">
+    <div class="bt">~19:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="cl">Dinner — pick one</div>
+      <div class="ol">Options from your saved places</div>
+      <div class="og">
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Die+Weisse/data=!4m2!3m1!1s0x4776916e5e45b235:0x7e4748f33bd5e8cc" target="_blank">Die Weisse</a></div><div class="oo">Your saved place. Traditional Salzburg brewery restaurant, local beer and Austrian food.</div></div>
+          <div class="ot">Brewery</div>
+        </div>
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Caf%C3%A9+Mozart+Salzburg/data=!4m2!3m1!1s0x4776910a8d11a1b5:0x38f7e4b3c3a8f20" target="_blank">Café Mozart</a></div><div class="oo">Your saved place. Classic café in the old town.</div></div>
+          <div class="ot">Classic café</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     DAY 4  Sun 1 Nov · Hallstatt day trip
+═══════════════════════════════════════════════════════════ -->
+<div class="page" id="day4">
+<div class="day-wrap">
+
+<div class="hdr">
+  <div class="eye">Central Europe Trip · Sun 1 Nov 2026</div>
+  <div class="ttl">Day 4 — Hallstatt</div>
+  <div class="sub">Day trip from Salzburg · Lake · Skywalk · Bone Chapel</div>
+  <div class="div"></div>
+</div>
+<div class="leg">
+  <div class="li"><div class="ld" style="background:var(--accent)"></div>Transit</div>
+  <div class="li"><div class="ld" style="background:var(--see)"></div>Sights</div>
+  <div class="li"><div class="ld" style="background:var(--eat)"></div>Food options</div>
+</div>
+<div class="tl">
+
+  <div class="sec">Early morning · Salzburg → Hallstatt</div>
+
+  <div class="bl ta">
+    <div class="bt">07:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Salzburg Hbf → Hallstatt</div>
+      <div class="cl">Train + Ferry ⚠ Not booked</div>
+      <div class="ct">Train to Hallstatt Bahnhof + ferry across lake</div>
+      <div class="cn">~1h30 total. Train to Hallstatt Bahnhof (on the lake's east shore), then <strong>ferry across</strong> (~10 min, EUR 3pp) — the village is on the west shore. <strong>⚠ Hallstatt train not booked yet.</strong> Trains fill up — book at oebb.at or use Eurail pass.</div>
+    </div>
+  </div>
+
+  <div class="sec">Morning · Village</div>
+
+  <div class="bl ts">
+    <div class="bt">09:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Hallstatt Market Square (Marktplatz)</div>
+      <div class="cl">Sights</div>
+      <div class="ct">Village walk — lakeside &amp; Market Square</div>
+      <div class="cn">Hallstatt village is tiny — most of it is the lakeside promenade and main square. <strong>Marktplatz</strong> with the iconic church and mountains behind. Souvenir shops and cafés open early.</div>
+    </div>
+  </div>
+
+  <div class="bl ts">
+    <div class="bt">10:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Hallstatt+Skywalk+Welterbeblick/data=!4m2!3m1!1s0x476976a00e9875c7:0x64f5df04d7c06950" target="_blank">Hallstatt Skywalk</a></div>
+      <div class="cl">Sights</div>
+      <div class="ct">Skywalk Welterbeblick — glass platform viewpoint</div>
+      <div class="cn">Walk or take the funicular (EUR 15pp return) to the <strong>Skywalk</strong> glass viewing platform. <strong>Best view in Hallstatt</strong> — the village below, the lake, and the Alps. Allow ~1.5h up here.</div>
+    </div>
+  </div>
+
+  <div class="sec">Midday · Lunch + Lake</div>
+
+  <div class="bl te">
+    <div class="bt">~12:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="cl">Lunch</div>
+      <div class="ol">Options</div>
+      <div class="og">
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Die+Kapelle/data=!4m2!3m1!1s0x476976b05cae2b73:0x2a0a3f8c1e5d0e71" target="_blank">Die Kapelle</a></div><div class="oo">Your saved place. Lakeside restaurant in Hallstatt village.</div></div>
+          <div class="ot">Lakeside</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bl ts">
+    <div class="bt">~12:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Hallstatt Lake</div>
+      <div class="cl">Activity</div>
+      <div class="ct">Boat ride on the lake (optional)</div>
+      <div class="cn">Rowboat hire or guided boat trip on <strong>Hallstätter See</strong>. The view back to the village from the water is one of the best shots in Austria. ~EUR 10–15 for a rowboat hour.</div>
+    </div>
+  </div>
+
+  <div class="sec">Afternoon · Bone Chapel + Return</div>
+
+  <div class="bl ts">
+    <div class="bt">14:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Hallstatt+Ossuary/data=!4m2!3m1!1s0x476976b07b82d5b1:0xa8d0c8e33c28f5e5" target="_blank">Beinhaus (Bone Chapel)</a></div>
+      <div class="cl">Sights</div>
+      <div class="ct">Bone Chapel — painted skulls ossuary</div>
+      <div class="cn">Tiny chapel next to the parish church with over 1,200 <strong>painted and decorated skulls</strong> — a uniquely macabre Alpine tradition. EUR 1.50pp. Worth the 5 min detour. <br><strong>Optional:</strong> Salt Mine tour (~2h, EUR 35pp) if you want to go underground.</div>
+    </div>
+  </div>
+
+  <div class="bl ta">
+    <div class="bt">~16:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Hallstatt → Salzburg</div>
+      <div class="cl">Transit</div>
+      <div class="ct">Return ferry + train to Salzburg</div>
+      <div class="cn">Ferry back across the lake, then train to Salzburg. Aim to arrive Salzburg by 18:00–18:30. Evening free — dinner at Die Weisse or Café Mozart.</div>
+    </div>
+  </div>
+
+  <div class="bl te">
+    <div class="bt">~19:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="cl">Dinner in Salzburg — pick one</div>
+      <div class="ol">Options</div>
+      <div class="og">
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Die+Weisse/data=!4m2!3m1!1s0x4776916e5e45b235:0x7e4748f33bd5e8cc" target="_blank">Die Weisse</a></div><div class="oo">Your saved place. Salzburg brewery restaurant.</div></div>
+          <div class="ot">Brewery</div>
+        </div>
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Caf%C3%A9+Mozart+Salzburg/data=!4m2!3m1!1s0x4776910a8d11a1b5:0x38f7e4b3c3a8f20" target="_blank">Café Mozart</a></div><div class="oo">Your saved place. Classic old town café.</div></div>
+          <div class="ot">Classic café</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="wb"><strong>⚠ Hallstatt train not booked yet.</strong> Book at oebb.at — trains fill up, especially on weekends. Sunday 1 Nov is All Saints Day (public holiday in Austria) — check if any sites close early.</div>
+</div></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     DAY 5  Mon 2 Nov · Salzburg → Vienna
+═══════════════════════════════════════════════════════════ -->
+<div class="page" id="day5">
+<div class="day-wrap">
+
+<div class="hdr">
+  <div class="eye">Central Europe Trip · Mon 2 Nov 2026</div>
+  <div class="ttl">Day 5 — Salzburg → Vienna</div>
+  <div class="sub">Morning Salzburg · Afternoon Vienna · Hofburg · Mozart Concert</div>
+  <div class="div"></div>
+</div>
+<div class="leg">
+  <div class="li"><div class="ld" style="background:var(--accent)"></div>Transit</div>
+  <div class="li"><div class="ld" style="background:var(--see)"></div>Sights</div>
+  <div class="li"><div class="ld" style="background:var(--eat)"></div>Food options</div>
+  <div class="li"><div class="ld" style="background:var(--accent)"></div>Concert</div>
+  <div class="li"><div class="ld" style="background:var(--hotel)"></div>Hotel</div>
+</div>
+<div class="tl">
+
+  <div class="sec">Morning · Optional Salzburg</div>
+
+  <div class="bl ts">
+    <div class="bt">~09:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Salzburg surrounds</div>
+      <div class="cl">Sights (optional, if time)</div>
+      <div class="ct">Hellbrunn Palace trick fountains · or Untersbergbahn cable car</div>
+      <div class="cn"><strong>Hellbrunn</strong> (20 min bus) — 17th-century gardens with water trick fountains, free to walk the grounds. <strong>Untersbergbahn</strong> — cable car up the Untersberg mountain for Alps views. Both your saved places. Pick one if you have time before the train.</div>
+    </div>
+  </div>
+
+  <div class="sec">Midday · Salzburg → Vienna</div>
+
+  <div class="bl ta">
+    <div class="bt">~11:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Salzburg Hbf → Wien Hbf</div>
+      <div class="cl">Train ✅ Booked</div>
+      <div class="ct">Railjet — direct, ~2h52</div>
+      <div class="cn">Return Railjet to Vienna. Ticket booked ✅. Collect from GDrive. Arrive Wien Hbf ~13:52–14:00.</div>
+    </div>
+  </div>
+
+  <div class="bl th">
+    <div class="bt">~14:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/ibis+Wien+Hauptbahnhof/data=!4m2!3m1!1s0x476da9d761dc5461:0x58b7048185d4de98" target="_blank">ibis Wien Hauptbahnhof</a></div>
+      <div class="cl">Hotel</div>
+      <div class="ct">ibis — collect main luggage, freshen up</div>
+      <div class="cn">Drop Salzburg bag, collect main luggage. Brief rest before afternoon sights.</div>
+    </div>
+  </div>
+
+  <div class="sec">Afternoon · Hofburg Imperial Treasury</div>
+
+  <div class="bl ts">
+    <div class="bt">~15:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Imperial+Treasury+Vienna/data=!4m2!3m1!1s0x476d079022832989:0x78e534779aa08cb2" target="_blank">Hofburg Imperial Treasury</a> · 1st District</div>
+      <div class="cl">Sights — open Mondays</div>
+      <div class="ct">Kaiserliche Schatzkammer — Crown Jewels</div>
+      <div class="cn">The Habsburg Crown Jewels, including the <strong>Imperial Crown of the Holy Roman Empire</strong>. Open Mon (unlike KHM which is closed Mondays). EUR 16pp. Allow ~1.5h. Inside the Hofburg complex.</div>
+    </div>
+  </div>
+
+  <div class="bl te">
+    <div class="bt">~18:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="cl">Dinner — pick one</div>
+      <div class="ol">Options from your saved places</div>
+      <div class="og">
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Gasthaus+P%C3%B6schl/data=!4m2!3m1!1s0x476d079e58b87da7:0x37ec1b06b791756f" target="_blank">Gasthaus Pöschl</a></div><div class="oo">Your saved place. Traditional Austrian, 1st district.</div></div>
+          <div class="ot">Traditional</div>
+        </div>
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Gasthaus+Zum+Wohl/data=!4m2!3m1!1s0x476d07f534b0ad45:0xec9d5132f7b2a557" target="_blank">Gasthaus Zum Wohl</a></div><div class="oo">Your saved place. Traditional Austrian, near 1st district.</div></div>
+          <div class="ot">Traditional</div>
+        </div>
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Caf%C3%A9+im+Kunsthistorischen+Museum+Wien/data=!4m2!3m1!1s0x476d079067be0195:0x54444adf4f77342a" target="_blank">Café im KHM</a></div><div class="oo">Your saved place. Café inside the KHM building.</div></div>
+          <div class="ot">Café</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">Evening · Concert</div>
+
+  <div class="bl tn">
+    <div class="bt">20:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Musikverein/data=!4m2!3m1!1s0x476d079a8e668f97:0x4d1028b9f37a75f" target="_blank">Musikverein</a> · Golden Hall</div>
+      <div class="cl">Concert ✅ Booked</div>
+      <div class="ct">Mozart &amp; Strauss — Musikverein Golden Hall</div>
+      <div class="cn">Concert booked ✅. The world-famous Golden Hall. <strong>Arrive 20 min early.</strong> Smart casual.</div>
+    </div>
+  </div>
+
+</div>
+<div class="nb"><strong>Note:</strong> KHM is CLOSED on Mondays — the KHM visit is scheduled for Day 9 (Friday), when it's open until 21:00.</div>
+</div></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     DAY 6  Tue 3 Nov · Vienna → Budapest
+═══════════════════════════════════════════════════════════ -->
+<div class="page" id="day6">
+<div class="day-wrap">
+
+<div class="hdr">
+  <div class="eye">Central Europe Trip · Tue 3 Nov 2026</div>
+  <div class="ttl">Day 6 — Vienna → Budapest</div>
+  <div class="sub">Morning Vienna · Afternoon Budapest arrival · Danube walk</div>
+  <div class="div"></div>
+</div>
+<div class="leg">
+  <div class="li"><div class="ld" style="background:var(--accent)"></div>Transit</div>
+  <div class="li"><div class="ld" style="background:var(--see)"></div>Sights</div>
+  <div class="li"><div class="ld" style="background:var(--eat)"></div>Food options</div>
+  <div class="li"><div class="ld" style="background:var(--hotel)"></div>Hotel</div>
+</div>
+<div class="tl">
+
+  <div class="sec">Morning · Vienna (Prater area)</div>
+
+  <div class="bl ts">
+    <div class="bt">09:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Prater park, 2nd District</div>
+      <div class="cl">Sights</div>
+      <div class="ct">Prater park + Riesenrad Ferris wheel</div>
+      <div class="cn">1897 giant ferris wheel — EUR 13.50 for views over Vienna. Free to enter the park. Featured in the 1949 film <em>The Third Man.</em> Good morning walk before train.</div>
+    </div>
+  </div>
+
+  <div class="bl ta">
+    <div class="bt">~10:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="cl">Before leaving Vienna</div>
+      <div class="ct">Leave main luggage at ibis Wien Hauptbahnhof</div>
+      <div class="cn">Travel to Budapest with <strong>carry-on only</strong>. Hotel stores luggage — collect again on Day 9 return.</div>
+    </div>
+  </div>
+
+  <div class="sec">Midday · Vienna → Budapest</div>
+
+  <div class="bl ta">
+    <div class="bt">~10:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Wien Hbf → Budapest Keleti</div>
+      <div class="cl">Train ✅ Booked</div>
+      <div class="ct">Railjet — direct, ~2h40</div>
+      <div class="cn">Depart Wien Hbf. Arrive Budapest Keleti ~12:19–13:00. Ticket booked ✅. Collect from GDrive. <strong>Note: passport needed</strong> — border crossing.</div>
+    </div>
+  </div>
+
+  <div class="bl th">
+    <div class="bt">~13:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Ak%C3%A1cfa+u.+12-14-6.+emelet+8.+ajt%C3%B3/data=!4m2!3m1!1s0x4741dc67b09fb6f5:0x336b22785b11e347" target="_blank">Akácfa u. 12-14 — Jewish Quarter</a></div>
+      <div class="cl">Arrive &amp; Check In</div>
+      <div class="ct">Budapest Airbnb — Jewish Quarter (7th District)</div>
+      <div class="cn">3 nights (3–6 Nov). Central location. Cancellable by 29 Oct. Grab lunch near the Airbnb.</div>
+    </div>
+  </div>
+
+  <div class="sec">Afternoon · Pest side, Danube embankment</div>
+
+  <div class="bl ts">
+    <div class="bt">15:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Pest embankment, Danube</div>
+      <div class="cl">Sights</div>
+      <div class="ct"><a href="https://www.google.com/maps/place/Shoes+on+the+Danube+Bank/data=!4m2!3m1!1s0x4741dc16742d64df:0xf68e196cbecb6ad6" target="_blank">Shoes on the Danube Bank</a></div>
+      <div class="cn">Haunting WWII memorial — 60 pairs of iron shoes on the riverbank. Very moving. On the Pest embankment with <strong>views across to Parliament.</strong></div>
+    </div>
+  </div>
+
+  <div class="bl ts">
+    <div class="bt">~16:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Sz%C3%A9chenyi+Chain+Bridge/data=!4m2!3m1!1s0x4741dc3fb79a1a29:0x1e40fed785d0c9a4" target="_blank">Széchenyi Chain Bridge</a></div>
+      <div class="cl">Sights</div>
+      <div class="ct">Chain Bridge walk</div>
+      <div class="cn">Walk across to Buda side. One of Budapest's most iconic landmarks. Views of both sides of the city.</div>
+    </div>
+  </div>
+
+  <div class="sec">Evening · Castle Hill</div>
+
+  <div class="bl ts">
+    <div class="bt">18:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Castle+Hill/data=!4m2!3m1!1s0x4741dc22e3aabd2b:0x977a623f871c1899" target="_blank">Castle Hill</a> · Buda</div>
+      <div class="cl">Sights</div>
+      <div class="ct">Castle Hill at dusk — Fisherman's Bastion</div>
+      <div class="cn">Take funicular from Clark Ádám Square (Buda side). <strong><a href="https://www.google.com/maps/place/Fisherman's+Bastion/data=!4m2!3m1!1s0x4741dc227fb4a99d:0x2f263ca844235e46" target="_blank">Fisherman's Bastion</a></strong> and Matthias Church lit up at night. Parliament across the river is one of the best views in Central Europe.</div>
+    </div>
+  </div>
+
+  <div class="bl te">
+    <div class="bt">~20:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="cl">Dinner — pick one</div>
+      <div class="ol">Options from your saved places</div>
+      <div class="og">
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Forni+di+Napoli/data=!4m2!3m1!1s0x4741dd812a0ae015:0xd43572ef955ba951" target="_blank">Forni di Napoli</a></div><div class="oo">Your saved place — noted "best pizza in the world."</div></div>
+          <div class="ot">Pizza</div>
+        </div>
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/New+York+Caf%C3%A9/data=!4m2!3m1!1s0x4741dc66e2a0e799:0x3b24d300deeee120" target="_blank">New York Café</a></div><div class="oo">Your saved place. Ornate 19th-century café, one of the world's most beautiful.</div></div>
+          <div class="ot">Grand café</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     DAY 7  Wed 4 Nov · Budapest
+═══════════════════════════════════════════════════════════ -->
+<div class="page" id="day7">
+<div class="day-wrap">
+
+<div class="hdr">
+  <div class="eye">Central Europe Trip · Wed 4 Nov 2026</div>
+  <div class="ttl">Day 7 — Budapest</div>
+  <div class="sub">Parliament · Basilica · Market · Thermal baths</div>
+  <div class="div"></div>
+</div>
+<div class="leg">
+  <div class="li"><div class="ld" style="background:var(--see)"></div>Sights</div>
+  <div class="li"><div class="ld" style="background:var(--eat)"></div>Food options</div>
+  <div class="li"><div class="ld" style="background:var(--accent)"></div>Evening</div>
+</div>
+<div class="tl">
+
+  <div class="sec">Morning · Parliament &amp; Basilica</div>
+
+  <div class="bl ts">
+    <div class="bt">10:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Kossuth Lajos tér — 5th District</div>
+      <div class="cl">Sights ✅ Booked</div>
+      <div class="ct">Hungarian Parliament — interior guided tour</div>
+      <div class="cn">~45 min guided tour. Gilded Neo-Gothic interior and Crown Jewels. EUR 26pp non-EU. Ticket booked ✅. <strong>Arrive 10–15 min before tour time.</strong></div>
+    </div>
+  </div>
+
+  <div class="bl ts">
+    <div class="bt">11:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/St.+Stephen's+Basilica/data=!4m2!3m1!1s0x4741c15e3aa3cdf7:0xdd42fcacae7fbccb" target="_blank">St Stephen's Basilica</a> · 5th District</div>
+      <div class="cl">Sights</div>
+      <div class="ct">St Stephen's Basilica — dome climb</div>
+      <div class="cn">Climb the dome for <strong>360° city views</strong> (~EUR 8). Worth the climb for the panorama. Walking distance from Parliament.</div>
+    </div>
+  </div>
+
+  <div class="sec">Midday · Central Market Hall</div>
+
+  <div class="bl ts">
+    <div class="bt">~12:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Central+Market+Hall/data=!4m2!3m1!1s0x4741dc4fe2b1c2f7:0xa08c351e7bba2ecc" target="_blank">Central Market Hall</a> · 9th District</div>
+      <div class="cl">Sights + Lunch</div>
+      <div class="ct">Great Market Hall — lángos &amp; paprika shopping</div>
+      <div class="cn"><strong>Lángos</strong> (fried dough with sour cream) from the market is a must-try Budapest street food. Ground floor is food stalls and fresh produce; upper level has souvenir stalls. Also check <strong><a href="https://www.google.com/maps/place/Szabads%C3%A1g+h%C3%ADd/data=!4m2!3m1!1s0x4741dc4e4acb8e4d:0x79fe601a42ad5a1f" target="_blank">Szabadság híd</a></strong> (Liberty Bridge) next door.</div>
+    </div>
+  </div>
+
+  <div class="bl ts">
+    <div class="bt">~13:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Metropolitan+Ervin+Szab%C3%B3+Library/data=!4m2!3m1!1s0x4741dc5a4d117489:0x3bd4c2889e6cf077" target="_blank">Metropolitan Ervin Szabó Library</a> · 8th District</div>
+      <div class="cl">Sights</div>
+      <div class="ct">Ervin Szabó Library</div>
+      <div class="cn">Your saved place. Stunning ornate Neo-Baroque interior — one of the world's most beautiful libraries. Day pass available even if you're not borrowing books.</div>
+    </div>
+  </div>
+
+  <div class="sec">Afternoon · Buda Castle</div>
+
+  <div class="bl ts">
+    <div class="bt">13:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Castle+Hill/data=!4m2!3m1!1s0x4741dc22e3aabd2b:0x977a623f871c1899" target="_blank">Castle Hill</a> · Buda</div>
+      <div class="cl">Sights</div>
+      <div class="ct">Buda Castle — Matthias Church + Fisherman's Bastion</div>
+      <div class="cn">Take the funicular up from Clark Ádám Square. <strong>Matthias Church</strong> — vivid patterned tiled roof, beautiful interior. <strong><a href="https://www.google.com/maps/place/Fisherman's+Bastion/data=!4m2!3m1!1s0x4741dc227fb4a99d:0x2f263ca844235e46" target="_blank">Fisherman's Bastion</a></strong> terraces for views. Walk back down through Castle Hill.</div>
+    </div>
+  </div>
+
+  <div class="sec">Evening · Thermal Baths</div>
+
+  <div class="bl te">
+    <div class="bt">~18:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="cl">Dinner before baths</div>
+      <div class="ol">Options from your saved places</div>
+      <div class="og">
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Forni+di+Napoli/data=!4m2!3m1!1s0x4741dd812a0ae015:0xd43572ef955ba951" target="_blank">Forni di Napoli</a></div><div class="oo">Your saved place — "best pizza in the world." Near Jewish Quarter Airbnb.</div></div>
+          <div class="ot">Pizza</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bl tn">
+    <div class="bt">19:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Állatkerti krt. 9-11 · City Park</div>
+      <div class="cl">Thermal Baths</div>
+      <div class="ct">Széchenyi Thermal Baths — evening soak</div>
+      <div class="cn">Neo-Baroque outdoor pools at night. <strong>Steam in cool November air</strong> — spectacular. Bring swimwear and flip-flops. Pre-book at szechenyibath.hu (~EUR 22–30pp). <strong>Go 19:00–20:00 for best atmosphere.</strong></div>
+    </div>
+  </div>
+
+</div>
+</div></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     DAY 8  Thu 5 Nov · Budapest
+═══════════════════════════════════════════════════════════ -->
+<div class="page" id="day8">
+<div class="day-wrap">
+
+<div class="hdr">
+  <div class="eye">Central Europe Trip · Thu 5 Nov 2026</div>
+  <div class="ttl">Day 8 — Budapest</div>
+  <div class="sub">Synagogue · Andrássy · Heroes' Square · Gellért Hill · Ruin bar</div>
+  <div class="div"></div>
+</div>
+<div class="leg">
+  <div class="li"><div class="ld" style="background:var(--see)"></div>Sights</div>
+  <div class="li"><div class="ld" style="background:var(--shop)"></div>Shopping</div>
+  <div class="li"><div class="ld" style="background:var(--eat)"></div>Food options</div>
+  <div class="li"><div class="ld" style="background:var(--accent)"></div>Evening</div>
+</div>
+<div class="tl">
+
+  <div class="sec">Morning · 7th District</div>
+
+  <div class="bl ts">
+    <div class="bt">10:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Doh%C3%A1ny+Street+Synagogue/data=!4m2!3m1!1s0x4741dc678843d805:0x2ad0a6d6ab0a2ca4" target="_blank">Dohány Street Synagogue</a> · 7th District</div>
+      <div class="cl">Sights</div>
+      <div class="ct">Great Synagogue on Dohány utca</div>
+      <div class="cn">Largest synagogue in Europe, second in the world. <strong>Neo-Moorish façade</strong>, Jewish museum inside, and a small memorial garden with a weeping willow sculpture. ~EUR 20pp. Worth seeing from outside even if you skip entry.</div>
+    </div>
+  </div>
+
+  <div class="sec">Midday · Andrássy út &amp; City Park</div>
+
+  <div class="bl ts">
+    <div class="bt">11:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Andrássy út — UNESCO boulevard</div>
+      <div class="cl">Sights</div>
+      <div class="ct">Andrássy Avenue walk</div>
+      <div class="cn">Budapest's grand boulevard — grand apartment buildings, embassies, cafés. Walk from Oktogon towards Heroes' Square. About 2.5km end-to-end; you can do half. <strong>Budapest Opera House</strong> is en route.</div>
+    </div>
+  </div>
+
+  <div class="bl ts">
+    <div class="bt">13:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/H%C5%91s%C3%B6k+tere/data=!4m2!3m1!1s0x4741dc07ed8f8a37:0xe09e51b1d2a94fce" target="_blank">Hősök tere (Heroes' Square)</a> · City Park</div>
+      <div class="cl">Sights</div>
+      <div class="ct">Heroes' Square + Vajdahunyad Castle</div>
+      <div class="cn"><strong>Heroes' Square</strong> — millennium monument with the 7 Magyar chieftains. Then walk into <strong><a href="https://www.google.com/maps/place/Vajdahunyad+Castle/data=!4m2!3m1!1s0x4741dbe8b5ede9b5:0xf9f37beaa0cc35a" target="_blank">Vajdahunyad Castle</a></strong> in City Park — a fairy-tale complex of various architectural styles around a small lake. Free to enter.</div>
+    </div>
+  </div>
+
+  <div class="bl te">
+    <div class="bt">~14:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="cl">Lunch in City Park area</div>
+      <div class="ol">Options</div>
+      <div class="og">
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/New+York+Caf%C3%A9/data=!4m2!3m1!1s0x4741dc66e2a0e799:0x3b24d300deeee120" target="_blank">New York Café</a></div><div class="oo">Your saved place. One of the world's most beautiful cafés — ornate Belle Époque interior. Near Jewish Quarter.</div></div>
+          <div class="ot">Grand café</div>
+        </div>
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Forni+di+Napoli/data=!4m2!3m1!1s0x4741dd812a0ae015:0xd43572ef955ba951" target="_blank">Forni di Napoli</a></div><div class="oo">Your saved place — "best pizza in the world."</div></div>
+          <div class="ot">Pizza</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">Afternoon · Thrift Shopping</div>
+
+  <div class="bl tsh">
+    <div class="bt">15:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Various districts</div>
+      <div class="cl">Thrift shopping — your saved places</div>
+      <div class="ct">Budapest vintage &amp; second-hand stores</div>
+      <div class="cn">Your saved Budapest thrift spots — pick based on where you are:</div>
+      <div style="margin-top:10px" class="sog">
+        <div class="soc"><div class="son"><a href="https://www.google.com/maps/place/Retrock/data=!4m2!3m1!1s0x4741dc64e31f1ed3:0x6f5d4ff16c0a0a73" target="_blank">Retrock</a></div><div class="soo">Vintage designer. Near Jewish Quarter.</div></div>
+        <div class="soc"><div class="son"><a href="https://www.google.com/maps/place/Hada+Second+Hand/data=!4m2!3m1!1s0x4741dc67d6f6a3f9:0xa1f428ff2e01ec01" target="_blank">Háda Second Hand</a></div><div class="soo">Large warehouse thrift. Multiple locations.</div></div>
+        <div class="soc"><div class="son"><a href="https://www.google.com/maps/place/Ludovika/data=!4m2!3m1!1s0x4741ddf00e9e1c7b:0x4aaec31b59e4f4c3" target="_blank">Ludovika</a></div><div class="soo">Curated vintage near 8th district.</div></div>
+        <div class="soc"><div class="son"><a href="https://www.google.com/maps/place/Komondors+Vintage/data=!4m2!3m1!1s0x4741dc56399f73a7:0xd2a476012b1e7bab" target="_blank">Komondors Vintage</a></div><div class="soo">Your saved place.</div></div>
+        <div class="soc"><div class="son">Primark, Budai Zsibvásár, Bakancsos Piac</div><div class="soo">Check Google Maps for current hours — all your saved places.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">Late afternoon · Gellért Hill</div>
+
+  <div class="bl ts">
+    <div class="bt">17:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Gell%C3%A9rt+Hill/data=!4m2!3m1!1s0x4741dca73db8fb31:0x30803ef5d7e6bc83" target="_blank">Gellért Hill</a> · Buda</div>
+      <div class="cl">Sights</div>
+      <div class="ct">Gellért Hill — Citadella &amp; Danube panorama</div>
+      <div class="cn">~20 min walk up from Gellért tér. The Citadella fortress at the top has <strong>one of the best 360° views in all of Budapest</strong> — both banks of the Danube, all bridges, Parliament and Buda Castle. Best at dusk with city lights coming on.</div>
+    </div>
+  </div>
+
+  <div class="bl te">
+    <div class="bt">~19:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="cl">Dinner</div>
+      <div class="ol">Options</div>
+      <div class="og">
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Forni+di+Napoli/data=!4m2!3m1!1s0x4741dd812a0ae015:0xd43572ef955ba951" target="_blank">Forni di Napoli</a></div><div class="oo">Your saved place — near Airbnb.</div></div>
+          <div class="ot">Pizza</div>
+        </div>
+        <div class="oc">
+          <div><div class="on">Ruin bar food</div><div class="oo">Szimpla Kert has food stalls and kitchen — eat and drink in one place.</div></div>
+          <div class="ot">Bar food</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">Evening · Ruin Bar</div>
+
+  <div class="bl tn">
+    <div class="bt">21:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Szimpla+Kert/data=!4m2!3m1!1s0x4741dc68ae44ac5b:0x45b65ed9c0df4ffe" target="_blank">Szimpla Kert</a> · 7th District</div>
+      <div class="cl">Night</div>
+      <div class="ct">Szimpla Kert — Budapest's original ruin bar</div>
+      <div class="cn">The city's most famous ruin bar — a crumbling former factory filled with mismatched furniture, local art, and fairy lights. <strong>Gets crowded after 22:00.</strong> Walking distance from Airbnb. No dress code, very affordable drinks.</div>
+    </div>
+  </div>
+
+</div>
+</div></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     DAY 9  Fri 6 Nov · Budapest → Vienna
+═══════════════════════════════════════════════════════════ -->
+<div class="page" id="day9">
+<div class="day-wrap">
+
+<div class="hdr">
+  <div class="eye">Central Europe Trip · Fri 6 Nov 2026</div>
+  <div class="ttl">Day 9 — Budapest → Vienna</div>
+  <div class="sub">Morning Budapest · Afternoon Vienna · KHM · Christmas Market · Final dinner</div>
+  <div class="div"></div>
+</div>
+<div class="leg">
+  <div class="li"><div class="ld" style="background:var(--accent)"></div>Transit</div>
+  <div class="li"><div class="ld" style="background:var(--see)"></div>Sights</div>
+  <div class="li"><div class="ld" style="background:var(--eat)"></div>Food options</div>
+  <div class="li"><div class="ld" style="background:var(--hotel)"></div>Hotel</div>
+</div>
+<div class="tl">
+
+  <div class="sec">Morning · Budapest checkout</div>
+
+  <div class="bl th">
+    <div class="bt">09:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Akácfa u. 12-14 — Jewish Quarter</div>
+      <div class="cl">Checkout</div>
+      <div class="ct">Budapest Airbnb checkout</div>
+      <div class="cn">Pack fully. Checkout by 11:00. Leave bags at the Airbnb if possible, or take to Keleti train station lockers.</div>
+    </div>
+  </div>
+
+  <div class="bl ts">
+    <div class="bt">~10:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Sz%C3%A9chenyi+Chain+Bridge/data=!4m2!3m1!1s0x4741dc3fb79a1a29:0x1e40fed785d0c9a4" target="_blank">Chain Bridge</a> · <a href="https://www.google.com/maps/place/Gell%C3%A9rt+Hill/data=!4m2!3m1!1s0x4741dca73db8fb31:0x30803ef5d7e6bc83" target="_blank">Gellért Hill</a></div>
+      <div class="cl">Last Budapest views</div>
+      <div class="ct">Final walk — Chain Bridge &amp; Gellért riverside</div>
+      <div class="cn">Last look at the Danube before heading to the station. Brief walk along the riverside embankment. <strong>Budapest goodbye moment.</strong></div>
+    </div>
+  </div>
+
+  <div class="sec">Midday · Budapest → Vienna</div>
+
+  <div class="bl ta">
+    <div class="bt">~12:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Budapest Keleti → Wien Hbf</div>
+      <div class="cl">Train ✅ Booked</div>
+      <div class="ct">Railjet — direct, ~2h40</div>
+      <div class="cn">Depart Budapest Keleti. Arrive Wien Hbf ~14:40. Ticket booked ✅. <strong>Note: passport needed</strong> — border crossing. Collect from GDrive.</div>
+    </div>
+  </div>
+
+  <div class="bl th">
+    <div class="bt">~15:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/ibis+Wien+Hauptbahnhof/data=!4m2!3m1!1s0x476da9d761dc5461:0x58b7048185d4de98" target="_blank">ibis Wien Hauptbahnhof</a></div>
+      <div class="cl">Hotel</div>
+      <div class="ct">ibis — collect stored luggage + last night</div>
+      <div class="cn">Luggage stored here since Day 6. Collect and check in for final night. <strong>Pack everything tonight</strong> — flight is early tomorrow.</div>
+    </div>
+  </div>
+
+  <div class="sec">Afternoon · KHM</div>
+
+  <div class="bl ts">
+    <div class="bt">15:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Kunsthistorisches+Museum+Wien/data=!4m2!3m1!1s0x476d079023ca68db:0xf9bbb1c4a3b24e30" target="_blank">Kunsthistorisches Museum (KHM)</a> · 1st District</div>
+      <div class="cl">Sights — open Fridays until 21:00</div>
+      <div class="ct">KHM — world-class art museum</div>
+      <div class="cn">Open until <strong>21:00 on Fridays</strong> — perfect timing. Habsburg art collection including Bruegel, Vermeer, Raphael, Caravaggio. The imperial staircase alone is worth seeing. EUR 21pp. Allow ~2h.</div>
+    </div>
+  </div>
+
+  <div class="sec">Evening · Christmas Market + Final Dinner</div>
+
+  <div class="bl ts">
+    <div class="bt">~18:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/Stephansplatz/data=!4m2!3m1!1s0x476d079af3ae0f91:0x51dbef43c9aba2cd" target="_blank">Stephansplatz</a> · 1st District</div>
+      <div class="cl">Christmas Market</div>
+      <div class="ct">Vienna Christmas Market — Stephansdom</div>
+      <div class="cn">The <strong>Christkindlmarkt Wien</strong> at Stephansplatz opens around Nov 15-20 — check the exact date at christkindlmarkt.at. If it's open: mulled wine (Glühwein), roasted chestnuts, handcrafted ornaments under St Stephen's Cathedral. <strong>⚠ Confirm opening date before the trip — it may not yet be open on Nov 6.</strong></div>
+    </div>
+  </div>
+
+  <div class="bl te">
+    <div class="bt">19:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="cl">Final dinner in Vienna — pick one</div>
+      <div class="ol">Options from your saved places</div>
+      <div class="og">
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Gasthaus+P%C3%B6schl/data=!4m2!3m1!1s0x476d079e58b87da7:0x37ec1b06b791756f" target="_blank">Gasthaus Pöschl</a></div><div class="oo">Your saved place. Traditional Austrian Viennese cuisine in the 1st District — perfect last dinner.</div></div>
+          <div class="ot">Traditional</div>
+        </div>
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Gasthaus+Zum+Wohl/data=!4m2!3m1!1s0x476d07f534b0ad45:0xec9d5132f7b2a557" target="_blank">Gasthaus Zum Wohl</a></div><div class="oo">Your saved place. Traditional Austrian, near 1st district.</div></div>
+          <div class="ot">Traditional</div>
+        </div>
+        <div class="oc">
+          <div><div class="on"><a href="https://www.google.com/maps/place/Caf%C3%A9+im+Kunsthistorischen+Museum+Wien/data=!4m2!3m1!1s0x476d079067be0195:0x54444adf4f77342a" target="_blank">Café im KHM</a></div><div class="oo">Your saved place. Café inside the KHM building.</div></div>
+          <div class="ot">Café</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bl th">
+    <div class="bt">21:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 <a href="https://www.google.com/maps/place/ibis+Wien+Hauptbahnhof/data=!4m2!3m1!1s0x476da9d761dc5461:0x58b7048185d4de98" target="_blank">ibis Wien Hauptbahnhof</a></div>
+      <div class="cl">Hotel — last night</div>
+      <div class="ct">Return to ibis — pack fully tonight</div>
+      <div class="cn"><strong>Pack everything completely tonight.</strong> Flight tomorrow departs 09:35 — wake up at 05:30 for S-Bahn to airport. Set two alarms.</div>
+    </div>
+  </div>
+
+</div>
+<div class="nb"><strong>Note:</strong> KHM is open until 21:00 on Fridays — confirms this is the right day for this visit.</div>
+</div></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     DAY 10  Sat 7 Nov · Fly Home
+═══════════════════════════════════════════════════════════ -->
+<div class="page" id="day10">
+<div class="day-wrap">
+
+<div class="hdr">
+  <div class="eye">Central Europe Trip · Sat 7 Nov 2026</div>
+  <div class="ttl">Day 10 — Fly Home</div>
+  <div class="sub">Vienna → Singapore · Scoot TR711</div>
+  <div class="div"></div>
+</div>
+<div class="leg">
+  <div class="li"><div class="ld" style="background:var(--accent)"></div>Transit / Flight</div>
+  <div class="li"><div class="ld" style="background:var(--hotel)"></div>Hotel</div>
+</div>
+<div class="tl">
+
+  <div class="sec">Early morning</div>
+
+  <div class="bl th">
+    <div class="bt">05:30</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 ibis Wien Hauptbahnhof</div>
+      <div class="cl">Wake up</div>
+      <div class="ct">05:30 wake — set two alarms</div>
+      <div class="cn">Everything should already be packed from last night. Double-check: <strong>passports, boarding passes, chargers, adapters.</strong> Grab breakfast at ibis or pick something up at the station.</div>
+    </div>
+  </div>
+
+  <div class="bl ta">
+    <div class="bt">06:15</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Wien Hbf → Vienna Airport (VIE)</div>
+      <div class="cl">Transit</div>
+      <div class="ct">S-Bahn S7 to Vienna Airport</div>
+      <div class="cn">Take the <strong>S7 S-Bahn</strong> from Wien Hbf — direct to Flughafen Wien (~25 min, EUR 4.20pp). Runs every 30 min. Or CAT (City Airport Train) from Wien Mitte (~16 min, EUR 14.90pp). <strong>Allow 2.5h before departure.</strong></div>
+    </div>
+  </div>
+
+  <div class="bl ta">
+    <div class="bt">07:00</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Vienna International Airport (VIE)</div>
+      <div class="cl">Airport</div>
+      <div class="ct">Arrive airport — check in &amp; security</div>
+      <div class="cn">Scoot TR711 check-in. Arrive with time to spare — allow for queue at security. Scoot is a low-cost carrier, <strong>confirm baggage allowance before arriving.</strong> Departure is Terminal 3.</div>
+    </div>
+  </div>
+
+  <div class="sec">Departure</div>
+
+  <div class="bl ta">
+    <div class="bt">09:35</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 VIE → SIN · Scoot TR711</div>
+      <div class="cl">Flight ✅ Booked</div>
+      <div class="ct">Scoot TR711 — Vienna → Singapore</div>
+      <div class="cn">Departs Vienna (VIE) <strong>09:35</strong>. Arrives Singapore Changi T1 <strong>03:40 Sun 8 Nov</strong> (+1 day). ~13h flight. Malaysian passport — check if Scoot visa requirements need anything en route.</div>
+    </div>
+  </div>
+
+  <div class="sec">Arrival</div>
+
+  <div class="bl ta">
+    <div class="bt">03:40<br>+1</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">📍 Singapore Changi Airport T1 · Sun 8 Nov</div>
+      <div class="cl">Arrive Singapore</div>
+      <div class="ct">Changi Terminal 1 — home</div>
+      <div class="cn">Welcome back. Arrive <strong>03:40 on Sunday 8 Nov</strong>. 10-day trip complete.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="arr">
+  <div class="arr-big">🏠</div>
+  <div class="arr-ttl">Vienna → Salzburg → Hallstatt → Budapest → Vienna → Home</div>
+  <div class="arr-sub">29 Oct – 8 Nov 2026 · 10 days · Central Europe</div>
+</div>
+
+</div></div>
+
+<script>
+(function(){
+  var days = document.querySelectorAll('.page');
+  var tabs = document.querySelectorAll('.nav-tab');
+
+  function show(n){
+    var id = 'day'+n;
+    days.forEach(function(d){ d.classList.toggle('active', d.id===id); });
+    tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.day===String(n)); });
+    // scroll active tab into view
+    var at = document.querySelector('.nav-tab.active');
+    if(at) at.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+    // save
+    try{ localStorage.setItem('et_day', n); }catch(e){}
+  }
+
+  function fromHash(){
+    var m = location.hash.match(/^#day(\d+)$/);
+    return m ? parseInt(m[1],10) : null;
+  }
+
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){
+      var n = parseInt(this.dataset.day,10);
+      history.pushState(null,'','#day'+n);
+      show(n);
+    });
+  });
+
+  window.addEventListener('popstate', function(){
+    var n = fromHash();
+    if(n) show(n);
+  });
+
+  // init
+  var init = fromHash();
+  if(!init){ try{ init = parseInt(localStorage.getItem('et_day')||'1',10); }catch(e){ init=1; } }
+  if(!init || init<1 || init>10) init=1;
+  show(init);
+})();
+</script>
+</body></html>
+
+</body></html>
