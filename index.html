@@ -3,7 +3,7 @@
 <title>Central Europe · Oct–Nov 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,500,1,0&icon_names=attractions,bridge,castle,church,directions_boat,fastfood,flight,hot_tub,hotel,landscape,local_cafe,local_library,location_city,lock,museum,music_note,near_me,nightlife,park,restaurant,shopping_bag,star,storefront,synagogue,train,water,zoom_out_map&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,500,1,0&icon_names=attractions,bridge,castle,church,directions_boat,fastfood,flight,hot_tub,hotel,landscape,local_cafe,local_library,location_city,lock,museum,music_note,my_location,near_me,nightlife,park,restaurant,shopping_bag,star,storefront,synagogue,train,water,zoom_out_map&display=block" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.css">
 <style>
 /* ── tokens ─────────────────────────────────────────────── */
@@ -299,7 +299,15 @@ body{
   background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,.2);
   font:500 12px/1.4 'Inter',sans-serif;padding:6px 9px;text-align:left;pointer-events:none}
 .pin-l b{font-weight:700}
-.pin:hover .pin-l,.pin:focus-visible .pin-l,.pin.hl .pin-l{display:block}
+@media(hover:hover){.pin:hover .pin-l{display:block}}
+.pin:focus-visible .pin-l,.pin.hl .pin-l,.pin.open .pin-l{display:block}
+.pin.open{z-index:6}
+.pin.open .pin-l{pointer-events:auto;cursor:pointer;padding:9px 12px;font-size:13px;max-width:240px}
+.pin-go{display:block;margin-top:5px;font-weight:700;color:var(--accent)}
+.eta{color:var(--eat);font-weight:600}
+#locBtn.on{background:var(--accent);color:#fff}
+.chip .half{font-weight:800;color:var(--accent)}
+.chip.on .half{color:#fff}
 .pin-c{min-width:34px;height:34px;padding:0 8px;border-radius:17px;border:2px solid #fff;background:var(--fg);color:var(--bg);cursor:pointer;
   font:700 13px/30px 'Inter',sans-serif;box-shadow:0 0 0 5px color-mix(in srgb,var(--fg) 18%,transparent),0 2px 6px rgba(0,0,0,.3)}
 .pin-c:hover{background:var(--accent);color:#fff}
@@ -1562,7 +1570,7 @@ body{
   </div>
   <div class="map-box" id="mapBox"><div class="map-ph" id="mapPh">Loading map…</div><div id="lmap"></div></div>
   <div class="map-edits" id="mapEdits" hidden></div>
-  <div class="map-help">Tap a pin or a place name to open it in Google Maps. Use the day menu beside a stop to move it to another day (saved on this device only).</div>
+  <div class="map-help">On a phone, tap a pin for its details, then tap the details to open Google Maps. On a computer, hover for details and click to open. The ◎ button shows where you are and rough travel times. Use the day menu beside a stop to move it to another day (saved on this device only).</div>
   <div class="map-day-ttl" id="mapTtl"></div>
   <div class="map-day-sub" id="mapSub"></div>
   <div id="mapList"></div>
@@ -1622,7 +1630,7 @@ var TRIPMAP=(function(){
     // Salzburg
     salzburg_hbf:{n:"Salzburg Hauptbahnhof",cat:"train",ll:[47.813027,13.045039],pid:"ChIJT2PH83iQdkcRnEDVqlb-Avs"},
     airbnb_salzburg:{n:"Salzburg Airbnb (Vogelweiderstraße 33)",cat:"hotel",ll:[47.810449,13.054322],pid:"ChIJgb3GhICQdkcRDEnPmqioKEU"},
-    hohenwerfen:{n:"Hohenwerfen Castle",cat:"palace",ll:[47.483176,13.18895],pid:"ChIJCymTk7PEdkcRk2e9_wpDY8k"},
+    hohenwerfen:{n:"Hohenwerfen Castle",cat:"palace",ll:[47.483176,13.18895],pid:"ChIJCymTk7PEdkcRk2e9_wpDY8k",city:"SZG"},   // day trip from Salzburg (it's marginally closer to Hallstatt)
     hohensalzburg:{n:"Hohensalzburg Fortress",cat:"palace",ll:[47.794948,13.047658],pid:"ChIJvQMhJ2CQdkcRa1Xs6dO-dys"},
     getreidegasse:{n:"Getreidegasse",cat:"landmark",ll:[47.800032,13.042427],pid:"ChIJZ8whB2SQdkcRwk0_h9TXh5Q"},
     mozart_birthplace:{n:"Mozart's Birthplace",cat:"museum",ll:[47.800008,13.043559],pid:"ChIJiYA55GOQdkcRi7885u5bbJ4"},
@@ -1702,6 +1710,9 @@ var TRIPMAP=(function(){
   var START=[[45.74,9.53],[49.02,22.9]];   // Austria + Hungary
   var EUROPE=[[35,-12],[62,35]];          // pins outside this (Changi) are ignored when zooming to fit
   var MOVES_KEY='et_map_moves', GEO_KEY='et_map_geo';
+  // home cities: a place belongs to the nearest one within 80 km (a PLACES entry can set city:"SZG" to override)
+  var CITIES={VIE:['Vienna',48.2082,16.3738],SZG:['Salzburg',47.8095,13.055],HLT:['Hallstatt',47.5622,13.6493],
+    BUD:['Budapest',47.4979,19.0402],SIN:['Singapore',1.3521,103.8198]};
 
   function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function load(k){try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}}
@@ -1713,6 +1724,11 @@ var TRIPMAP=(function(){
   function grp(p){return cat(p)[2];}
   function gurl(p){return p.u||'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.q||p.n)+(p.pid?'&query_place_id='+p.pid:'');}
   function dayName(d){return d?'Day '+d:'Unplanned';}
+  function cityOf(ll){
+    var best=null,bd=80;
+    for(var c in CITIES){var k=km(ll,[CITIES[c][1],CITIES[c][2]]);if(k<bd){bd=k;best=c;}}
+    return best;
+  }
 
   var byPid={},byQ={};
   Object.keys(PLACES).forEach(function(k){var p=PLACES[k];p.key=k;if(p.pid)byPid[p.pid]=p;if(p.q)byQ[p.q.toLowerCase()]=p;});
@@ -1782,16 +1798,49 @@ var TRIPMAP=(function(){
     stops=stops.filter(function(s){var id=s.p.key+'@'+s.day;if(once[id])return false;return (once[id]=true);});
     stops.sort(function(a,b){return a.o-b.o;});
     S={stops:stops,days:days,moves:moves};
+    // the cities each day is spent in; a day in two cities gets separate AM / PM filters.
+    // A city you only pass through by train (just a station) doesn't count.
+    stops.forEach(function(s){if(s.p.ll&&s.p.city===undefined)s.p.city=cityOf(s.p.ll);});
+    days.forEach(function(d){
+      var by={};
+      stops.forEach(function(s){
+        if(s.day!==d.d||!s.p.city)return;
+        var q=by[s.p.city]||(by[s.p.city]={city:s.p.city,o:s.o,real:false});
+        q.o=Math.min(q.o,s.o);
+        if(grp(s.p)!=='transit')q.real=true;
+      });
+      d.parts=Object.keys(by).map(function(c){return by[c];}).filter(function(q){return q.real;}).sort(function(a,b){return a.o-b.o;});
+      var tags=d.parts.length===2?['AM','PM']:['AM','Midday','PM'];
+      d.parts.forEach(function(q,i){q.tag=d.parts.length>1?tags[i]||'':'';});
+    });
   }
 
   // ── filters ──
-  var sel={day:'all',cats:{}},me=null;   // me: [lat,lng] while "Near me" is on
+  // sel.day: 'all' | 'near' | '0' (unplanned) | '5' (whole day) | '5:SZG' (the Salzburg half of a split day)
+  var sel={day:'all',cats:{}},me=null;   // me: your last known [lat,lng]
   var elDays=document.getElementById('mfDays'),elCats=document.getElementById('mfCats'),elList=document.getElementById('mapList');
+  function selDay(){return parseInt(sel.day,10);}   // NaN for all / near
+  function selCity(){return sel.day.split(':')[1]||'';}
+  function dayInfo(n){return S.days.filter(function(x){return x.d===n;})[0];}
   function dayOk(s){
     if(sel.day==='near')return !!(me&&s.p.ll&&km(me,s.p.ll)<=NEAR_KM);
-    return sel.day==='all'||s.day===+sel.day;
+    if(sel.day==='all')return true;
+    if(s.day!==selDay())return false;
+    var c=selCity();
+    return !c||s.p.city===c||!dayInfo(s.day).parts.some(function(q){return q.city===s.p.city;});
   }
-  function oneDay(){return /^\d+$/.test(sel.day);}
+  function oneDay(){return selDay()>0;}
+  // the pins a day zooms to: the cities it's spent in, not the far end of a train ride
+  function mainPt(p){
+    if(sel.day==='near')return true;
+    var n=selDay();
+    if(!(n>0))return inBox(p.ll,EUROPE);
+    var c=selCity(),ps=dayInfo(n).parts;
+    if(c)return p.city===c;
+    return !ps.length||ps.some(function(q){return q.city===p.city;});
+  }
+  // a split day's whole-day value becomes its first half
+  function norm(v){var d=/^\d+$/.test(v)&&dayInfo(+v);return d&&d.parts.length>1?v+':'+d.parts[0].city:v;}
   function dist(d){return d<1?Math.round(d*100)*10+' m':d.toFixed(1)+' km';}
   function catOk(s){return !Object.keys(sel.cats).length||sel.cats[s.p.cat];}
   // stops grouped by place (one pin per place)
@@ -1809,7 +1858,11 @@ var TRIPMAP=(function(){
     var h='<button class="chip'+(sel.day==='all'?' on':'')+'" data-day="all">All days</button>'+
       '<button class="chip'+(sel.day==='near'?' on':'')+'" data-day="near"><span class="ms">near_me</span>Near me</button>';
     S.days.forEach(function(d){
-      h+='<button class="chip'+(sel.day===String(d.d)?' on':'')+'" data-day="'+d.d+'">Day '+d.d+'<small>'+esc(d.short)+'</small></button>';
+      if(d.parts.length>1)d.parts.forEach(function(q){
+        var v=d.d+':'+q.city;
+        h+='<button class="chip'+(sel.day===v?' on':'')+'" data-day="'+v+'">Day '+d.d+' <b class="half">'+q.tag+'</b><small>'+esc(d.short.split('·')[0].trim())+' · '+q.city+'</small></button>';
+      });
+      else h+='<button class="chip'+(sel.day===String(d.d)?' on':'')+'" data-day="'+d.d+'">Day '+d.d+'<small>'+esc(d.short)+'</small></button>';
     });
     if(S.stops.some(function(s){return s.day===0;}))
       h+='<button class="chip'+(sel.day==='0'?' on':'')+'" data-day="0">Unplanned</button>';
@@ -1834,10 +1887,11 @@ var TRIPMAP=(function(){
   elDays.addEventListener('click',function(e){
     var b=e.target.closest('[data-day]');if(!b)return;
     if(b.dataset.day==='near'){locate(b);return;}
-    sel.day=b.dataset.day;render(true);
+    sel.day=norm(b.dataset.day);render(true);
   });
   // "Near me": every pin within NEAR_KM of where you are, whatever its day
   function locate(b){
+    if(locOn&&me){sel.day='near';render(true);return;}
     if(!navigator.geolocation){alert('Location is not available on this device.');return;}
     b.classList.add('busy');
     navigator.geolocation.getCurrentPosition(function(pos){
@@ -1868,6 +1922,56 @@ var TRIPMAP=(function(){
     d.onclick=fit;return d;
   };
   FitCtl.prototype.onRemove=function(){};
+
+  // ── your location: only looked up while the ◎ button is on; adds rough travel times ──
+  var locOn=false,watch=null,lastDraw=null;
+  function LocCtl(){}
+  LocCtl.prototype.onAdd=function(){
+    var d=document.createElement('div');d.className='maplibregl-ctrl maplibregl-ctrl-group';
+    d.innerHTML='<button type="button" id="locBtn" title="Show my location and travel times" aria-label="Show my location and travel times" aria-pressed="false"><span class="ms">my_location</span></button>';
+    d.onclick=toggleLoc;return d;
+  };
+  LocCtl.prototype.onRemove=function(){};
+  function toggleLoc(){
+    var b=document.getElementById('locBtn');
+    if(locOn){
+      locOn=false;navigator.geolocation.clearWatch(watch);watch=null;lastDraw=null;
+      b.classList.remove('on');b.setAttribute('aria-pressed','false');
+      showMe();renderList();refreshTips();
+      return;
+    }
+    if(!navigator.geolocation){alert('Location is not available on this device.');return;}
+    locOn=true;b.classList.add('on');b.setAttribute('aria-pressed','true');
+    var first=true;
+    watch=navigator.geolocation.watchPosition(function(pos){
+      me=[pos.coords.latitude,pos.coords.longitude];
+      showMe();
+      if(first){first=false;map.easeTo({center:lnglat(me),zoom:Math.max(map.getZoom(),14)});}
+      if(!lastDraw||km(lastDraw,me)>0.03){   // redraw times every ~30 m you move
+        lastDraw=me;
+        if(sel.day==='near')render(false);else{renderList();refreshTips();}
+      }
+    },function(){
+      if(locOn)toggleLoc();
+      alert('Could not get your location. Allow location access for this site and try again.');
+    },{enableHighAccuracy:true,maximumAge:15000});
+  }
+  function showMe(){
+    if(!map)return;
+    if(!(me&&(locOn||sel.day==='near'))){if(meMark){meMark.remove();meMark=null;}return;}
+    if(meMark){meMark.setLngLat(lnglat(me));return;}
+    var d=document.createElement('div');d.className='me-dot';d.title='You are here';
+    meMark=new maplibregl.Marker({element:d}).setLngLat(lnglat(me)).addTo(map);
+  }
+  // rough door-to-door estimate from straight-line distance (Google Maps has the real route)
+  function eta(ll){
+    var d=km(me,ll);
+    if(d>30)return Math.round(d)+' km away';
+    if(d<=2.5)return '~'+Math.max(1,Math.round(d*1.3/4.8*60))+' min walk · '+dist(d);
+    return '~'+Math.round(10+d*3.9)+' min by transit · '+dist(d);
+  }
+  function showEta(){return locOn&&me;}
+
   function initMap(){
     if(map)return true;
     var ph=document.getElementById('mapPh');
@@ -1877,9 +1981,10 @@ var TRIPMAP=(function(){
     map.touchZoomRotate.disableRotation();
     map.addControl(new maplibregl.NavigationControl({showCompass:false}),'top-left');
     map.addControl(new FitCtl(),'top-left');
-    map.addControl(new maplibregl.GeolocateControl({positionOptions:{enableHighAccuracy:true},trackUserLocation:true}),'top-left');
+    map.addControl(new LocCtl(),'top-left');
     map.addControl(new maplibregl.AttributionControl({compact:true}),'bottom-right');
     map.on('load',function(){ph.remove();});
+    map.on('click',closePin);
     map.on('style.load',drawRings);
     map.on('zoomend',cluster);
     try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',retheme);}catch(e){}
@@ -1901,14 +2006,10 @@ var TRIPMAP=(function(){
       var ds=it.inst.map(function(s){return s.day;}).filter(Boolean);
       live.push({it:it,anchor:it.inst.some(function(s){return s.anchor;}),dim:!ds.length,
         badge:sel.day==='all'&&ds.length?ds[0]+(ds.length>1?'+':''):''});
-      if(inBox(p.ll,EUROPE))pts.push(p.ll);
+      if(mainPt(p))pts.push(p.ll);
     });
-    if(meMark){meMark.remove();meMark=null;}
-    if(sel.day==='near'&&me){
-      var d=document.createElement('div');d.className='me-dot';d.title='You are here';
-      meMark=new maplibregl.Marker({element:d}).setLngLat(lnglat(me)).addTo(map);
-      pts.push(me);
-    }
+    showMe();
+    if(sel.day==='near'&&me)pts.push(me);
     cluster();drawRings();
     if(refit)fit();
   }
@@ -1917,7 +2018,7 @@ var TRIPMAP=(function(){
     if(!map)return;
     Object.keys(markers).forEach(function(k){markers[k].remove();});
     bubbles.forEach(function(b){b.remove();});
-    markers={};bubbles=[];
+    markers={};bubbles=[];openPin=null;
     var z=map.getZoom(),gs=[];
     live.forEach(function(x){
       var pt=map.project(lnglat(x.it.p.ll)),g=null;
@@ -1928,16 +2029,33 @@ var TRIPMAP=(function(){
     });
     gs.forEach(function(g){g.m.length===1?addPin(g.m[0]):addBubble(g.m);});
   }
+  // Mouse: hovering shows the info label, a click opens Google Maps.
+  // Touch: the first tap opens the info label, a tap on the label opens Google Maps.
+  var openPin=null;
+  function closePin(){if(openPin){openPin.classList.remove('open');openPin=null;}}
   function addPin(x){
-    var p=x.it.p,el=document.createElement('div');
+    var p=x.it.p,el=document.createElement('div'),touch=false;
     el.className='pin g-'+grp(p)+(x.anchor?' anchor':'')+(x.dim?' dim':'');
-    el.tabIndex=0;el.setAttribute('role','link');el.setAttribute('aria-label',p.n+', open in Google Maps');
+    el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-label',p.n+', details and Google Maps link');
+    el._it=x.it;
     el.innerHTML='<span class="ms">'+cat(p)[0]+'</span>'+(x.anchor?'<b class="pin-a"><span class="ms">star</span></b>':'')+
       (x.badge?'<b class="pin-d">'+x.badge+'</b>':'')+'<span class="pin-l">'+tip(x.it)+'</span>';
-    var open=function(e){e.stopPropagation();window.open(gurl(p),'_blank','noopener');};
-    el.addEventListener('click',open);
-    el.addEventListener('keydown',function(e){if(e.key==='Enter')open(e);});
+    var go=function(){window.open(gurl(p),'_blank','noopener');};
+    el.addEventListener('pointerdown',function(e){touch=e.pointerType!=='mouse';});
+    el.addEventListener('click',function(e){
+      e.stopPropagation();
+      if(!touch||e.target.closest('.pin-l')){go();return;}
+      if(openPin===el){closePin();return;}
+      closePin();openPin=el;el.classList.add('open');
+    });
+    el.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();go();}});
     markers[p.key]=new maplibregl.Marker({element:el}).setLngLat(lnglat(p.ll)).addTo(map);
+  }
+  function refreshTips(){
+    Object.keys(markers).forEach(function(k){
+      var el=markers[k].getElement(),l=el.querySelector('.pin-l');
+      if(l)l.innerHTML=tip(el._it);
+    });
   }
   function addBubble(ms){
     var el=document.createElement('button'),b=new maplibregl.LngLatBounds();
@@ -1965,12 +2083,14 @@ var TRIPMAP=(function(){
     map.addLayer({id:'rings-fill',type:'fill',source:'rings',paint:{'fill-color':accent,'fill-opacity':.05}});
     map.addLayer({id:'rings-line',type:'line',source:'rings',paint:{'line-color':accent,'line-width':1.5,'line-dasharray':[3,3]}});
   }
-  // hover label (desktop); a tap opens Google Maps straight away
+  // the pin's info label (hover on a computer, first tap on a phone)
   function tip(it){
     var c=cat(it.p);
     return '<b>'+esc(it.p.n)+'</b><br>'+c[1]+' · '+it.inst.map(function(s){return dayName(s.day)+(s.t&&sel.day!=='all'?' '+esc(s.t):'');}).join(', ')+
       (it.inst.some(function(s){return s.anchor;})?'<br><span class="flag">★ Anchor — must-do</span>':'')+
-      (it.p.chk?'<br><span class="flag">Pin position to confirm</span>':'');
+      (it.p.chk?'<br><span class="flag">Pin position to confirm</span>':'')+
+      (showEta()?'<br><span class="eta">'+eta(it.p.ll)+'</span>':'')+
+      '<span class="pin-go">Open in Google Maps ↗</span>';
   }
 
   // ── rearranging (saved on this device) ──
@@ -2016,7 +2136,8 @@ var TRIPMAP=(function(){
     return gs.concat([other,base]).filter(function(g){return g.items.length;});
   }
   function row(s,it){   // `it` is passed in "Near me", where a row covers every day the place is on
-    var p=s.p,c=cat(p),meta=it?dist(km(me,p.ll))+' · '+it.inst.map(function(x){return dayName(x.day);}).join(', ')+' · '+c[1]:(s.t?esc(s.t)+' · ':'')+c[1];
+    var p=s.p,c=cat(p),meta=it?(showEta()?eta(p.ll):dist(km(me,p.ll)))+' · '+it.inst.map(function(x){return dayName(x.day);}).join(', ')+' · '+c[1]:
+      (showEta()&&p.ll?'<span class="eta">'+eta(p.ll)+'</span> · ':'')+(s.t?esc(s.t)+' · ':'')+c[1];
     if(s.moved)meta+=' · moved from '+dayName(s.from);
     if(p.chk)meta+=' · <span class="flag">to confirm</span>';
     if(!p.ll)meta+=' · <span class="flag">no pin yet</span>';
@@ -2041,9 +2162,9 @@ var TRIPMAP=(function(){
       document.getElementById('mapSub').textContent=its.length+' place'+(its.length===1?'':'s')+' within '+NEAR_KM+' km, from every day · tap Near me again to refresh';
       return;
     }
-    var all=sel.day==='all',ds=all?S.days.map(function(d){return d.d;}).concat([0]):[+sel.day],h='',total=0;
+    var all=sel.day==='all',ds=all?S.days.map(function(d){return d.d;}).concat([0]):[selDay()],h='',total=0;
     ds.forEach(function(d){
-      var ss=S.stops.filter(function(s){return s.day===d&&catOk(s);});
+      var ss=S.stops.filter(function(s){return s.day===d&&dayOk(s)&&catOk(s);});
       total+=ss.length;
       if(all&&!ss.length)return;
       if(all){
@@ -2057,13 +2178,13 @@ var TRIPMAP=(function(){
       });
     });
     elList.innerHTML=h;
-    var dd=S.days.filter(function(x){return String(x.d)===sel.day;})[0];
-    document.getElementById('mapTtl').textContent=all?'All days':dd?dd.title:'Unplanned';
+    var dd=dayInfo(selDay()),c=selCity(),half=dd&&c?dd.parts.filter(function(q){return q.city===c;})[0]:null;
+    document.getElementById('mapTtl').textContent=all?'All days':dd?dd.title+(half?' — '+half.tag+' in '+CITIES[c][0]:''):'Unplanned';
     document.getElementById('mapSub').textContent=(all?'':dd?dd.date+' · ':'Places not on any day · ')+total+' stop'+(total===1?'':'s')+(Object.keys(sel.cats).length?' (filtered)':'');
   }
   elList.addEventListener('click',function(e){
     var b=e.target.closest('.ml-dh button');
-    if(b){sel.day=b.dataset.day;render(true);scrollTo({top:0,behavior:'smooth'});}
+    if(b){sel.day=norm(b.dataset.day);render(true);scrollTo({top:0,behavior:'smooth'});}
   });
   elList.addEventListener('change',function(e){
     var x=e.target.closest('.stop-mv');if(x)move(x.dataset.k,+x.dataset.from,+x.value);
