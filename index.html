@@ -3,7 +3,7 @@
 <title>Central Europe · Oct–Nov 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,500,1,0&icon_names=attractions,bridge,castle,church,directions_boat,fastfood,flight,hot_tub,hotel,landscape,local_cafe,local_library,location_city,lock,museum,music_note,my_location,near_me,nightlife,park,restaurant,shopping_bag,star,storefront,synagogue,train,water,zoom_out_map&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,500,1,0&icon_names=attractions,bridge,cake,castle,check_circle,church,directions_boat,fastfood,flight,hot_tub,hotel,landscape,local_cafe,local_library,location_city,lock,museum,music_note,my_location,near_me,nightlife,park,restaurant,route,shopping_bag,star,storefront,synagogue,train,water,zoom_out_map&display=block" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.css">
 <style>
 /* ── tokens ─────────────────────────────────────────────── */
@@ -299,7 +299,8 @@ body{
   background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,.2);
   font:500 12px/1.4 'Inter',sans-serif;padding:6px 9px;text-align:left;pointer-events:none}
 .pin-l b{font-weight:700}
-@media(hover:hover){.pin:hover .pin-l{display:block}}
+@media(hover:hover){.pin:hover .pin-l{display:block;pointer-events:auto}}
+.pin-l::before{content:'';position:absolute;left:0;right:0;top:100%;height:12px}   /* lets the mouse reach the label */
 .pin:focus-visible .pin-l,.pin.hl .pin-l,.pin.open .pin-l{display:block}
 .pin.open{z-index:6}
 .pin.open .pin-l{pointer-events:auto;cursor:pointer;padding:9px 12px;font-size:13px;max-width:240px}
@@ -308,6 +309,52 @@ body{
 #locBtn.on{background:var(--accent);color:#fff}
 .chip .half{font-weight:800;color:var(--accent)}
 .chip.on .half{color:#fff}
+/* waypoints (✓), route numbers and Extras (✦) */
+.pin.wp{z-index:2;box-shadow:0 0 0 3px var(--eat),0 2px 8px rgba(0,0,0,.4)}
+.pin-w{position:absolute;top:-7px;left:-7px;width:18px;height:18px;border-radius:50%;border:2px solid #fff;
+  background:var(--eat);color:#fff;font:700 10px/14px 'Inter',sans-serif;text-align:center}
+.pin-n{position:absolute;bottom:-8px;right:-9px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;border:1.5px solid #fff;
+  background:var(--accent);color:#fff;font:700 10px/15px 'Inter',sans-serif;text-align:center}
+.pin.ex{width:26px;height:26px;background:var(--card);border:2px dashed currentColor;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.pin.ex .ms{font-size:15px}
+.pin.ex.g-see,.stop.ex .g-see{color:var(--see)}.pin.ex.g-eat,.stop.ex .g-eat{color:var(--eat)}
+.pin.ex.g-shop,.stop.ex .g-shop{color:var(--shop)}.pin.ex.g-night,.stop.ex .g-night{color:var(--night)}
+.pin-c.ex{background:var(--card);color:var(--fg);border:2px dashed var(--muted)}
+.pin-note{color:var(--muted)}
+.pin-wp{display:block;width:100%;margin-top:7px;padding:6px 8px;border-radius:7px;border:1px solid var(--eat);
+  background:var(--eat-light);color:var(--eat);font:700 12px 'Inter',sans-serif;text-align:left;cursor:pointer}
+.pin-wp.on{background:var(--eat);color:#fff}
+#rtBtn.on{background:var(--accent);color:#fff}
+.chip.x-tog.on{background:var(--fg);border-color:var(--fg);color:var(--bg)}
+.chip.x-type.on{background:var(--accent-light);border-color:var(--accent);color:var(--fg)}
+.chip.x-type.on .ms{color:var(--accent)!important}
+.chip.x-type.on small{color:var(--muted)!important}
+.stop-act{display:inline-flex;align-items:center;gap:6px}
+.wp-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--muted);
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.wp-btn .ms{font-size:19px}
+.wp-btn.on{background:var(--eat);border-color:var(--eat);color:#fff}
+.stop.wp .stop-i{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--eat)}
+.flag-wp{color:var(--eat);font-weight:600}
+.ml-g.wp .ms{color:var(--eat)}
+.stop.ex .stop-i{background:var(--card);border:2px dashed currentColor}
+.ex-add-btn,.ex-add{font:600 12px 'Inter',sans-serif;color:var(--accent);background:var(--card);border:1px solid var(--accent);
+  border-radius:8px;padding:6px 9px;min-height:32px;cursor:pointer;white-space:nowrap}
+.ml-x{display:flex;align-items:baseline;gap:8px;margin:28px 0 6px;font:700 16px/1.3 'Playfair Display',Georgia,serif}
+.ml-x small{font:500 12px 'Inter',sans-serif;color:var(--muted)}
+.route-sum{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:8px 0 6px;padding:9px 12px;border-radius:10px;
+  background:var(--accent-light);font-size:12px}
+.route-sum .ms{color:var(--accent)}
+.route-sum a{margin-left:auto;font-weight:700;color:var(--accent);text-decoration:none}
+/* waypoints on the day pages */
+.wp-on>.card{position:relative;border:1.5px solid var(--eat);box-shadow:0 0 0 3px var(--eat-light)}
+.wp-on:not(.anchor)>.card::before,.wpb>.card::before{content:'✓ Waypoint';position:absolute;top:-9px;right:12px;padding:0 8px;border-radius:999px;
+  background:var(--eat);color:#fff;font:700 9px/17px 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.wpb>.card{position:relative;border:1.5px dashed var(--eat)}
+.wpb>.bd{background:var(--eat)}
+a.wp-link::before{content:'✓ ';color:var(--eat);font-weight:700}
+.wpb-rm{margin-top:8px;font:600 11px 'Inter',sans-serif;border:1px solid var(--border);background:transparent;color:var(--muted);
+  border-radius:6px;padding:4px 8px;cursor:pointer}
 .pin-c{min-width:34px;height:34px;padding:0 8px;border-radius:17px;border:2px solid #fff;background:var(--fg);color:var(--bg);cursor:pointer;
   font:700 13px/30px 'Inter',sans-serif;box-shadow:0 0 0 5px color-mix(in srgb,var(--fg) 18%,transparent),0 2px 6px rgba(0,0,0,.3)}
 .pin-c:hover{background:var(--accent);color:#fff}
@@ -1567,10 +1614,11 @@ body{
   <div class="mf">
     <div class="mf-row" id="mfDays" role="toolbar" aria-label="Filter by day"></div>
     <div class="mf-row" id="mfCats" role="toolbar" aria-label="Filter by type of place"></div>
+    <div class="mf-row" id="mfExtras" role="toolbar" aria-label="Extra places of interest"></div>
   </div>
   <div class="map-box" id="mapBox"><div class="map-ph" id="mapPh">Loading map…</div><div id="lmap"></div></div>
   <div class="map-edits" id="mapEdits" hidden></div>
-  <div class="map-help">On a phone, tap a pin for its details, then tap the details to open Google Maps. On a computer, hover for details and click to open. The ◎ button shows where you are and rough travel times. Use the day menu beside a stop to move it to another day (saved on this device only).</div>
+  <div class="map-help">On a phone, tap a pin for its details, then tap the details to open Google Maps. On a computer, hover for details and click to open. The ◎ button shows where you are and rough travel times; the route button draws the day's route. <strong>✓ Confirm</strong> a place to make it a <strong>waypoint</strong>: part of that day's plan and route, like an anchor but not a must-do. Waypoints and day moves are saved on this device only.</div>
   <div class="map-day-ttl" id="mapTtl"></div>
   <div class="map-day-sub" id="mapSub"></div>
   <div id="mapList"></div>
@@ -1681,6 +1729,74 @@ var TRIPMAP=(function(){
     changi:{n:"Singapore Changi Airport T1",cat:"airport",ll:[1.361858,103.990327],pid:"ChIJ1XgwjIk82jER3GYMUrMC4RM"}
   };
 
+  /* ── EXTRAS ───────────────────────────────────────────────
+     Researched places of interest (Oct 2026: Michelin, Falstaff and established
+     city guides), all within 5 km of an anchor. Kept apart from the schedule:
+     hidden until "Extras" is switched on, then shown near the day's anchors and
+     waypoints. "＋ Add" on one makes it a waypoint for that day.
+     Coordinates are from OpenStreetMap; q is the Google Maps search text. */
+  var EXTRAS={
+    // Vienna
+    sperl:{n:"Café Sperl",cat:"cafe",ll:[48.199838,16.36117],q:"Café Sperl, Gumpendorfer Straße 11, 1060 Wien",note:"Classic 1880s coffeehouse with billiard tables, by Naschmarkt"},
+    hawelka:{n:"Café Hawelka",cat:"cafe",ll:[48.207956,16.369805],q:"Café Hawelka, Dorotheergasse 6, 1010 Wien",note:"Bohemian old-school café; famous for Buchteln (sweet buns)"},
+    landtmann:{n:"Café Landtmann",cat:"cafe",ll:[48.211562,16.36145],q:"Café Landtmann, Universitätsring 4, 1010 Wien",note:"Grand Ringstrasse café since 1873, next to the Burgtheater"},
+    prueckel:{n:"Café Prückel",cat:"cafe",ll:[48.207608,16.380417],q:"Café Prückel, Stubenring 24, 1010 Wien",note:"1950s-interior Ringstrasse café, by the Stadtpark"},
+    sacher_wien:{n:"Café Sacher",cat:"dessert",ll:[48.203939,16.36966],q:"Café Sacher, Philharmoniker Straße 4, 1010 Wien",note:"Home of the original Sachertorte, behind the Opera — expect a queue"},
+    gerstner:{n:"Gerstner K. u. K. Hofzuckerbäcker",cat:"dessert",ll:[48.203195,16.370315],q:"Gerstner, Kärntner Straße 51, 1010 Wien",note:"Former imperial court confectioner, opposite the Opera"},
+    oberlaa:{n:"Kurkonditorei Oberlaa",cat:"dessert",ll:[48.206722,16.3707],q:"Kurkonditorei Oberlaa, Neuer Markt 16, 1010 Wien",note:"Lighter takes on Viennese cakes; good Topfenstrudel"},
+    meierei:{n:"Meierei im Stadtpark",cat:"restaurant",ll:[48.20446,16.381279],q:"Meierei im Stadtpark, Am Heumarkt 2A, 1030 Wien",note:"Michelin Bib Gourmand 2025; Austrian classics in the Stadtpark"},
+    plachutta:{n:"Plachutta Wollzeile",cat:"restaurant",ll:[48.207548,16.378755],q:"Plachutta, Wollzeile 38, 1010 Wien",note:"Vienna's Tafelspitz (boiled beef) institution — book ahead"},
+    kameel:{n:"Zum Schwarzen Kameel",cat:"restaurant",ll:[48.209995,16.368317],q:"Zum Schwarzen Kameel, Bognergasse 5, 1010 Wien",note:"Historic deli-bistro; open sandwiches and wine at the bar"},
+    trzesniewski:{n:"Trześniewski",cat:"streetfood",ll:[48.208028,16.370189],q:"Trześniewski, Dorotheergasse 1, 1010 Wien",note:"Tiny open-sandwich counter, a Viennese snack classic"},
+    dommayer:{n:"Café Dommayer",cat:"cafe",ll:[48.187102,16.298959],q:"Café Dommayer, Dommayergasse 1, 1130 Wien",note:"Traditional café 5 min from Schönbrunn, where Johann Strauss II debuted"},
+    albertina:{n:"Albertina",cat:"museum",ll:[48.204636,16.368261],q:"Albertina, Albertinaplatz 1, 1010 Wien",note:"Habsburg palace museum: Monet to Picasso, plus state rooms"},
+    riding_school:{n:"Spanish Riding School",cat:"landmark",ll:[48.207307,16.366707],q:"Spanische Hofreitschule, Michaelerplatz 1, 1010 Wien",note:"Lipizzaner horses; morning training is cheaper than shows — check schedule"},
+    secession:{n:"Secession",cat:"museum",ll:[48.20038,16.36574],q:"Secession, Friedrichstraße 12, 1010 Wien",note:"Gold-domed Art Nouveau hall with Klimt's Beethoven Frieze"},
+    hundertwasser:{n:"Hundertwasserhaus",cat:"landmark",ll:[48.207384,16.393941],q:"Hundertwasserhaus, Kegelgasse 37-39, 1030 Wien",note:"Colourful, wavy apartment block — view from outside"},
+    stadtpark:{n:"Stadtpark",cat:"park",ll:[48.202886,16.379724],q:"Stadtpark, 1010 Wien",note:"Golden Johann Strauss statue; easy stroll before the Musikverein"},
+    zoo:{n:"Tiergarten Schönbrunn",cat:"park",ll:[48.181734,16.304772],q:"Tiergarten Schönbrunn, Maxingstraße 13b, 1130 Wien",note:"World's oldest zoo, in the Schönbrunn grounds"},
+    haus_musik:{n:"Haus der Musik",cat:"museum",ll:[48.203792,16.373155],q:"Haus der Musik, Seilerstätte 30, 1010 Wien",note:"Interactive sound and music museum"},
+    mq:{n:"MuseumsQuartier",cat:"museum",ll:[48.203183,16.358346],q:"MuseumsQuartier, Museumsplatz 1, 1070 Wien",note:"Leopold Museum (Schiele, Klimt) and MUMOK around a lively courtyard"},
+    // Salzburg
+    tomaselli:{n:"Café Tomaselli",cat:"cafe",ll:[47.79922,13.044882],q:"Café Tomaselli, Alter Markt 9, 5020 Salzburg",note:"Austria's oldest café (c. 1700); cakes carried round on trays"},
+    bazar:{n:"Café Bazar",cat:"cafe",ll:[47.801864,13.043832],q:"Café Bazar, Schwarzstraße 3, 5020 Salzburg",note:"Riverside café near Mirabell, a local favourite"},
+    alchemie:{n:"Kaffee Alchemie",cat:"cafe",ll:[47.798979,13.049474],q:"Kaffee Alchemie, Rudolfskai 38, 5020 Salzburg",note:"Specialty coffee bar on the river"},
+    stiftskulinarium:{n:"St. Peter Stiftskulinarium",cat:"restaurant",ll:[47.796977,13.044161],q:"St. Peter Stiftskulinarium, St.-Peter-Bezirk 1, 5020 Salzburg",note:"Said to be Europe's oldest restaurant, in St. Peter's Abbey"},
+    augustiner:{n:"Augustiner Bräu Kloster Mülln",cat:"restaurant",ll:[47.805886,13.033309],q:"Augustiner Bräu Kloster Mülln, Lindhofstraße 7, 5020 Salzburg",note:"Monastery beer hall with self-serve stone mugs and food stalls",chk:1},
+    gablerbraeu:{n:"Gablerbräu",cat:"restaurant",ll:[47.80247,13.04559],q:"Gablerbräu, Linzer Gasse 9, 5020 Salzburg",note:"Inn dating to 1429, near Mirabell"},
+    fuerst:{n:"Café Konditorei Fürst",cat:"dessert",ll:[47.799335,13.044067],q:"Café Konditorei Fürst, Brodgasse 13, 5020 Salzburg",note:"Maker of the original Mozartkugel — the silver-and-blue ones"},
+    sacher_szg:{n:"Café Sacher Salzburg",cat:"dessert",ll:[47.802341,13.043054],q:"Café Sacher, Schwarzstraße 5-7, 5020 Salzburg",note:"Sachertorte by the river"},
+    dom_szg:{n:"Salzburg Cathedral",cat:"church",ll:[47.797846,13.046623],q:"Salzburger Dom, Domplatz 1a, 5020 Salzburg",note:"Baroque cathedral where Mozart was baptised"},
+    petersfriedhof:{n:"St. Peter's Cemetery",cat:"church",ll:[47.796722,13.045453],q:"Petersfriedhof, 5020 Salzburg",note:"Atmospheric old cemetery and catacombs under the Mönchsberg"},
+    moenchsberg:{n:"Mönchsberg lift",cat:"viewpoint",ll:[47.800888,13.039465],q:"MönchsbergAufzug, Gstättengasse 13, 5020 Salzburg",note:"Lift up the cliff for the classic view over the old town"},
+    // Hallstatt
+    gruener_baum:{n:"Seehotel Grüner Baum",cat:"restaurant",ll:[47.562449,13.649657],q:"Seehotel Grüner Baum, Marktplatz 104, 4830 Hallstatt",note:"Falstaff-rated lakeside restaurant: local char and trout, good cakes"},
+    zauner:{n:"Seewirt Zauner",cat:"restaurant",ll:[47.562289,13.648862],q:"Seewirt Zauner, Marktplatz 51, 4830 Hallstatt",note:"Traditional inn right on the Market Square"},
+    salzwelten:{n:"Salzwelten salt mine",cat:"museum",ll:[47.562023,13.639272],q:"Salzwelten Hallstatt",note:"World's oldest salt mine — ⚠ its funicular was rebuilt from Sep 2025; check it has reopened"},
+    museum_hallstatt:{n:"World Heritage Museum",cat:"museum",ll:[47.561926,13.648974],q:"Welterbemuseum Hallstatt, Seestraße 56, 4830 Hallstatt",note:"7,000 years of salt-mining history; good if it rains"},
+    // Budapest
+    borkonyha:{n:"Borkonyha Winekitchen",cat:"restaurant",ll:[47.499466,19.052474],q:"Borkonyha Winekitchen, Sas utca 3, 1051 Budapest",note:"Michelin-starred wine kitchen near the Basilica — book ahead"},
+    hungarikum:{n:"Hungarikum Bisztró",cat:"restaurant",ll:[47.503462,19.048057],q:"Hungarikum Bisztró, Steindl Imre utca 13, 1051 Budapest",note:"Homestyle Hungarian (goulash, duck, mangalica) near Parliament — reserve"},
+    gerbeaud:{n:"Gerbeaud",cat:"dessert",ll:[47.497076,19.050383],q:"Gerbeaud, Vörösmarty tér 7-8, 1051 Budapest",note:"Budapest's most famous confectioner; takeaway slices are cheaper"},
+    gelarto:{n:"Gelarto Rosa",cat:"dessert",ll:[47.50012,19.053124],q:"Gelarto Rosa, Szent István tér 3, 1051 Budapest",note:"Gelato shaped into a rose, opposite the Basilica"},
+    szamos:{n:"Szamos Gourmet Ház",cat:"dessert",ll:[47.495826,19.050555],q:"Szamos Gourmet Ház, Deák Ferenc utca 3-5, 1052 Budapest",note:"Marzipan specialists; cakes and coffee"},
+    molnars:{n:"Molnár's Kürtőskalács",cat:"dessert",ll:[47.492746,19.052976],q:"Molnár's Kürtőskalács, Váci utca 31, 1052 Budapest",note:"Chimney cake baked fresh on Váci utca"},
+    auguszt:{n:"Auguszt Cukrászda",cat:"dessert",ll:[47.509083,19.024316],q:"Auguszt Cukrászda, Fény utca 8, 1024 Budapest",note:"Long-running family patisserie, Buda side near Széll Kálmán tér"},
+    daubner:{n:"Daubner Cukrászda",cat:"dessert",ll:[47.528323,19.032034],q:"Daubner Cukrászda, Szépvölgyi út 50, 1025 Budapest",note:"Where locals go for cakes; ~3 km from Castle Hill"},
+    matthias:{n:"Matthias Church",cat:"church",ll:[47.502012,19.034211],q:"Matthias Church, Szentháromság tér 2, 1014 Budapest",note:"Patterned-tile roof, right beside Fisherman's Bastion"},
+    opera_bud:{n:"Hungarian State Opera",cat:"landmark",ll:[47.50287,19.058158],q:"Hungarian State Opera, Andrássy út 22, 1061 Budapest",note:"Neo-Renaissance opera house on Andrássy út; guided tours"},
+    rumbach:{n:"Rumbach Street Synagogue",cat:"synagogue",ll:[47.497871,19.058889],q:"Rumbach Street Synagogue, Rumbach Sebestyén utca 11-13, 1075 Budapest",note:"Restored Moorish-style synagogue near Dohány"},
+    gozsdu:{n:"Gozsdu Udvar",cat:"landmark",ll:[47.49854,19.059185],q:"Gozsdu Udvar, Király utca 13, 1075 Budapest",note:"Passage of courtyards full of bars and restaurants"},
+    margitsziget:{n:"Margaret Island",cat:"park",ll:[47.527293,19.047867],q:"Margaret Island, Budapest",note:"Car-free island park in the Danube"},
+    nat_museum:{n:"Hungarian National Museum",cat:"museum",ll:[47.491184,19.062884],q:"Hungarian National Museum, Múzeum körút 14-16, 1088 Budapest",note:"Hungary's history museum, near Astoria"},
+    muvesz:{n:"Művész Kávéház",cat:"cafe",ll:[47.502677,19.059935],q:"Művész Kávéház, Andrássy út 29, 1061 Budapest",note:"Old-world café opposite the Opera House"}
+  };
+  Object.keys(EXTRAS).forEach(function(k){var e=EXTRAS[k];e.key='e:'+k;e.extra=true;});
+  function placeOf(k){return k.indexOf('e:')===0?EXTRAS[k.slice(2)]:PLACES[k];}
+  // extra types for the Extras filter
+  var ETYPES={food:['restaurant','Food'],cafe:['local_cafe','Cafés'],dessert:['cake','Desserts'],sight:['museum','Sights']};
+  function etype(p){return p.cat==='cafe'?'cafe':p.cat==='dessert'?'dessert':(p.cat==='restaurant'||p.cat==='streetfood')?'food':'sight';}
+
   /* ── ANCHORS ──────────────────────────────────────────────
      Anchors (must-dos) are marked in the schedule itself: add `anchor` to a
      block's class, e.g. <div class="bl ts anchor">. The block then shows a
@@ -1692,6 +1808,8 @@ var TRIPMAP=(function(){
      day, so the map doesn't show it twice. */
   var ANCHOR_KM=2;
   var NEAR_KM=1.5;   // radius of the "Near me" filter
+  var EXTRA_KM=5;    // Extras are shown within this distance of the day's anchors and waypoints
+  var WALK_KM=2.5;   // route legs up to this length are drawn as walking routes, longer ones as transit
 
   // category: [icon, label, colour group]
   var CATS={
@@ -1699,7 +1817,7 @@ var TRIPMAP=(function(){
     museum:['museum','Museum','see'], landmark:['location_city','Landmark & street','see'], viewpoint:['landscape','Viewpoint','see'],
     park:['park','Park & garden','see'], lake:['water','Lake','see'], boat:['directions_boat','Boat ride','see'], bridge:['bridge','Bridge','see'],
     ride:['attractions','Ride','see'], library:['local_library','Library','see'], bath:['hot_tub','Thermal bath','see'],
-    cafe:['local_cafe','Café','eat'], restaurant:['restaurant','Restaurant','eat'], streetfood:['fastfood','Street food','eat'],
+    cafe:['local_cafe','Café','eat'], restaurant:['restaurant','Restaurant','eat'], streetfood:['fastfood','Street food','eat'], dessert:['cake','Dessert','eat'],
     market:['storefront','Market','shop'], shop:['shopping_bag','Shop','shop'],
     concert:['music_note','Concert','night'], nightlife:['nightlife','Bar & nightlife','night'],
     hotel:['hotel','Stay','stay'], train:['train','Station','transit'], airport:['flight','Airport','transit']
@@ -1709,7 +1827,7 @@ var TRIPMAP=(function(){
     'type-arrive':'train','type-see':'landmark','type-eat':'restaurant','type-hotel':'hotel','type-night':'nightlife','type-shop':'shop'};
   var START=[[45.74,9.53],[49.02,22.9]];   // Austria + Hungary
   var EUROPE=[[35,-12],[62,35]];          // pins outside this (Changi) are ignored when zooming to fit
-  var MOVES_KEY='et_map_moves', GEO_KEY='et_map_geo';
+  var MOVES_KEY='et_map_moves', GEO_KEY='et_map_geo', WP_KEY='et_map_waypoints', ROUTE_KEY='et_map_route';
   // home cities: a place belongs to the nearest one within 80 km (a PLACES entry can set city:"SZG" to override)
   var CITIES={VIE:['Vienna',48.2082,16.3738],SZG:['Salzburg',47.8095,13.055],HLT:['Hallstatt',47.5622,13.6493],
     BUD:['Budapest',47.4979,19.0402],SIN:['Singapore',1.3521,103.8198]};
@@ -1796,8 +1914,19 @@ var TRIPMAP=(function(){
     });
     var once={};
     stops=stops.filter(function(s){var id=s.p.key+'@'+s.day;if(once[id])return false;return (once[id]=true);});
+    // waypoints confirmed on this device: {"2":["poeschl","e:sperl"]} (e: = an Extra)
+    var wps=load(WP_KEY)||{};
+    Object.keys(wps).forEach(function(d){
+      d=+d;
+      wps[d]=wps[d].filter(function(k){return !!placeOf(k);});
+      wps[d].forEach(function(k){
+        var p=placeOf(k),s=stops.filter(function(x){return x.p===p&&x.day===d;})[0];
+        if(!s){s={p:p,day:d,from:d,o:9e3,t:'',added:true};stops.push(s);}
+        s.wp=true;
+      });
+    });
     stops.sort(function(a,b){return a.o-b.o;});
-    S={stops:stops,days:days,moves:moves};
+    S={stops:stops,days:days,moves:moves,wps:wps};
     // the cities each day is spent in; a day in two cities gets separate AM / PM filters.
     // A city you only pass through by train (just a station) doesn't count.
     stops.forEach(function(s){if(s.p.ll&&s.p.city===undefined)s.p.city=cityOf(s.p.ll);});
@@ -1909,12 +2038,106 @@ var TRIPMAP=(function(){
     render(false);
   });
 
+  // ── Extras: hidden until switched on, then shown near the anchors and waypoints in view ──
+  var ex={on:false,types:{food:1,cafe:1,dessert:1,sight:1}};
+  var elEx=document.getElementById('mfExtras');
+  function extrasInView(anyType){
+    if(!ex.on||sel.day==='0')return [];
+    var bases=null,onDay={},out=[];
+    if(oneDay()){
+      bases=S.stops.filter(function(s){return (s.anchor||s.wp)&&s.p.ll&&dayOk(s);});
+      S.stops.forEach(function(s){if(s.day===selDay()&&s.p.extra)onDay[s.p.key]=1;});   // already a waypoint today
+    }
+    Object.keys(EXTRAS).forEach(function(k){
+      var e=EXTRAS[k],near=null,d=0;
+      if((!anyType&&!ex.types[etype(e)])||onDay[e.key])return;
+      if(sel.day==='near'){if(!me)return;d=km(me,e.ll);if(d>NEAR_KM)return;}
+      else if(bases){
+        d=Infinity;
+        bases.forEach(function(s){var x=km(s.p.ll,e.ll);if(x<d){d=x;near=s.p;}});
+        if(d>EXTRA_KM)return;
+      }
+      out.push({p:e,d:d,near:near});
+    });
+    return out.sort(function(a,b){return a.d-b.d;});
+  }
+  function renderExtrasRow(){
+    var h='<button class="chip x-tog'+(ex.on?' on':'')+'" data-x="toggle" aria-pressed="'+ex.on+'">✦ Extras'+(ex.on?'':' <small>off</small>')+'</button>';
+    if(ex.on){
+      var n={};
+      extrasInView(true).forEach(function(x){var t=etype(x.p);n[t]=(n[t]||0)+1;});
+      Object.keys(ETYPES).forEach(function(t){
+        h+='<button class="chip x-type'+(ex.types[t]?' on':'')+'" data-x="'+t+'" aria-pressed="'+!!ex.types[t]+'"><span class="ms">'+ETYPES[t][0]+'</span>'+ETYPES[t][1]+'<small>'+(n[t]||0)+'</small></button>';
+      });
+    }
+    elEx.innerHTML=h;
+  }
+  elEx.addEventListener('click',function(e){
+    var b=e.target.closest('[data-x]');if(!b)return;
+    var x=b.dataset.x;
+    if(x==='toggle')ex.on=!ex.on;else if(ex.types[x])delete ex.types[x];else ex.types[x]=1;
+    render(false);
+  });
+
+  // ── waypoints: places you confirm for a day (this device only) ──
+  function toggleWp(k,d){
+    if(!(d>0))return;
+    if(!S)build();
+    var a=S.wps[d]||(S.wps[d]=[]),i=a.indexOf(k);
+    if(i>=0)a.splice(i,1);else a.push(k);
+    if(!a.length)delete S.wps[d];
+    save(WP_KEY,S.wps);
+    build();render(false);renderSched();
+  }
+  // which PLACES entry a schedule link points to (null for links the map doesn't know)
+  function linkPlace(a){
+    var url;try{url=new URL(a.href);}catch(e){return null;}
+    var pid=url.searchParams.get('query_place_id'),q=(url.searchParams.get('query')||'').trim().toLowerCase();
+    return (pid&&byPid[pid])||byQ[q]||null;
+  }
+  // show waypoints in the day pages: a ✓ on cards already in the schedule, new cards for the rest
+  function renderSched(){
+    var wps=load(WP_KEY)||{};
+    document.querySelectorAll('.wp-sec').forEach(function(x){x.remove();});
+    document.querySelectorAll('.wp-on').forEach(function(x){x.classList.remove('wp-on');});
+    document.querySelectorAll('.wp-link').forEach(function(x){x.classList.remove('wp-link');});
+    Object.keys(wps).forEach(function(d){
+      var pg=document.getElementById('day'+d),tl=pg&&pg.querySelector('.tl,.timeline');
+      if(!tl)return;
+      var rest=wps[d].filter(function(k){
+        var p=placeOf(k),hit=false;
+        if(!p)return false;
+        if(!p.extra)pg.querySelectorAll('a[href*="google.com/maps"]:not([data-nomap])').forEach(function(a){
+          if(linkPlace(a)!==p)return;
+          hit=true;a.classList.add('wp-link');
+          var blk=a.closest('.bl,.block');if(blk)blk.classList.add('wp-on');
+        });
+        return !hit;
+      });
+      if(!rest.length)return;
+      var w=document.createElement('div');w.className='wp-sec';
+      w.innerHTML='<div class="sec">✓ Waypoints · added on this device</div>'+rest.map(function(k){
+        var p=placeOf(k),c=cat(p);
+        return '<div class="bl ts wpb"><div class="bt"></div><div class="bd"></div><div class="card">'+
+          '<div class="tag">📍 <a href="'+esc(gurl(p))+'" target="_blank" rel="noopener" data-nomap>'+esc(p.n)+'</a></div>'+
+          '<div class="cl">'+c[1]+(p.extra?' · from Extras':' · moved here from the map')+'</div><div class="ct">'+esc(p.n)+'</div>'+
+          (p.note?'<div class="cn">'+esc(p.note)+'</div>':'')+
+          '<button type="button" class="wpb-rm" data-k="'+esc(k)+'" data-day="'+d+'">Remove waypoint</button></div></div>';
+      }).join('');
+      tl.appendChild(w);
+    });
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.wpb-rm');
+    if(b)toggleWp(b.dataset.k,+b.dataset.day);
+  });
+
   // ── map: MapLibre + OpenFreeMap (free vector tiles, no API key) ──
-  var map,styleUrl,markers={},bubbles=[],live=[],pts=[],meMark;
+  var map,styleUrl,styleReady=false,markers={},bubbles=[],live=[],pts=[],meMark;   // styleReady: safe to add map layers
   function lnglat(ll){return [ll[1],ll[0]];}
   function dark(){var t=document.documentElement.getAttribute('data-theme');return t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches;}
   function style(){return 'https://tiles.openfreemap.org/styles/'+(dark()?'dark':'positron');}
-  function retheme(){var u=style();if(map&&u!==styleUrl){styleUrl=u;map.setStyle(u);}}
+  function retheme(){var u=style();if(map&&u!==styleUrl){styleUrl=u;styleReady=false;map.setStyle(u);}}
   function FitCtl(){}
   FitCtl.prototype.onAdd=function(){
     var d=document.createElement('div');d.className='maplibregl-ctrl maplibregl-ctrl-group';
@@ -1972,6 +2195,89 @@ var TRIPMAP=(function(){
   }
   function showEta(){return locOn&&me;}
 
+  // ── route: the day's anchors and waypoints in order, drawn per city ──
+  var routeOn=load(ROUTE_KEY)!==false,walkCache={};
+  function RouteCtl(){}
+  RouteCtl.prototype.onAdd=function(){
+    var d=document.createElement('div');d.className='maplibregl-ctrl maplibregl-ctrl-group';
+    d.innerHTML='<button type="button" id="rtBtn" class="'+(routeOn?'on':'')+'" title="Show the day\'s route" aria-label="Show the day\'s route" aria-pressed="'+routeOn+'"><span class="ms">route</span></button>';
+    d.onclick=function(){
+      routeOn=!routeOn;save(ROUTE_KEY,routeOn);
+      var b=document.getElementById('rtBtn');b.classList.toggle('on',routeOn);b.setAttribute('aria-pressed',routeOn);
+      renderMap(false);renderList();
+    };
+    return d;
+  };
+  RouteCtl.prototype.onRemove=function(){};
+  // one ordered list of stops per city; unscheduled waypoints slot in where they add the least distance
+  function routeSegs(){
+    if(!routeOn||!oneDay())return [];
+    var d=selDay(),by={},cities=[];
+    S.stops.forEach(function(s){
+      if(s.day!==d||!(s.anchor||s.wp)||!s.p.ll||!dayOk(s))return;
+      var c=s.p.city||'?';
+      if(!by[c]){by[c]=[];cities.push(c);}
+      by[c].push(s);
+    });
+    return cities.map(function(c){
+      var seq=by[c].filter(function(s){return s.o<5e3;});
+      by[c].filter(function(s){return s.o>=5e3;}).forEach(function(s){
+        var best=seq.length,cost=Infinity;
+        for(var i=0;i<=seq.length;i++){
+          var a=seq[i-1],b=seq[i],x=(a?km(a.p.ll,s.p.ll):0)+(b?km(s.p.ll,b.p.ll):0)-(a&&b?km(a.p.ll,b.p.ll):0);
+          if(x<cost){cost=x;best=i;}
+        }
+        seq.splice(best,0,s);
+      });
+      return seq;
+    });
+  }
+  function routeOrder(){var n=0,o={};routeSegs().forEach(function(seq){seq.forEach(function(s){o[s.p.key]=++n;});});return o;}
+  function accentColor(){return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#8B4A2F';}
+  function line(c,k){return {type:'Feature',geometry:{type:'LineString',coordinates:c},properties:{k:k}};}
+  // short legs follow walking paths (free OSM routing service), longer ones are dashed (take transit)
+  function drawRoute(){
+    if(!map||!styleReady)return;
+    var fs=[];
+    routeSegs().forEach(function(seq){
+      for(var i=1;i<seq.length;i++){
+        var a=seq[i-1].p.ll,b=seq[i].p.ll,id=a+'>'+b;
+        if(km(a,b)>WALK_KM){fs.push(line([lnglat(a),lnglat(b)],'far'));continue;}
+        fs.push(line(walkCache[id]||[lnglat(a),lnglat(b)],'walk'));
+        if(walkCache[id]===undefined)fetchWalk(id,a,b);
+      }
+    });
+    var data={type:'FeatureCollection',features:fs},src=map.getSource('route');
+    if(src){src.setData(data);return;}
+    map.addSource('route',{type:'geojson',data:data});
+    map.addLayer({id:'route-far',type:'line',source:'route',filter:['==',['get','k'],'far'],layout:{'line-cap':'round'},
+      paint:{'line-color':accentColor(),'line-width':2.5,'line-opacity':.7,'line-dasharray':[1,2.5]}});
+    map.addLayer({id:'route-walk',type:'line',source:'route',filter:['==',['get','k'],'walk'],layout:{'line-cap':'round','line-join':'round'},
+      paint:{'line-color':accentColor(),'line-width':4,'line-opacity':.75}});
+  }
+  function fetchWalk(id,a,b){
+    walkCache[id]=null;   // pending
+    fetch('https://routing.openstreetmap.de/routed-foot/route/v1/driving/'+a[1]+','+a[0]+';'+b[1]+','+b[0]+'?overview=full&geometries=geojson')
+      .then(function(r){return r.json();})
+      .then(function(j){walkCache[id]=j.routes&&j.routes[0]?j.routes[0].geometry.coordinates:false;})
+      .catch(function(){walkCache[id]=false;})
+      .then(function(){clearTimeout(fetchWalk.t);fetchWalk.t=setTimeout(drawRoute,150);});
+  }
+  function routeSummary(){
+    var segs=routeSegs().filter(function(q){return q.length>1;});
+    if(!segs.length)return '';
+    var walk=0,far=0,stops=0;
+    segs.forEach(function(seq){
+      stops+=seq.length;
+      for(var i=1;i<seq.length;i++){var d=km(seq[i-1].p.ll,seq[i].p.ll);if(d<=WALK_KM)walk+=d*1.3;else far++;}
+    });
+    var main=segs.slice().sort(function(a,b){return b.length-a.length;})[0],pt=function(s){return s.p.ll.join(',');};
+    var url='https://www.google.com/maps/dir/?api=1&origin='+pt(main[0])+'&destination='+pt(main[main.length-1])+
+      (main.length>2?'&waypoints='+main.slice(1,-1).slice(0,9).map(pt).join('%7C'):'');
+    return '<div class="route-sum"><span class="ms">route</span><span>Route · '+stops+' stops · ~'+walk.toFixed(1)+' km on foot'+
+      (far?' + '+far+' transit leg'+(far>1?'s':''):'')+'</span><a href="'+url+'" target="_blank" rel="noopener">Open in Google Maps ↗</a></div>';
+  }
+
   function initMap(){
     if(map)return true;
     var ph=document.getElementById('mapPh');
@@ -1982,10 +2288,11 @@ var TRIPMAP=(function(){
     map.addControl(new maplibregl.NavigationControl({showCompass:false}),'top-left');
     map.addControl(new FitCtl(),'top-left');
     map.addControl(new LocCtl(),'top-left');
+    map.addControl(new RouteCtl(),'top-left');
     map.addControl(new maplibregl.AttributionControl({compact:true}),'bottom-right');
     map.on('load',function(){ph.remove();});
     map.on('click',closePin);
-    map.on('style.load',drawRings);
+    map.on('style.load',function(){styleReady=true;drawRings();drawRoute();});
     map.on('zoomend',cluster);
     try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',retheme);}catch(e){}
     new MutationObserver(retheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
@@ -2001,19 +2308,22 @@ var TRIPMAP=(function(){
   function renderMap(refit){
     if(!map)return;
     live=[];pts=[];
+    var order=routeOrder();
     items().forEach(function(it){
       var p=it.p;if(!p.ll)return;
       var ds=it.inst.map(function(s){return s.day;}).filter(Boolean);
-      live.push({it:it,anchor:it.inst.some(function(s){return s.anchor;}),dim:!ds.length,
-        badge:sel.day==='all'&&ds.length?ds[0]+(ds.length>1?'+':''):''});
+      live.push({it:it,anchor:it.inst.some(function(s){return s.anchor;}),wp:it.inst.some(function(s){return s.wp;}),dim:!ds.length,
+        badge:sel.day==='all'&&ds.length?ds[0]+(ds.length>1?'+':''):'',n:order[p.key]});
       if(mainPt(p))pts.push(p.ll);
     });
+    extrasInView().forEach(function(x){live.push({it:{p:x.p,inst:[],x:x},ex:true});});
     showMe();
     if(sel.day==='near'&&me)pts.push(me);
-    cluster();drawRings();
+    cluster();drawRings();drawRoute();
     if(refit)fit();
   }
-  // pins closer than ~34px merge into a count bubble; tap it to zoom in. Anchors never merge.
+  // pins closer than ~34px merge into a count bubble; tap it to zoom in.
+  // Anchors and waypoints never merge, and Extras only merge with other Extras.
   function cluster(){
     if(!map)return;
     Object.keys(markers).forEach(function(k){markers[k].remove();});
@@ -2022,8 +2332,9 @@ var TRIPMAP=(function(){
     var z=map.getZoom(),gs=[];
     live.forEach(function(x){
       var pt=map.project(lnglat(x.it.p.ll)),g=null;
-      if(!x.anchor&&z<15)for(var i=0;i<gs.length;i++){
-        if(!gs[i].m[0].anchor&&Math.abs(gs[i].pt.x-pt.x)<34&&Math.abs(gs[i].pt.y-pt.y)<34){g=gs[i];break;}
+      if(!x.anchor&&!x.wp&&z<15)for(var i=0;i<gs.length;i++){
+        var y=gs[i].m[0];
+        if(!y.anchor&&!y.wp&&!y.ex===!x.ex&&Math.abs(gs[i].pt.x-pt.x)<34&&Math.abs(gs[i].pt.y-pt.y)<34){g=gs[i];break;}
       }
       if(g)g.m.push(x);else gs.push({pt:pt,m:[x]});
     });
@@ -2035,21 +2346,24 @@ var TRIPMAP=(function(){
   function closePin(){if(openPin){openPin.classList.remove('open');openPin=null;}}
   function addPin(x){
     var p=x.it.p,el=document.createElement('div'),touch=false;
-    el.className='pin g-'+grp(p)+(x.anchor?' anchor':'')+(x.dim?' dim':'');
+    el.className='pin g-'+grp(p)+(x.anchor?' anchor':'')+(x.wp&&!x.anchor?' wp':'')+(x.ex?' ex':'')+(x.dim?' dim':'');
     el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-label',p.n+', details and Google Maps link');
     el._it=x.it;
-    el.innerHTML='<span class="ms">'+cat(p)[0]+'</span>'+(x.anchor?'<b class="pin-a"><span class="ms">star</span></b>':'')+
-      (x.badge?'<b class="pin-d">'+x.badge+'</b>':'')+'<span class="pin-l">'+tip(x.it)+'</span>';
+    el.innerHTML='<span class="ms">'+cat(p)[0]+'</span>'+(x.anchor?'<b class="pin-a"><span class="ms">star</span></b>':x.wp?'<b class="pin-w">✓</b>':'')+
+      (x.badge?'<b class="pin-d">'+x.badge+'</b>':'')+(x.n?'<b class="pin-n">'+x.n+'</b>':'')+'<span class="pin-l">'+tip(x.it)+'</span>';
     var go=function(){window.open(gurl(p),'_blank','noopener');};
     el.addEventListener('pointerdown',function(e){touch=e.pointerType!=='mouse';});
     el.addEventListener('click',function(e){
       e.stopPropagation();
+      var w=e.target.closest('.pin-wp');
+      if(w){toggleWp(w.dataset.k,selDay());return;}
       if(!touch||e.target.closest('.pin-l')){go();return;}
       if(openPin===el){closePin();return;}
       closePin();openPin=el;el.classList.add('open');
     });
     el.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();go();}});
     markers[p.key]=new maplibregl.Marker({element:el}).setLngLat(lnglat(p.ll)).addTo(map);
+    el.setAttribute('aria-label',p.n+', details and Google Maps link');   // MapLibre replaces it with "Map marker"
   }
   function refreshTips(){
     Object.keys(markers).forEach(function(k){
@@ -2060,7 +2374,7 @@ var TRIPMAP=(function(){
   function addBubble(ms){
     var el=document.createElement('button'),b=new maplibregl.LngLatBounds();
     ms.forEach(function(x){b.extend(lnglat(x.it.p.ll));});
-    el.className='pin-c';el.type='button';el.textContent=ms.length;
+    el.className='pin-c'+(ms[0].ex?' ex':'');el.type='button';el.textContent=ms.length;
     el.setAttribute('aria-label',ms.length+' places, zoom in');
     el.addEventListener('click',function(e){e.stopPropagation();map.fitBounds(b,{padding:60,maxZoom:16,duration:600});});
     bubbles.push(new maplibregl.Marker({element:el}).setLngLat(b.getCenter()).addTo(map));
@@ -2072,7 +2386,7 @@ var TRIPMAP=(function(){
     return {type:'Feature',geometry:{type:'Polygon',coordinates:[c]},properties:{}};
   }
   function drawRings(){
-    if(!map||!map.isStyleLoaded())return;
+    if(!map||!styleReady)return;
     var fs=[];
     if(oneDay())live.forEach(function(x){if(x.anchor&&center(x.it.p))fs.push(ring(x.it.p.ll,ANCHOR_KM));});
     if(sel.day==='near'&&me)fs.push(ring(me,NEAR_KM));
@@ -2085,12 +2399,15 @@ var TRIPMAP=(function(){
   }
   // the pin's info label (hover on a computer, first tap on a phone)
   function tip(it){
-    var c=cat(it.p);
-    return '<b>'+esc(it.p.n)+'</b><br>'+c[1]+' · '+it.inst.map(function(s){return dayName(s.day)+(s.t&&sel.day!=='all'?' '+esc(s.t):'');}).join(', ')+
-      (it.inst.some(function(s){return s.anchor;})?'<br><span class="flag">★ Anchor — must-do</span>':'')+
-      (it.p.chk?'<br><span class="flag">Pin position to confirm</span>':'')+
-      (showEta()?'<br><span class="eta">'+eta(it.p.ll)+'</span>':'')+
-      '<span class="pin-go">Open in Google Maps ↗</span>';
+    var p=it.p,c=cat(p),d=selDay(),h='<b>'+esc(p.n)+'</b><br>',anchor=it.inst.some(function(s){return s.anchor;});
+    var wp=it.inst.some(function(s){return s.wp&&s.day===d;});
+    if(p.extra)h+=c[1]+' · ✦ Extra'+(it.x&&it.x.near?' · '+dist(it.x.d)+' from '+esc(it.x.near.n):'')+'<br><span class="pin-note">'+esc(p.note)+'</span>';
+    else h+=c[1]+' · '+it.inst.map(function(s){return dayName(s.day)+(s.t&&sel.day!=='all'?' '+esc(s.t):'');}).join(', ')+
+      (anchor?'<br><span class="flag">★ Anchor — must-do</span>':it.inst.some(function(s){return s.wp;})?'<br><span class="flag-wp">✓ Waypoint</span>':'');
+    h+=(p.chk?'<br><span class="flag">Pin position to confirm</span>':'')+(showEta()?'<br><span class="eta">'+eta(p.ll)+'</span>':'');
+    if(d>0&&!anchor)h+='<button type="button" class="pin-wp'+(wp?' on':'')+'" data-k="'+esc(p.key)+'">'+
+      (wp?'✓ Waypoint · tap to remove':p.extra?'＋ Add to Day '+d+' as a waypoint':'✓ Confirm as a waypoint')+'</button>';
+    return h+'<span class="pin-go">Open in Google Maps ↗</span>';
   }
 
   // ── rearranging (saved on this device) ──
@@ -2101,18 +2418,27 @@ var TRIPMAP=(function(){
     build();render(false);
   }
   function renderEdits(){
-    var el=document.getElementById('mapEdits'),ids=Object.keys(S.moves);
-    el.hidden=!ids.length;
-    if(!ids.length)return;
-    el.innerHTML='<span>'+ids.length+' stop'+(ids.length>1?'s':'')+' rearranged on this device.</span>'+
+    var el=document.getElementById('mapEdits'),ids=Object.keys(S.moves),wds=Object.keys(S.wps);
+    var wn=wds.reduce(function(n,d){return n+S.wps[d].length;},0);
+    el.hidden=!ids.length&&!wn;
+    if(el.hidden)return;
+    var what=[];
+    if(ids.length)what.push(ids.length+' day move'+(ids.length>1?'s':''));
+    if(wn)what.push(wn+' waypoint'+(wn>1?'s':''));
+    el.innerHTML='<span>'+what.join(' and ')+' saved on this device.</span>'+
       '<button class="pri" data-a="copy">Copy changes</button><button data-a="reset">Reset</button>';
     el.onclick=function(e){
       var b=e.target.closest('button');if(!b)return;
-      if(b.dataset.a==='reset'){if(confirm('Undo all rearranging on this device?')){S.moves={};save(MOVES_KEY,{});build();render(false);}return;}
+      if(b.dataset.a==='reset'){
+        if(confirm('Undo all day moves and waypoints on this device?')){S.moves={};S.wps={};save(MOVES_KEY,{});save(WP_KEY,{});build();render(false);renderSched();}
+        return;
+      }
       var txt='Trip map changes:\n'+ids.map(function(id){
         var i=id.lastIndexOf('@'),p=PLACES[id.slice(0,i)];
-        return '• '+(p?p.n:id.slice(0,i))+': '+dayName(+id.slice(i+1))+' → '+dayName(S.moves[id]);
-      }).join('\n');
+        return '• Move '+(p?p.n:id.slice(0,i))+': '+dayName(+id.slice(i+1))+' → '+dayName(S.moves[id]);
+      }).concat(wds.sort(function(a,b){return a-b;}).map(function(d){
+        return S.wps[d].map(function(k){var p=placeOf(k);return '• Waypoint, Day '+d+': '+p.n+(p.extra?' (Extra — '+p.q+')':'');}).join('\n');
+      })).join('\n');
       var done=function(){b.textContent='Copied ✓';setTimeout(function(){b.textContent='Copy changes';},1800);};
       if(navigator.clipboard)navigator.clipboard.writeText(txt).then(done,function(){prompt('Copy these changes:',txt);});
       else prompt('Copy these changes:',txt);
@@ -2123,11 +2449,11 @@ var TRIPMAP=(function(){
   // sight anchors group the stops around them; hotels and stations are anchors too but don't form groups
   function center(p){return !!p.ll&&grp(p)!=='stay'&&grp(p)!=='transit';}
   function groups(list){
-    var anchors=list.filter(function(s){return s.anchor&&center(s.p);});
+    var anchors=list.filter(function(s){return (s.anchor||s.wp)&&center(s.p);});   // waypoints group stops too
     if(!anchors.length)return [{items:list}];
     var gs=anchors.map(function(a){return {a:a,title:a.p.n,items:[a]};}),other={title:'Other options',items:[]},base={title:'Stay & transit',items:[]};
     list.forEach(function(s){
-      if(s.anchor&&center(s.p))return;
+      if((s.anchor||s.wp)&&center(s.p))return;
       if(grp(s.p)==='stay'||grp(s.p)==='transit'){base.items.push(s);return;}
       var best=null,bd=ANCHOR_KM;
       if(s.p.ll)gs.forEach(function(g){var k=km(s.p.ll,g.a.p.ll);if(k<=bd){bd=k;best=g;}});
@@ -2138,31 +2464,57 @@ var TRIPMAP=(function(){
   function row(s,it){   // `it` is passed in "Near me", where a row covers every day the place is on
     var p=s.p,c=cat(p),meta=it?(showEta()?eta(p.ll):dist(km(me,p.ll)))+' · '+it.inst.map(function(x){return dayName(x.day);}).join(', ')+' · '+c[1]:
       (showEta()&&p.ll?'<span class="eta">'+eta(p.ll)+'</span> · ':'')+(s.t?esc(s.t)+' · ':'')+c[1];
+    if(s.wp&&!s.anchor)meta+=' · <span class="flag-wp">✓ Waypoint</span>';
+    if(p.extra)meta+=' · from Extras';
     if(s.moved)meta+=' · moved from '+dayName(s.from);
     if(p.chk)meta+=' · <span class="flag">to confirm</span>';
     if(!p.ll)meta+=' · <span class="flag">no pin yet</span>';
     var act;
     if(s.anchor)act='<span class="stop-lock" title="Anchor — locked to this day"><span class="ms">lock</span>Anchor</span>';
     else{
-      act='<select class="stop-mv" data-k="'+esc(p.key)+'" data-from="'+s.from+'" aria-label="Move '+esc(p.n)+' to another day">';
-      S.days.forEach(function(d){act+='<option value="'+d.d+'"'+(s.day===d.d?' selected':'')+'>Day '+d.d+'</option>';});
-      act+='<option value="0"'+(s.day===0?' selected':'')+'>Unplanned</option></select>';
+      act='<span class="stop-act">';
+      if(s.day>0)act+='<button type="button" class="wp-btn'+(s.wp?' on':'')+'" data-k="'+esc(p.key)+'" data-day="'+s.day+'" aria-pressed="'+!!s.wp+'" title="'+
+        (s.wp?'Waypoint — tap to remove':'Confirm as a waypoint for '+dayName(s.day))+'" aria-label="'+(s.wp?'Remove waypoint: ':'Confirm as waypoint: ')+esc(p.n)+'"><span class="ms">check_circle</span></button>';
+      if(!s.added){
+        act+='<select class="stop-mv" data-k="'+esc(p.key)+'" data-from="'+s.from+'" aria-label="Move '+esc(p.n)+' to another day">';
+        S.days.forEach(function(d){act+='<option value="'+d.d+'"'+(s.day===d.d?' selected':'')+'>Day '+d.d+'</option>';});
+        act+='<option value="0"'+(s.day===0?' selected':'')+'>Unplanned</option></select>';
+      }
+      act+='</span>';
     }
-    return '<li class="stop'+(s.anchor?' anchor':'')+(s.day===0?' dim':'')+'" data-k="'+esc(p.key)+'">'+
+    return '<li class="stop'+(s.anchor?' anchor':'')+(s.wp&&!s.anchor?' wp':'')+(s.day===0?' dim':'')+'" data-k="'+esc(p.key)+'">'+
       '<span class="stop-i g-'+grp(p)+'"><span class="ms">'+c[0]+'</span></span>'+
       '<span class="stop-main"><a class="stop-name" href="'+esc(gurl(p))+'" target="_blank" rel="noopener">'+esc(p.n)+'</a><span class="stop-meta">'+meta+'</span></span>'+
       act+'</li>';
   }
+  // an Extra in the list: where it is relative to the day's anchors, and a way to add it
+  function exRow(x){
+    var p=x.p,c=cat(p),d=selDay();
+    var where=x.near?dist(x.d)+' from '+esc(x.near.n):sel.day==='near'?(showEta()?eta(p.ll):dist(x.d)+' away'):'';
+    var act=d>0?'<button type="button" class="ex-add-btn" data-k="'+esc(p.key)+'" data-day="'+d+'">＋ Add</button>':
+      '<select class="ex-add" data-k="'+esc(p.key)+'" aria-label="Add '+esc(p.n)+' to a day"><option value="">＋ Add to…</option>'+
+      S.days.map(function(dd){return '<option value="'+dd.d+'">Day '+dd.d+'</option>';}).join('')+'</select>';
+    return '<li class="stop ex" data-k="'+esc(p.key)+'"><span class="stop-i g-'+grp(p)+'"><span class="ms">'+c[0]+'</span></span>'+
+      '<span class="stop-main"><a class="stop-name" href="'+esc(gurl(p))+'" target="_blank" rel="noopener">'+esc(p.n)+'</a>'+
+      '<span class="stop-meta">'+c[1]+(where?' · '+where:'')+(p.chk?' · <span class="flag">to confirm</span>':'')+'<br>'+esc(p.note)+'</span></span>'+act+'</li>';
+  }
+  function extrasSection(){
+    if(!ex.on)return '';
+    var xs=extrasInView();
+    var lbl=sel.day==='all'?'All Extras':sel.day==='near'?'Extras near you':'Extras within '+EXTRA_KM+' km of this day\'s anchors &amp; waypoints';
+    return '<div class="ml-x"><span>✦ '+lbl+'</span><small>'+xs.length+'</small></div>'+
+      (xs.length?'<ol class="stop-list">'+xs.map(exRow).join('')+'</ol>':'<p class="ml-empty">No Extras here with these filters.</p>');
+  }
   function renderList(){
     if(sel.day==='near'){
       var its=items().sort(function(a,b){return km(me,a.p.ll)-km(me,b.p.ll);});
-      elList.innerHTML=its.length?'<ol class="stop-list">'+its.map(function(it){return row(it.inst[0],it);}).join('')+'</ol>':
-        '<p class="ml-empty">Nothing pinned within '+NEAR_KM+' km of you'+(Object.keys(sel.cats).length?' with these filters':'')+'.</p>';
+      elList.innerHTML=(its.length?'<ol class="stop-list">'+its.map(function(it){return row(it.inst[0],it);}).join('')+'</ol>':
+        '<p class="ml-empty">Nothing pinned within '+NEAR_KM+' km of you'+(Object.keys(sel.cats).length?' with these filters':'')+'.</p>')+extrasSection();
       document.getElementById('mapTtl').textContent='Near you';
       document.getElementById('mapSub').textContent=its.length+' place'+(its.length===1?'':'s')+' within '+NEAR_KM+' km, from every day · tap Near me again to refresh';
       return;
     }
-    var all=sel.day==='all',ds=all?S.days.map(function(d){return d.d;}).concat([0]):[selDay()],h='',total=0;
+    var all=sel.day==='all',ds=all?S.days.map(function(d){return d.d;}).concat([0]):[selDay()],h=routeSummary(),total=0;
     ds.forEach(function(d){
       var ss=S.stops.filter(function(s){return s.day===d&&dayOk(s)&&catOk(s);});
       total+=ss.length;
@@ -2173,11 +2525,11 @@ var TRIPMAP=(function(){
       }
       if(!ss.length){h+='<p class="ml-empty">Nothing here with the current filters.</p>';return;}
       groups(ss).forEach(function(g){
-        if(g.title)h+='<div class="ml-g">'+(g.a?'<span class="ms">star</span>':'')+esc(g.title)+'</div>';
+        if(g.title)h+='<div class="ml-g'+(g.a&&!g.a.anchor?' wp':'')+'">'+(g.a?'<span class="ms">'+(g.a.anchor?'star':'check_circle')+'</span>':'')+esc(g.title)+'</div>';
         h+='<ol class="stop-list">'+g.items.map(function(s){return row(s);}).join('')+'</ol>';
       });
     });
-    elList.innerHTML=h;
+    elList.innerHTML=h+extrasSection();
     var dd=dayInfo(selDay()),c=selCity(),half=dd&&c?dd.parts.filter(function(q){return q.city===c;})[0]:null;
     document.getElementById('mapTtl').textContent=all?'All days':dd?dd.title+(half?' — '+half.tag+' in '+CITIES[c][0]:''):'Unplanned';
     document.getElementById('mapSub').textContent=(all?'':dd?dd.date+' · ':'Places not on any day · ')+total+' stop'+(total===1?'':'s')+(Object.keys(sel.cats).length?' (filtered)':'');
@@ -2186,8 +2538,13 @@ var TRIPMAP=(function(){
     var b=e.target.closest('.ml-dh button');
     if(b){sel.day=norm(b.dataset.day);render(true);scrollTo({top:0,behavior:'smooth'});}
   });
+  elList.addEventListener('click',function(e){
+    var b=e.target.closest('.wp-btn,.ex-add-btn');
+    if(b)toggleWp(b.dataset.k,+b.dataset.day);
+  });
   elList.addEventListener('change',function(e){
     var x=e.target.closest('.stop-mv');if(x)move(x.dataset.k,+x.dataset.from,+x.value);
+    var a=e.target.closest('.ex-add');if(a&&a.value)toggleWp(a.dataset.k,+a.value);
   });
   // hovering a row highlights its pin
   var lit;
@@ -2198,8 +2555,9 @@ var TRIPMAP=(function(){
     lit=el;if(el)el.classList.add('hl');
   });
 
-  function render(refit){renderChips();renderMap(refit);renderList();renderEdits();}
+  function render(refit){renderChips();renderExtrasRow();renderMap(refit);renderList();renderEdits();}
 
+  renderSched();   // waypoints show on the day pages straight away, not only after opening the map
   var first=true;
   return {show:function(){
     build();render(false);
