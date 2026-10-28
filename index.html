@@ -670,12 +670,12 @@ html.dlg-open{overflow:hidden}
 .sr-h .ms{font-size:20px;color:var(--accent)}
 .sr-h small{font:500 13px 'Inter',sans-serif;color:var(--muted)}
 .sr-list{list-style:none;display:grid;gap:10px}
-.sr{display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;align-items:start;padding:12px;border:1px solid var(--border);border-radius:14px;
+.res{display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;align-items:start;padding:12px;border:1px solid var(--border);border-radius:14px;
   background:var(--card);cursor:pointer;transition:border-color 150ms ease,box-shadow 150ms ease,transform 160ms var(--ease-out)}
-.sr:active{transform:scale(.99)}
-@media(hover:hover) and (pointer:fine){.sr:hover{border-color:color-mix(in srgb,var(--accent) 35%,var(--border));box-shadow:0 4px 14px -6px rgba(26,23,20,.18)}}
-.sr.anchor{border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}
-.sr.wp{border-color:color-mix(in srgb,var(--eat) 50%,var(--border))}
+.res:active{transform:scale(.99)}
+@media(hover:hover) and (pointer:fine){.res:hover{border-color:color-mix(in srgb,var(--accent) 35%,var(--border));box-shadow:0 4px 14px -6px rgba(26,23,20,.18)}}
+.res.anchor{border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}
+.res.wp{border-color:color-mix(in srgb,var(--eat) 50%,var(--border))}
 .sr-ph{width:92px;height:92px;border-radius:10px;object-fit:cover;background:var(--accent-light)}
 .sr-ic{display:flex;align-items:center;justify-content:center;color:#fff}
 .sr-ic .ms{font-size:34px}
@@ -694,7 +694,7 @@ html.dlg-open{overflow:hidden}
   font:500 13px/1 'Inter',sans-serif;cursor:pointer;transition:transform 160ms var(--ease-out),border-color 150ms ease}
 .dlg-tags button:active{transform:scale(.96)}
 @media(hover:hover) and (pointer:fine){.dlg-tags button:hover{border-color:var(--accent)}}
-.sr mark{background:color-mix(in srgb,var(--night) 32%,transparent);color:var(--fg);border-radius:3px;padding:0 1px}
+.res mark{background:color-mix(in srgb,var(--night) 32%,transparent);color:var(--fg);border-radius:3px;padding:0 1px}
 .sr-a{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .sr-btn{display:inline-flex;align-items:center;gap:5px;min-height:40px;padding:0 12px;border:1px solid var(--border);border-radius:10px;background:var(--bg);
   color:var(--fg);font:600 13px/1 'Inter',sans-serif;text-decoration:none;cursor:pointer;transition:transform 160ms var(--ease-out)}
@@ -702,7 +702,7 @@ html.dlg-open{overflow:hidden}
 .sr-btn .ms{font-size:17px;color:var(--accent)}
 .sr-empty{margin-top:24px;padding:18px;border-radius:14px;background:var(--card);border:1px solid var(--border);font-size:14px;line-height:1.55;color:var(--muted)}
 .sr-empty b{color:var(--fg)}
-@media(max-width:420px){.sr{grid-template-columns:76px minmax(0,1fr);gap:12px}.sr-ph{width:76px;height:76px}}
+@media(max-width:420px){.res{grid-template-columns:76px minmax(0,1fr);gap:12px}.sr-ph{width:76px;height:76px}}
 .dlg-add{grid-column:1/-1;display:grid;gap:5px;font-size:12px;font-weight:600;color:var(--muted)}
 .dlg-add select{width:100%;min-height:48px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--fg);font:500 16px 'Inter',sans-serif}
 .dlg-actions .dlg-sync{grid-column:1/-1}
@@ -3517,7 +3517,7 @@ var TRIPMAP=(function(){
     var meta=esc(c[1])+' · '+esc(when)+(p.city?' · '+CITIES[p.city][0]:'')+(showEta()&&p.ll?' · <span class="eta">'+eta(p.ll)+'</span>':'');
     var badge=r.anchor?'<span class="sr-b anchor"><span class="ms" aria-hidden="true">star</span>Anchor</span>':r.wp?'<span class="sr-b wp"><span class="ms" aria-hidden="true">check</span>Waypoint</span>':'';
     var snip=snippet(r,toks),tl=cardTags(r,toks);
-    return '<li class="sr '+r.group+'" data-k="'+esc(p.key)+'">'+
+    return '<li class="res '+r.group+'" data-k="'+esc(p.key)+'">'+
       (im?'<img class="sr-ph" src="'+esc(im.f)+'" alt="" loading="lazy">':'<span class="sr-ph sr-ic g-'+grp(p)+'"><span class="ms" aria-hidden="true">'+c[0]+'</span></span>')+
       '<div class="sr-main"><h3 class="sr-n"><button type="button" class="sr-open">'+hl(p.n,toks)+'</button></h3>'+
       '<p class="sr-m">'+badge+meta+'</p>'+(snip?'<p class="sr-s">'+snip+'</p>':'')+(tl?'<p class="sr-t">'+tl+'</p>':'')+
@@ -3575,7 +3575,7 @@ var TRIPMAP=(function(){
       else sq.day=b.dataset.d;
       renderSearch();return;
     }
-    var li=e.target.closest('.sr');if(!li||e.target.closest('a'))return;
+    var li=e.target.closest('.res');if(!li||e.target.closest('a'))return;
     var r=SX.filter(function(x){return x.p.key===li.dataset.k;})[0];if(!r)return;
     if(e.target.closest('[data-sr="map"]')){focusOnMap(r.days[0]||'all',r.p.key);return;}
     if(r.blocks.length)openDetail(r.blocks[0]);else openPlace(r);
