@@ -580,6 +580,7 @@ html.dlg-open{overflow:hidden}
 .dlg-opts{list-style:none;margin-top:16px;border-top:1px solid var(--border)}
 .dlg-opts li{display:grid;grid-template-columns:60px minmax(0,1fr);gap:12px;align-items:start;padding:12px 0;border-bottom:1px solid var(--border)}
 .dlg-opts img,.dlg-opts .noph{width:60px;height:60px;border-radius:10px;object-fit:cover;background:var(--eat-light)}
+.dlg-opts li.hit{margin:0 -12px;padding:12px;border-radius:12px;border-bottom-color:transparent;background:var(--accent-light)}
 .dlg-opts .noph{display:flex;align-items:center;justify-content:center;color:var(--eat)}
 .dlg-opts .noph .ms{font-size:24px}
 .dlg-opts b{display:block;font-size:15px;font-weight:600}
@@ -766,10 +767,18 @@ html.dlg-open{overflow:hidden}
     <div class="block-time">10:30</div>
     <div class="block-dot"></div>
     <div class="card">
-      <div class="cluster-tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=DECENTRAL%2C+Freyung+3%2C+1010+Wien&amp;query_place_id=ChIJdxrowjsHbUcRumznVyJE1PI" target="_blank">DECENTRAL</a> · Freyung, 1st District</div>
       <div class="card-label">Breakfast / Coffee — pick one</div>
-      <h2 class="card-title">DECENTRAL (Café Central's stand-in) · or Demel</h2>
-      <div class="card-note">Café Central is closed for renovation, so its coffee and pastries are served here in Palais Harrach, a few hundred metres away. Order a Melange coffee and Apfelstrudel. Open daily 08:00–22:00.<br><strong>Or <a href="https://www.google.com/maps/search/?api=1&amp;query=Demel%2C+Kohlmarkt+14%2C+1010+Wien" target="_blank">Demel</a></strong> (Kohlmarkt 14) — Vienna's famous cake shop and café, on the way to the Hofburg. Go early to avoid queues.</div>
+      <div class="options-label">Options in the 1st District, on the way to the Hofburg</div>
+      <div class="options-grid">
+        <div class="option-card">
+          <div><div class="option-name"><a href="https://www.google.com/maps/search/?api=1&amp;query=DECENTRAL%2C+Freyung+3%2C+1010+Wien&amp;query_place_id=ChIJdxrowjsHbUcRumznVyJE1PI" target="_blank">DECENTRAL</a></div><div class="option-note">Café Central's stand-in: Café Central is closed for renovation, so its coffee and pastries are served here in Palais Harrach (Freyung), a few hundred metres away. Order a Melange coffee and Apfelstrudel. Open daily 08:00–22:00.</div></div>
+          <div class="option-tag">Café</div>
+        </div>
+        <div class="option-card">
+          <div><div class="option-name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Demel%2C+Kohlmarkt+14%2C+1010+Wien" target="_blank">Demel</a></div><div class="option-note">Kohlmarkt 14. Vienna's famous cake shop and café, on the way to the Hofburg. Go early to avoid queues.</div></div>
+          <div class="option-tag">Cake shop</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -3299,9 +3308,10 @@ var TRIPMAP=(function(){
     SYNC.setBlock(id,v);
     fillDlg();
   }
-  function openDetail(blk){
+  // focus: one place in the block (an option picked in Find) leads the sheet: its photo, tags and Maps buttons
+  function openDetail(blk,focus){
     if(!dlg)makeDlg();
-    dlgCtx={blk:blk,day:+blk.closest('.page').id.slice(3),p:blockPlace(blk)};
+    dlgCtx={blk:blk,day:+blk.closest('.page').id.slice(3),p:focus||blockPlace(blk),focus:focus&&focus.key};
     fillDlg();
     document.documentElement.classList.add('dlg-open');
     dlg.showModal();
@@ -3335,7 +3345,7 @@ var TRIPMAP=(function(){
       h+='<ul class="dlg-opts">'+opts.map(function(oc){
         var a=oc.querySelector('.on a,.option-name a'),o=a&&linkPlace(a),oi=photo(o),nm=a?a.textContent:'',
           nt=oc.querySelector('.oo,.option-note'),tg=oc.querySelector('.ot,.option-tag');
-        return '<li>'+(oi?'<img src="'+esc(oi.f)+'" alt="" loading="lazy">':'<span class="noph"><span class="ms" aria-hidden="true">'+(o?cat(o)[0]:'restaurant')+'</span></span>')+
+        return '<li'+(o&&o.key===dlgCtx.focus?' class="hit"':'')+'>'+(oi?'<img src="'+esc(oi.f)+'" alt="" loading="lazy">':'<span class="noph"><span class="ms" aria-hidden="true">'+(o?cat(o)[0]:'restaurant')+'</span></span>')+
           '<div><b>'+esc(nm)+'</b>'+(tg?'<p>'+esc(tg.textContent)+(nt?' · '+esc(nt.textContent):'')+'</p>':nt?'<p>'+esc(nt.textContent)+'</p>':'')+
           (a?'<a class="dlg-btn" href="'+esc(a.href)+'" target="_blank" rel="noopener"><span class="ms" aria-hidden="true">map</span>Open in Google Maps</a>':'')+'</div></li>';
       }).join('')+'</ul>';
@@ -3578,7 +3588,7 @@ var TRIPMAP=(function(){
     var li=e.target.closest('.res');if(!li||e.target.closest('a'))return;
     var r=SX.filter(function(x){return x.p.key===li.dataset.k;})[0];if(!r)return;
     if(e.target.closest('[data-sr="map"]')){focusOnMap(r.days[0]||'all',r.p.key);return;}
-    if(r.blocks.length)openDetail(r.blocks[0]);else openPlace(r);
+    if(r.blocks.length)openDetail(r.blocks[0],r.p);else openPlace(r);
   });
   // a place that isn't a schedule card (an Extra, or a place on no day): its own detail sheet
   // open Find with a search filled in (from a tag in a detail sheet)
