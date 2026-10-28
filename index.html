@@ -1,6 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Central Europe · Oct–Nov 2026</title>
+<script>try{var t=localStorage.getItem('et_theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -11,7 +12,7 @@
 <meta name="apple-mobile-web-app-title" content="Trip">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,500,1,0&icon_names=add,attractions,cake,calendar_month,calendar_view_day,castle,chevron_left,chevron_right,check,check_circle,checklist,church,close,delete,directions,directions_boat,directions_car,directions_walk,edit,event,explore,fastfood,flight,help,hot_tub,hotel,info,landscape,local_cafe,local_library,location_city,location_on,lock,map,museum,music_note,my_location,near_me,nightlife,open_in_new,park,restaurant,route,schedule,search,shopping_bag,star,storefront,synagogue,today,train,tune,view_agenda,warning,water,zoom_out_map&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,500,1,0&icon_names=add,alt_route,attractions,brightness_auto,cake,calendar_month,calendar_view_day,castle,chevron_left,chevron_right,check,check_circle,checklist,church,close,dark_mode,delete,directions,directions_boat,directions_car,directions_walk,edit,event,explore,fastfood,flight,help,hot_tub,hotel,info,landscape,light_mode,local_cafe,local_library,location_city,location_on,lock,map,museum,music_note,my_location,near_me,nightlife,open_in_new,park,restaurant,route,schedule,search,shopping_bag,star,storefront,synagogue,today,train,tune,view_agenda,warning,water,zoom_out_map&display=block" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.css">
 <style>
 /* ── tokens ─────────────────────────────────────────────── */
@@ -648,16 +649,12 @@ html.dlg-open{overflow:hidden}
   transition:background-color 150ms ease,color 150ms ease,transform 160ms var(--ease-out)}
 .bnav button .ms{font-size:24px}
 .bnav button:active{transform:scale(.95);background:var(--accent-light)}
-.bnav button:disabled{opacity:.35;cursor:default}
-.bnav button:disabled:active{transform:none;background:transparent}
 .bnav button.on{color:var(--accent)}
 .bnav [data-b="days"]{color:var(--fg)}
-.bnav-cur{font-size:12px;font-weight:700}
 
 /* ── day picker ──────────────────────────────────────────── */
 .dpk-h{margin:0 0 14px;font:700 24px/1.2 'Playfair Display',Georgia,serif}
 .dpk-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.dpk-todo{grid-column:1/-1}
 .dpk-tile{display:grid;gap:3px;min-height:66px;padding:12px 14px;text-align:left;border:1px solid var(--border);border-radius:12px;
   background:var(--card);color:var(--fg);cursor:pointer;font:500 13px/1.3 'Inter',sans-serif;transition:transform 160ms var(--ease-out),background-color 150ms ease}
 .dpk-tile b{font-size:16px;font-weight:700}
@@ -703,6 +700,9 @@ html.dlg-open{overflow:hidden}
 .sr-b{display:inline-flex;align-items:center;gap:2px;margin-right:6px;padding:1px 7px 1px 4px;border-radius:999px;color:#fff;font-size:11px;font-weight:600;vertical-align:1px}
 .sr-b .ms{font-size:13px}
 .sr-b.anchor{background:var(--accent)}.sr-b.wp{background:var(--eat)}
+.sr-b.alt{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1px var(--muted)}
+.sr-b.plan{background:var(--accent-light);color:var(--accent)}
+.td-a .sr-b{margin-right:0;padding:4px 9px 4px 6px;font-size:12px}
 .sr-s{margin-top:5px;font-size:13px;line-height:1.45;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .sr-t{margin-top:5px;font-size:12px;line-height:1.5;color:var(--muted)}
 .dlg-tags{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 2px}
@@ -759,6 +759,18 @@ html.dlg-open{overflow:hidden}
 .td-del{width:40px;height:40px;margin-left:auto;display:flex;align-items:center;justify-content:center;border:0;border-radius:10px;background:transparent;color:var(--muted);cursor:pointer}
 .td-del .ms{font-size:20px}
 .td-sync{margin-top:18px;font-size:12px;color:var(--muted)}
+
+/* ── bottom bar badge, appearance switch ─────────────────── */
+.bnav-ic{position:relative;display:inline-flex}
+.bnav-n{position:absolute;top:-3px;left:calc(100% - 9px);min-width:17px;height:17px;padding:0 4px;border-radius:999px;
+  background:var(--accent);color:var(--bg);font:700 10px/17px 'Inter',sans-serif;text-align:center}
+.bnav-n:empty{display:none}
+.foot{display:flex;justify-content:center;padding:32px 16px 24px}
+.theme-sw{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--border);border-radius:999px;background:var(--card)}
+.theme-sw button{min-height:36px;display:inline-flex;align-items:center;gap:5px;padding:0 12px;border:0;border-radius:999px;background:transparent;
+  color:var(--muted);font:600 12px/1 'Inter',sans-serif;cursor:pointer;transition:background-color 150ms ease,color 150ms ease}
+.theme-sw button .ms{font-size:17px}
+.theme-sw button[aria-pressed=true]{background:var(--accent-light);color:var(--accent)}
 </style>
 </head><body>
 
@@ -2069,6 +2081,34 @@ html.dlg-open{overflow:hidden}
 </div>
 </div>
 
+<footer class="foot">
+  <div class="theme-sw" id="themeSw" role="group" aria-label="Appearance">
+    <button type="button" data-mode="auto"><span class="ms" aria-hidden="true">brightness_auto</span>Auto</button>
+    <button type="button" data-mode="light"><span class="ms" aria-hidden="true">light_mode</span>Light</button>
+    <button type="button" data-mode="dark"><span class="ms" aria-hidden="true">dark_mode</span>Dark</button>
+  </div>
+</footer>
+<script>
+/* ── appearance: Auto follows the phone; Light or Dark is remembered on this device ── */
+(function(){
+  var KEY='et_theme',root=document.documentElement,sw=document.getElementById('themeSw');
+  function apply(t){
+    if(t==='light'||t==='dark')root.setAttribute('data-theme',t);else root.removeAttribute('data-theme');
+    document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){
+      var dk=t==='dark'||(t!=='light'&&/dark/.test(m.media));m.content=dk?'#1A1714':'#FAF8F5';
+    });
+    sw.querySelectorAll('[data-mode]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.mode===(t||'auto'));});
+  }
+  var t=null;try{t=localStorage.getItem(KEY);}catch(e){}
+  apply(t);
+  sw.addEventListener('click',function(e){
+    var b=e.target.closest('[data-mode]');if(!b)return;
+    var v=b.dataset.mode==='auto'?null:b.dataset.mode;
+    try{if(v)localStorage.setItem(KEY,v);else localStorage.removeItem(KEY);}catch(x){}
+    apply(v);
+  });
+})();
+</script>
 <script src="place-tags.js"></script>
 <script>
 /* ── SYNC ── everything you change on the site is shared through a Google Sheet tab:
@@ -3955,7 +3995,7 @@ var TODO=(function(){
     {id:'d4-bus',g:'check',day:4,blk:['d4-gosau-bus-home'],t:'Going to the Gosausee? Check the Sunday bus times',
       n:'The winter Sunday and holiday timetable has fewer buses. Plan each leg in the ÖBB app and screenshot the alternatives.',
       links:[['ÖBB journey planner','https://fahrplan.oebb.at/'],['Bus 543 timetable','https://www.ooevv.at/fileadmin/OOEVV/Downloads/Fahrplaene/543.pdf']]},
-    {id:'werfen-monday',g:'check',day:3,t:'Plan B check: Hohenwerfen may be closed on Mondays',
+    {id:'werfen-monday',g:'check',day:3,blk:['d3-salzburg-old-town-instead-of'],t:'Plan B check: Hohenwerfen may be closed on Mondays',
       n:'Day 3\'s Plan B moves Werfen to Day 5 (Mon 2 Nov). Check the castle\'s opening days before relying on it.',links:[['Hohenwerfen tickets','https://tickets.burg-hohenwerfen.at/en']]},
     {id:'christkindl',g:'check',day:9,blk:['d9-vienna-christmas-market-step'],t:'Check the Christmas market opening date',
       links:[['christkindlmarkt.at','https://www.christkindlmarkt.at/']]},
@@ -3980,11 +4020,27 @@ var TODO=(function(){
     });
     return out;
   }
+  // what the item is for on the schedule: an anchor, a waypoint, a Plan B / option, or a plain stop
+  function kinds(i){
+    var out=[];
+    (i.blk||[]).forEach(function(id){
+      var b=document.querySelector('[data-id="'+id+'"]');if(!b)return;
+      var bt=((b.querySelector('.bt,.block-time')||{}).textContent||'').trim(),tag=(b.querySelector('.tag,.cluster-tag')||{}).textContent||'';
+      var k=b.classList.contains('anchor')?['anchor','star','Anchor']:
+        (b.classList.contains('wp-on')||b.classList.contains('wpb'))?['wp','check_circle','Waypoint']:
+        b.classList.contains('plan-b')?['alt','alt_route',/\d/.test(bt)?'Plan B':bt]:
+        /🅐/.test(tag)?['alt','alt_route',(tag.match(/(Plan|Option) A/)||['Option A'])[0]]:
+        ['plan','event','On the plan'];
+      if(!out.some(function(o){return o[2]===k[2];}))out.push(k);
+    });
+    return out;
+  }
   function row(i){
-    var more=i.n||i.day||(i.links&&i.links.length)||i.mine;
+    var ks=kinds(i),more=i.n||i.day||(i.links&&i.links.length)||i.mine||ks.length;
     return '<li class="td-i'+(i.done?' done':'')+'"><label class="td-c"><input type="checkbox" data-td="'+esc(i.id)+'"'+(i.done?' checked':'')+'>'+
       '<span class="td-t">'+esc(i.t)+'</span></label>'+
       (more?'<div class="td-x">'+(i.n?'<p class="td-n">'+esc(i.n)+'</p>':'')+'<div class="td-a">'+
+        ks.map(function(k){return '<span class="sr-b '+k[0]+'"><span class="ms" aria-hidden="true">'+k[1]+'</span>'+esc(k[2])+'</span>';}).join('')+
         (i.day?'<a class="td-day" href="#day'+i.day+'">Day '+i.day+'</a>':'')+
         (i.links||[]).map(function(l){return '<a class="td-link" href="'+esc(l[1])+'" target="_blank" rel="noopener">'+esc(l[0])+'<span class="ms" aria-hidden="true">open_in_new</span></a>';}).join('')+
         (i.mine?'<button type="button" class="td-del" data-del="'+esc(i.id)+'" aria-label="Remove: '+esc(i.t)+'"><span class="ms" aria-hidden="true">delete</span></button>':'')+
@@ -4010,6 +4066,7 @@ var TODO=(function(){
   function marks(){
     var all=items(),left=all.filter(function(i){return !i.done;});
     var tn=document.getElementById('tdTabN');if(tn)tn.textContent=left.length?left.length+' left':'All done';
+    var bn=document.getElementById('bnTdN');if(bn)bn.textContent=left.length||'';
     document.querySelectorAll('.page[id^="day"] .tobook').forEach(function(el){
       var d=+el.closest('.page').id.slice(3),mine=left.filter(function(i){return i.day===d;});
       el.hidden=!left.length;if(!left.length)return;
@@ -4097,7 +4154,7 @@ var TODO=(function(){
     });
     var at = document.querySelector('.nav-tab.active');
     if(at && at.offsetWidth) revealTab(at);
-    try{ localStorage.setItem('et_day', n); }catch(e){}
+    if(!isNaN(n)) try{ localStorage.setItem('et_day', n); }catch(e){}
     if(window.updateBnav) updateBnav(n);
     if(n==='map' && window.TRIPMAP) TRIPMAP.show();
     if(n==='search' && window.TRIPMAP) TRIPMAP.search();
@@ -4132,36 +4189,35 @@ var TODO=(function(){
     e.preventDefault(); j = (j+tabs.length)%tabs.length;
     tabs[j].focus(); go(tabs[j]);
   });
-  // ── bottom bar on phones: previous day, day picker, today, map, next day ──
+  // ── bottom bar on phones: Plan (the days; tap again for the day picker), To do, Find, Map ──
   var order = tabs.map(function(t){ return t.dataset.day; });   // map, 1 … 10
   var cur = null;
   var bnav = document.createElement('nav');
   bnav.className = 'bnav'; bnav.setAttribute('aria-label','Quick day navigation');
   bnav.innerHTML =
-    '<button type="button" data-b="prev"><span class="ms" aria-hidden="true">chevron_left</span><span>Prev</span></button>'+
-    '<button type="button" data-b="days" aria-haspopup="dialog"><span class="ms" aria-hidden="true">calendar_month</span><span class="bnav-cur">Days</span></button>'+
+    '<button type="button" data-b="plan"><span class="ms" aria-hidden="true">calendar_month</span><span>Plan</span></button>'+
+    '<button type="button" data-b="todo"><span class="bnav-ic"><span class="ms" aria-hidden="true">checklist</span><b class="bnav-n" id="bnTdN"></b></span><span>To do</span></button>'+
     '<button type="button" data-b="search"><span class="ms" aria-hidden="true">search</span><span>Find</span></button>'+
-    '<button type="button" data-b="map"><span class="ms" aria-hidden="true">map</span><span>Map</span></button>'+
-    '<button type="button" data-b="next"><span class="ms" aria-hidden="true">chevron_right</span><span>Next</span></button>';
+    '<button type="button" data-b="map"><span class="ms" aria-hidden="true">map</span><span>Map</span></button>';
   document.body.appendChild(bnav);
+  if(window.TODO){ var tdl = TODO.left(); document.getElementById('bnTdN').textContent = tdl || ''; }
+  var lastDay = null;   // where Plan goes back to from Find, Map or To do
   function tabFor(v){ return tabs.filter(function(t){ return t.dataset.day===String(v); })[0]; }
   window.updateBnav = function(n){
     cur = n;
-    var d = isNaN(n) ? null : n;
-    bnav.querySelector('.bnav-cur').textContent = d ? 'Day '+d : 'Days';
-    bnav.querySelector('[data-b="prev"]').disabled = !d || d<=1;
-    bnav.querySelector('[data-b="next"]').disabled = !d || d>=10;
+    if(!isNaN(n)) lastDay = n;
+    var plan = bnav.querySelector('[data-b="plan"]');
+    plan.classList.toggle('on', !isNaN(n));
+    plan.setAttribute('aria-label', isNaN(n) ? 'Plan: back to Day '+(lastDay || td || 1) : 'Plan: choose a day');
+    bnav.querySelector('[data-b="todo"]').classList.toggle('on', n==='todo');
     bnav.querySelector('[data-b="map"]').classList.toggle('on', n==='map');
     bnav.querySelector('[data-b="search"]').classList.toggle('on', n==='search');
   };
   bnav.addEventListener('click', function(e){
-    var b = e.target.closest('[data-b]'); if(!b || b.disabled) return;
+    var b = e.target.closest('[data-b]'); if(!b) return;
     var k = b.dataset.b;
-    if(k==='prev') go(tabFor(cur-1));
-    else if(k==='next') go(tabFor(cur+1));
-    else if(k==='map') go(tabFor('map'));
-    else if(k==='search') go(tabFor('search'));
-    else openPicker();
+    if(k==='plan'){ if(isNaN(cur)) go(tabFor(lastDay || td || 1)); else openPicker(); }
+    else go(tabFor(k));
   });
   // the day picker: every day as a big tile, in a bottom sheet
   var pk;
@@ -4177,9 +4233,7 @@ var TODO=(function(){
       });
     }
     var h = '<div class="dlg-sheet"><button type="button" class="dlg-x" aria-label="Close"><span class="ms" aria-hidden="true">close</span></button>'+
-      '<div class="dlg-body"><h2 class="dpk-h">Go to</h2><div class="dpk-grid">';
-    var tl = window.TODO ? TODO.left() : 0;   // Map and Find have their own buttons; the list doesn't
-    h += '<button type="button" class="dpk-tile dpk-todo'+(cur==='todo'?' on':'')+'" data-go="todo"><b>To do</b><small>'+(tl ? tl+' left' : 'All done')+'</small></button>';
+      '<div class="dlg-body"><h2 class="dpk-h">Plan</h2><div class="dpk-grid">';
     order.filter(function(v){ return !isNaN(v); }).forEach(function(v){
       var t = tabFor(v), pg = document.getElementById(v==='map' ? 'map' : 'day'+v);
       var date = pg && pg.querySelector('.header-eyebrow,.eye');
@@ -4270,9 +4324,9 @@ var TODO=(function(){
 
   window.addEventListener('popstate', function(){ var n = fromHash(); if(n) show(n); });
 
-  // open on: the address, else today (during the trip), else the last day viewed
+  // open on: the address, else today (during the trip), else the last day viewed: the plan, never Find / Map / To do
   var init = fromHash() || td;
-  if(!init){ try{ var sv=localStorage.getItem('et_day')||'1'; init = isNaN(sv) ? sv : parseInt(sv,10); }catch(e){ init=1; } }
+  if(!init){ try{ init = parseInt(localStorage.getItem('et_day'),10) || 1; }catch(e){ init=1; } }
   if(isNaN(init) ? !tabFor(init) : (init<1 || init>10)) init=1;
   show(init);
 })();
