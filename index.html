@@ -50,6 +50,7 @@ body{
 ::selection{background:color-mix(in srgb,var(--accent) 24%,transparent);color:var(--fg)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 html{scrollbar-color:var(--time-line) transparent;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior-x:none}   /* sideways swipes change the day, not the browser's back/forward */
 a{text-underline-offset:.18em}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
@@ -3860,9 +3861,25 @@ var SCHEDVIEW=(function(){
     if(td && t.dataset.day===String(td)){ t.classList.add('today'); t.setAttribute('aria-current','date'); t.title='Today'; }
   });
 
+  // ── each page keeps its own scroll position, also after closing the site ──
+  var SCROLL_KEY = 'et_scroll', pos = {}, shownId = null, userMoved = false;
+  try{ pos = JSON.parse(localStorage.getItem(SCROLL_KEY)) || {}; }catch(e){}
+  if('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  function keepScroll(){ if(shownId) pos[shownId] = Math.round(window.scrollY); }
+  function saveScroll(){ keepScroll(); try{ localStorage.setItem(SCROLL_KEY, JSON.stringify(pos)); }catch(e){} }
+  var scrollT;
+  window.addEventListener('scroll', function(){ keepScroll(); clearTimeout(scrollT); scrollT = setTimeout(saveScroll, 400); }, {passive:true});
+  window.addEventListener('pagehide', saveScroll);
+  ['wheel','touchstart','keydown'].forEach(function(ev){ window.addEventListener(ev, function(){ userMoved = true; }, {passive:true, once:true}); });
+  // photos above the saved spot can still be loading on first open: go back to it once they're in
+  window.addEventListener('load', function(){ if(!userMoved && shownId) window.scrollTo(0, pos[shownId] || 0); });
+
   function show(n){
     var id = isNaN(n) ? n : 'day'+n;
+    keepScroll();
     days.forEach(function(d){ d.classList.toggle('active', d.id===id); });
+    shownId = id;
+    window.scrollTo(0, pos[id] || 0);
     if(window.SCHEDVIEW) SCHEDVIEW.refresh();
     tabs.forEach(function(t){
       var on = t.dataset.day===String(n);
@@ -3925,7 +3942,6 @@ var SCHEDVIEW=(function(){
     else if(k==='map') go(tabFor('map'));
     else if(k==='search') go(tabFor('search'));
     else openPicker();
-    if(k!=='days') window.scrollTo({top:0});
   });
   // the day picker: every day as a big tile, in a bottom sheet
   var pk;
@@ -3937,7 +3953,7 @@ var SCHEDVIEW=(function(){
       pk.addEventListener('click', function(e){
         if(e.target===pk || e.target.closest('.dlg-x')){ pk.close(); return; }
         var t = e.target.closest('[data-go]'); if(!t) return;
-        pk.close(); go(tabFor(t.dataset.go)); window.scrollTo({top:0});
+        pk.close(); go(tabFor(t.dataset.go));
       });
     }
     var h = '<div class="dlg-sheet"><button type="button" class="dlg-x" aria-label="Close"><span class="ms" aria-hidden="true">close</span></button>'+
@@ -3952,6 +3968,62 @@ var SCHEDVIEW=(function(){
     pk.innerHTML = h + '</div></div></div>';
     pk.showModal();
   }
+  // ── swipe left / right on a day for the next / previous day (touch only) ──
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var sw = null;
+  function sideScroller(el){   // a row that scrolls sideways keeps its own swipes
+    for(; el && el!==document.body; el = el.parentElement){
+      if(el.scrollWidth > el.clientWidth + 2 && /auto|scroll/.test(getComputedStyle(el).overflowX)) return true;
+    }
+    return false;
+  }
+  document.addEventListener('touchstart', function(e){
+    sw = null;
+    if(e.touches.length!==1 || isNaN(cur) || document.querySelector('dialog[open]')) return;
+    var t = e.touches[0], x = t.clientX;
+    if(x < 24 || x > window.innerWidth-24) return;   // screen edges belong to the phone's back gesture
+    if(e.target.closest('.maplibregl-map,input,textarea,select,#nav,.bnav') || sideScroller(e.target)) return;
+    sw = {x:x, y:t.clientY, t:Date.now(), dx:0, lock:null, pg:document.getElementById('day'+cur)};
+  }, {passive:true});
+  document.addEventListener('touchmove', function(e){
+    if(!sw) return;
+    if(e.touches.length!==1){ snapBack(sw.pg); sw = null; return; }   // a second finger: pinch, not swipe
+    var t = e.touches[0], dx = t.clientX-sw.x, dy = t.clientY-sw.y;
+    if(!sw.lock){
+      if(Math.abs(dx) < 12 && Math.abs(dy) < 12) return;
+      sw.lock = Math.abs(dx) > Math.abs(dy)*1.7 ? 'x' : 'y';
+    }
+    if(sw.lock!=='x') return;
+    sw.dx = dx;
+    if(still.matches) return;
+    var edge = (dx>0 && cur<=1) || (dx<0 && cur>=10);   // nothing that way: resist harder
+    sw.pg.style.transition = 'none';
+    sw.pg.style.transform = 'translateX('+(dx*(edge ? .12 : .35))+'px)';
+  }, {passive:true});
+  function swipeEnd(){
+    if(!sw) return;
+    var s = sw, dx = s.dx, v = Math.abs(dx)/Math.max(1, Date.now()-s.t);
+    sw = null;
+    if(s.lock!=='x') return;
+    var to = dx<0 ? cur+1 : cur-1;
+    var go_ = (Math.abs(dx) > 80 || (v > .35 && Math.abs(dx) > 30)) && to>=1 && to<=10;
+    if(!go_){ snapBack(s.pg); return; }
+    s.pg.style.transition = ''; s.pg.style.transform = '';
+    go(tabFor(to));
+    if(still.matches) return;
+    // the new day slides in from the side the finger came from
+    var pg = document.getElementById('day'+to);
+    pg.animate([{transform:'translateX('+(dx<0 ? 48 : -48)+'px)', opacity:.4}, {transform:'none', opacity:1}],
+               {duration:240, easing:'cubic-bezier(.23,1,.32,1)'});
+  }
+  document.addEventListener('touchend', swipeEnd);
+  function snapBack(pg){
+    if(!pg || !pg.style.transform) return;
+    pg.style.transition = 'transform 220ms cubic-bezier(.23,1,.32,1)';
+    pg.style.transform = '';
+  }
+  document.addEventListener('touchcancel', function(){ if(sw) snapBack(sw.pg); sw = null; });
+
   window.addEventListener('popstate', function(){ var n = fromHash(); if(n) show(n); });
 
   // open on: the address, else today (during the trip), else the last day viewed
