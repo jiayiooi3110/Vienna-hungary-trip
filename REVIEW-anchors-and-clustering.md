@@ -17,7 +17,7 @@ Your flow on the day: go to the anchor, then use the Map tab's **Near me** to se
 |---|---|
 | 1 | Vienna Airport arrival · 1st district walk (St. Stephen's, Hofburg/Heldenplatz) · Naschmarkt |
 | 2 | Breakfast at mani im vierten · Schönbrunn · Belvedere · Ringstrasse at dusk · back to the hotel |
-| 3 | Train Wien → Salzburg · **Werfen / Hohenwerfen (Plan A)** · Mirabell Gardens |
+| 3 | Train Wien → Salzburg · **Werfen: The Sound of Music Trail (Plan A)** · Mirabell Gardens |
 | 4 | Train + ferry to Hallstatt · Hallstatt village / Market Square · Boat ride on the lake |
 | 5 | Train Salzburg → Vienna · Mozart concert, Musikverein Golden Hall |
 | 6 | Prater + Riesenrad · Train Vienna → Budapest |
@@ -115,3 +115,7 @@ The sheet's Option B anchors were Hohensalzburg and Mirabell. Mirabell stays an 
 3. **Prosecco boat tour pier:** you'll send the booking link later. Until then it stays "pier TBC" with no pin.
 4. **Day 1 café:** both are listed. Demel (Kohlmarkt 14) is now an option next to DECENTRAL. ✅
    - Your sheet gave Demel's address as Petersplatz 6. The pin uses Kohlmarkt 14, its well-known address.
+5. **Day 3 Werfen anchor:** the Sound of Music Trail replaces Hohenwerfen Castle (you don't need the castle). ✅
+   - The castle is now an **Extra** (a place of interest): hidden until Extras are on, shown near Day 3, and can be confirmed as a waypoint later. Its to-dos (tickets, Monday closure) are gone; the Extra's note says what to check if you go.
+   - The trail's pin sits at its start, the Werfen tourist office (Markt 24), flagged "to confirm": OpenStreetMap doesn't name the meadow.
+   - New to-do: check the trail is walkable at the end of October (it's promoted as a summer walk).

@@ -1156,13 +1156,13 @@ html.dlg-open{overflow:hidden}
 
   <div class="wb"><strong>Werfen is the plan.</strong> Only if the weather rules it out, switch to Plan B: swap with Day 5 morning — do the Salzburg Old Town today, and try Werfen on Day 5 morning instead (train to Vienna is 12:07, so only if time allows).</div>
 
-  <div class="bl ts anchor" style="margin-top:16px" data-id="d3-werfen-hohenwerfen-castle-go">
+  <div class="bl ts anchor" style="margin-top:16px" data-id="d3-werfen-sound-of-music-trail">
     <div class="bt">~13:30</div><div class="bd"></div>
     <div class="card">
-      <div class="tag">🅐 Plan A · <a href="https://www.google.com/maps/search/?api=1&amp;query=Burg+Hohenwerfen%2C+Burgstra%C3%9Fe+2%2C+5450+Werfen&amp;query_place_id=ChIJCymTk7PEdkcRk2e9_wpDY8k" target="_blank">Werfen day hike</a></div>
-      <div class="cl">Sights — full afternoon</div>
-      <h2 class="ct">Werfen — <a href="https://www.google.com/maps/search/?api=1&amp;query=Burg+Hohenwerfen%2C+Burgstra%C3%9Fe+2%2C+5450+Werfen&amp;query_place_id=ChIJCymTk7PEdkcRk2e9_wpDY8k" target="_blank">Hohenwerfen Castle</a> + gorge</h2>
-      <div class="cn">~45 min train from Salzburg Hbf (EUR 8pp return). <strong>Hohenwerfen Castle</strong> — medieval fortress on a cliff above the Salzach gorge. Falconry shows. Walk up the hill (~20 min). Return to Salzburg by 18:00. <strong>Book castle entry online.</strong></div>
+      <div class="tag">🅐 Plan A · <a href="https://www.google.com/maps/search/?api=1&amp;query=The+Sound+of+Music+Trail%2C+Werfen" target="_blank">The Sound of Music Trail</a></div>
+      <div class="cl">Walk — full afternoon</div>
+      <h2 class="ct">Werfen — The Sound of Music Trail</h2>
+      <div class="cn">~45 min train from Salzburg Hbf to Werfen (EUR 8pp return), then about 10 min on foot to the tourist office in the village centre, where the trail starts. About <strong>1.4 km and an hour up</strong> to the Gschwandtanger meadow where the picnic scene was filmed, with Hohenwerfen Castle on its cliff across the valley (the castle is an Extra on the map, if you want to add it). Some steep parts, benches on the way; same path down. Free audio guide narrated by Nicholas Hammond (Friedrich in the film): the SmartGuide app, or the QR code on the signpost by the tourist office. Sunset is around 16:45, so be heading up by 14:30. Back in Salzburg by 18:00.</div>
     </div>
   </div>
 
@@ -2312,7 +2312,7 @@ var TRIPMAP=(function(){
     // Salzburg
     salzburg_hbf:{n:"Salzburg Hauptbahnhof",cat:"train",ll:[47.813027,13.045039],pid:"ChIJT2PH83iQdkcRnEDVqlb-Avs"},
     airbnb_salzburg:{n:"Salzburg Airbnb (Vogelweiderstraße 33)",cat:"hotel",ll:[47.810449,13.054322],pid:"ChIJgb3GhICQdkcRDEnPmqioKEU"},
-    hohenwerfen:{n:"Hohenwerfen Castle",cat:"palace",ll:[47.483176,13.18895],pid:"ChIJCymTk7PEdkcRk2e9_wpDY8k",city:"SZG"},   // day trip from Salzburg (it's marginally closer to Hallstatt)
+    som_trail:{n:"The Sound of Music Trail",cat:"viewpoint",ll:[47.476975,13.188585],q:"The Sound of Music Trail, Werfen",city:"SZG",chk:1},   // pin: the start, at the Werfen tourist office (Markt 24); the walk goes up to the Gschwandtanger meadow
     hohensalzburg:{n:"Hohensalzburg Fortress",cat:"palace",ll:[47.794948,13.047658],pid:"ChIJvQMhJ2CQdkcRa1Xs6dO-dys"},
     getreidegasse:{n:"Getreidegasse",cat:"landmark",ll:[47.800032,13.042427],pid:"ChIJZ8whB2SQdkcRwk0_h9TXh5Q"},
     mozart_birthplace:{n:"Mozart's Birthplace",cat:"museum",ll:[47.800008,13.043559],pid:"ChIJiYA55GOQdkcRi7885u5bbJ4"},
@@ -2405,6 +2405,7 @@ var TRIPMAP=(function(){
     dom_szg:{n:"Salzburg Cathedral",cat:"church",ll:[47.797846,13.046623],q:"Salzburger Dom, Domplatz 1a, 5020 Salzburg",note:"Baroque cathedral where Mozart was baptised"},
     petersfriedhof:{n:"St. Peter's Cemetery",cat:"church",ll:[47.796722,13.045453],q:"Petersfriedhof, 5020 Salzburg",note:"Atmospheric old cemetery and catacombs under the Mönchsberg"},
     moenchsberg:{n:"Mönchsberg lift",cat:"viewpoint",ll:[47.800888,13.039465],q:"MönchsbergAufzug, Gstättengasse 13, 5020 Salzburg",note:"Lift up the cliff for the classic view over the old town"},
+    hohenwerfen:{n:"Hohenwerfen Castle",cat:"palace",ll:[47.483176,13.18895],q:"Burg Hohenwerfen, Burgstraße 2, 5450 Werfen",city:"SZG",note:"Medieval fortress on a cliff above Werfen, ~20 min walk up from the village; falconry shows. If you go: tickets online (no cancellations), and check its days, as it reportedly closes on Mondays and for the season in early November"},
     // Hallstatt
     gruener_baum:{n:"Seehotel Grüner Baum",cat:"restaurant",ll:[47.562449,13.649657],q:"Seehotel Grüner Baum, Marktplatz 104, 4830 Hallstatt",note:"Falstaff-rated lakeside restaurant: local char and trout, good cakes"},
     zauner:{n:"Seewirt Zauner",cat:"restaurant",ll:[47.562289,13.648862],q:"Seewirt Zauner, Marktplatz 51, 4830 Hallstatt",note:"Traditional inn right on the Market Square"},
@@ -2783,6 +2784,7 @@ var TRIPMAP=(function(){
     "gosausee":{"f": "images/gosausee.jpg", "a": "AtterseeMM", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Vorderer_Gosausee_mit_Dachstein.jpg"},
     "demel":{"f": "images/demel.jpg", "a": "Johann Werfring", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Demel_aussen.jpg"},
     "dohany":{"f": "images/dohany.jpg", "a": "The original uploader was OsvátA at Hungarian Wikipedia.", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Synagogue-Budapest.jpg"},
+    "e:hohenwerfen":{"f": "images/hohenwerfen.jpg", "a": "Arne Müseler", "l": "CC BY-SA 3.0 de", "u": "https://commons.wikimedia.org/wiki/File:Hohenwerfen_castle.jpg"},
     "e:albertina":{"f": "images/x_albertina.jpg", "a": "C.Stadler/Bwag", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Wien_-_Albertina.JPG"},
     "e:bazar":{"f": "images/x_bazar.jpg", "a": "MyName (Luckyprof (talk))", "l": "CC BY-SA 3.0 at", "u": "https://commons.wikimedia.org/wiki/File:Basar-Schwarzstrasse.jpg"},
     "e:dom_szg":{"f": "images/x_dom_szg.jpg", "a": "Bede735c", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Salzburg_Cathedral_1.jpg"},
@@ -2814,7 +2816,6 @@ var TRIPMAP=(function(){
     "hellbrunn":{"f": "images/hellbrunn.jpg", "a": "Nicholas Even (own work)", "l": "CC BY 2.5", "u": "https://commons.wikimedia.org/wiki/File:Hellbrunn2.JPG"},
     "hofburg":{"f": "images/hofburg.jpg", "a": "C.Stadler/Bwag", "l": "CC BY-SA 3.0 at", "u": "https://commons.wikimedia.org/wiki/File:Wien_-_Neue_Hofburg.JPG"},
     "hohensalzburg":{"f": "images/hohensalzburg.jpg", "a": "C.Stadler/Bwag", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Salzburg_-_Festung_Hohensalzburg.JPG"},
-    "hohenwerfen":{"f": "images/hohenwerfen.jpg", "a": "Arne Müseler", "l": "CC BY-SA 3.0 de", "u": "https://commons.wikimedia.org/wiki/File:Hohenwerfen_castle.jpg"},
     "karlskirche":{"f": "images/karlskirche.jpg", "a": "Thomas Ledl", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Karlskirche_Abendsonne_1.jpg"},
     "liberty_bridge":{"f": "images/liberty_bridge.jpg", "a": "Felix König", "l": "CC BY 3.0", "u": "https://commons.wikimedia.org/wiki/File:Szabads%C3%A1g_h%C3%ADd_Budapest_September_2013.JPG"},
     "mirabell":{"f": "images/mirabell.jpg", "a": "Cezar Suceveanu", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Palatul_Mirabell1.jpg"},
@@ -3982,8 +3983,6 @@ var TODO=(function(){
   var SEED=[
     {id:'hallstatt-train',g:'book',day:4,blk:['d4-07-30-train-to-hallstatt-fer'],t:'Book the Salzburg → Hallstatt train (Sun 1 Nov, 07:30)',
       n:'Trains fill up on weekends. One change at Attnang-Puchheim, then the ferry.',links:[['ÖBB tickets','https://www.oebb.at/en/']]},
-    {id:'hohenwerfen',g:'book',day:3,blk:['d3-werfen-hohenwerfen-castle-go'],t:'Book Hohenwerfen Castle entry (Sat 31 Oct)',
-      n:'Online tickets can\'t be cancelled; the ticket on your phone is scanned at the turnstile.',links:[['Hohenwerfen tickets','https://tickets.burg-hohenwerfen.at/en']]},
     {id:'figlmueller',g:'book',day:1,blk:['d1-dinner-pick-one'],t:'Reserve a table at Figlmüller (Day 1 dinner)',
       n:'No online booking page: phone +43 1 512 61 77, or see their FAQ. Bäckerstraße is easier for walk-ins.',links:[['Figlmüller FAQ','https://www.figlmueller.at/en/faq/']]},
     {id:'prosecco',g:'book',day:7,blk:['d7-prosecco-boat-tour'],t:'Book the prosecco boat tour, and note its pier',
@@ -3995,8 +3994,9 @@ var TODO=(function(){
     {id:'d4-bus',g:'check',day:4,blk:['d4-gosau-bus-home'],t:'Going to the Gosausee? Check the Sunday bus times',
       n:'The winter Sunday and holiday timetable has fewer buses. Plan each leg in the ÖBB app and screenshot the alternatives.',
       links:[['ÖBB journey planner','https://fahrplan.oebb.at/'],['Bus 543 timetable','https://www.ooevv.at/fileadmin/OOEVV/Downloads/Fahrplaene/543.pdf']]},
-    {id:'werfen-monday',g:'check',day:3,blk:['d3-salzburg-old-town-instead-of'],t:'Plan B check: Hohenwerfen may be closed on Mondays',
-      n:'Day 3\'s Plan B moves Werfen to Day 5 (Mon 2 Nov). Check the castle\'s opening days before relying on it.',links:[['Hohenwerfen tickets','https://tickets.burg-hohenwerfen.at/en']]},
+    {id:'werfen-trail',g:'check',day:3,blk:['d3-werfen-sound-of-music-trail'],t:'Check the Sound of Music Trail is walkable at the end of October',
+      n:'It\'s promoted as a summer walk: ask the Werfen tourist office about snow or mud, and download the SmartGuide audio guide before you go.',
+      links:[['Trail info (SalzburgerLand)','https://www.salzburgerland.com/en/sound-of-music-trail-werfen/']]},
     {id:'christkindl',g:'check',day:9,blk:['d9-vienna-christmas-market-step'],t:'Check the Christmas market opening date',
       links:[['christkindlmarkt.at','https://www.christkindlmarkt.at/']]},
     {id:'scoot-bags',g:'check',day:10,blk:['d10-arrive-airport-check-in-amp'],t:'Check the Scoot baggage allowance (TR711)',
