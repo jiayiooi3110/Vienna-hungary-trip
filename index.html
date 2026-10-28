@@ -1895,7 +1895,7 @@ html.dlg-open{overflow:hidden}
    Paste the Apps Script web-app URL into SYNC_URL (setup: SHEET-SYNC-SETUP.md).
    Left empty, changes stay on this device. Writes need the edit code, asked for once per phone. */
 var SYNC=(function(){
-  var SYNC_URL='';   // e.g. 'https://script.google.com/macros/s/…/exec'
+  var SYNC_URL='https://script.google.com/macros/s/AKfycby-5LhAy0YgZDsoj4ivFZDKOaDXMMoHn_bjGeBv9a48J4O3Ay5tWV_KZuqc6NuoTIhSxA/exec';
   var K={wp:'et_map_waypoints',move:'et_map_moves',block:'et_blocks',queue:'et_sync_queue',code:'et_sync_code',dev:'et_sync_device',at:'et_sync_at'};
   function load(k,d){try{var v=JSON.parse(localStorage.getItem(k)||'null');return v==null?d:v;}catch(e){return d;}}
   function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
