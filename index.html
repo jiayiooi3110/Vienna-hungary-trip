@@ -1,9 +1,17 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Central Europe · Oct–Nov 2026</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#FAF8F5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1A1714" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Trip">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,500,1,0&icon_names=attractions,cake,calendar_month,calendar_view_day,castle,chevron_left,chevron_right,check,check_circle,church,close,directions,directions_boat,directions_car,directions_walk,edit,event,explore,fastfood,flight,help,hot_tub,hotel,info,landscape,local_cafe,local_library,location_city,location_on,lock,map,museum,music_note,my_location,near_me,nightlife,open_in_new,park,restaurant,route,schedule,search,shopping_bag,star,storefront,synagogue,today,train,tune,view_agenda,warning,water,zoom_out_map&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,500,1,0&icon_names=add,attractions,cake,calendar_month,calendar_view_day,castle,chevron_left,chevron_right,check,check_circle,checklist,church,close,delete,directions,directions_boat,directions_car,directions_walk,edit,event,explore,fastfood,flight,help,hot_tub,hotel,info,landscape,local_cafe,local_library,location_city,location_on,lock,map,museum,music_note,my_location,near_me,nightlife,open_in_new,park,restaurant,route,schedule,search,shopping_bag,star,storefront,synagogue,today,train,tune,view_agenda,warning,water,zoom_out_map&display=block" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.css">
 <style>
 /* ── tokens ─────────────────────────────────────────────── */
@@ -51,6 +59,9 @@ body{
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 html{scrollbar-color:var(--time-line) transparent;-webkit-tap-highlight-color:transparent}
 html,body{overscroll-behavior-x:none}   /* sideways swipes change the day, not the browser's back/forward */
+/* a day sliding out mid-swipe must not widen the page: phones zoom out to fit it and the fixed bars jump.
+   Set on both, or the browser hands body's value to the window instead of clipping the body. */
+html,body{overflow-x:clip}
 a{text-underline-offset:.18em}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
@@ -65,6 +76,7 @@ a{text-underline-offset:.18em}
   padding-right:max(10px,env(safe-area-inset-right,0px));
 }
 .nav::-webkit-scrollbar{display:none}
+.nav::after{content:'';flex:0 0 1px}   /* phones drop a scroll row's end padding; this keeps Day 10 clear of the edge */
 .nav-tab{
   flex-shrink:0;min-height:44px;min-width:56px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -645,6 +657,7 @@ html.dlg-open{overflow:hidden}
 /* ── day picker ──────────────────────────────────────────── */
 .dpk-h{margin:0 0 14px;font:700 24px/1.2 'Playfair Display',Georgia,serif}
 .dpk-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.dpk-todo{grid-column:1/-1}
 .dpk-tile{display:grid;gap:3px;min-height:66px;padding:12px 14px;text-align:left;border:1px solid var(--border);border-radius:12px;
   background:var(--card);color:var(--fg);cursor:pointer;font:500 13px/1.3 'Inter',sans-serif;transition:transform 160ms var(--ease-out),background-color 150ms ease}
 .dpk-tile b{font-size:16px;font-weight:700}
@@ -710,11 +723,48 @@ html.dlg-open{overflow:hidden}
 .dlg-add select{width:100%;min-height:48px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--fg);font:500 16px 'Inter',sans-serif}
 .dlg-actions .dlg-sync{grid-column:1/-1}
 
+
+/* ── To do ───────────────────────────────────────────────── */
+.td-prog{margin:4px 0 18px}
+.td-bar{height:8px;border-radius:999px;background:var(--accent-light);overflow:hidden}
+.td-bar span{display:block;height:100%;border-radius:inherit;background:var(--accent);transition:width 300ms var(--ease-out)}
+.td-prog p{margin-top:8px;font-size:14px;color:var(--muted)}
+.td-prog b{color:var(--fg)}
+.td-add{display:flex;flex-wrap:wrap;gap:8px}
+.td-add input,.td-add select{min-height:48px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--fg);font:500 16px 'Inter',sans-serif}
+.td-add input{flex:1 1 220px;min-width:0;padding:0 14px}
+.td-add input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+.td-add select{padding:0 10px}
+.td-add button{min-height:48px;display:inline-flex;align-items:center;gap:6px;padding:0 18px;border:0;border-radius:12px;background:var(--accent);color:#fff;
+  font:600 15px 'Inter',sans-serif;cursor:pointer;transition:transform 160ms var(--ease-out)}
+.td-add button:active{transform:scale(.97)}
+.td-h{display:flex;align-items:baseline;gap:8px;margin:26px 0 6px;font:700 19px/1.25 'Playfair Display',Georgia,serif}
+.td-h small{font:500 13px 'Inter',sans-serif;color:var(--muted)}
+.td-list{list-style:none;border-top:1px solid var(--border)}
+.td-i{padding:4px 0 12px;border-bottom:1px solid var(--border)}
+.td-c{display:flex;align-items:flex-start;gap:12px;min-height:44px;padding-top:10px;cursor:pointer}
+.td-c input{flex-shrink:0;width:22px;height:22px;margin-top:1px;accent-color:var(--accent);cursor:pointer}
+.td-t{font-size:15px;font-weight:600;line-height:1.4;text-wrap:pretty}
+.td-i.done .td-t{color:var(--muted);font-weight:500;text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--muted) 60%,transparent)}
+.td-i.done .td-x{display:none}
+.td-x{padding-left:34px}
+.td-n{max-width:65ch;font-size:13px;line-height:1.5;color:var(--muted)}
+.td-a{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px}
+.td-a:empty{display:none}
+.td-day,.td-link{display:inline-flex;align-items:center;gap:4px;min-height:36px;padding:0 12px;border:1px solid var(--border);border-radius:10px;
+  background:var(--card);color:var(--fg);font:600 13px/1 'Inter',sans-serif;text-decoration:none;transition:transform 160ms var(--ease-out)}
+.td-day:active,.td-link:active{transform:scale(.97)}
+.td-link{color:var(--accent)}
+.td-link .ms{font-size:16px}
+.td-del{width:40px;height:40px;margin-left:auto;display:flex;align-items:center;justify-content:center;border:0;border-radius:10px;background:transparent;color:var(--muted);cursor:pointer}
+.td-del .ms{font-size:20px}
+.td-sync{margin-top:18px;font-size:12px;color:var(--muted)}
 </style>
 </head><body>
 
 <!-- sticky day nav -->
 <nav class="nav" id="nav" role="tablist" aria-label="Day navigation">
+  <button class="nav-tab nav-tab-map" data-day="todo" role="tab"><span class="nav-tab-day">To do</span><span class="nav-tab-city" id="tdTabN"></span></button>
   <button class="nav-tab nav-tab-map" data-day="search" role="tab"><span class="nav-tab-day">Find</span><span class="nav-tab-city">Places</span></button>
   <button class="nav-tab nav-tab-map" data-day="map" role="tab"><span class="nav-tab-day">Map</span><span class="nav-tab-city">All days</span></button>
   <button class="nav-tab" data-day="1" role="tab"><span class="nav-tab-day">1</span><span class="nav-tab-city">Thu · Vienna</span></button>
@@ -1162,7 +1212,7 @@ html.dlg-open{overflow:hidden}
 <div class="hdr">
   <h1 class="ttl">Day 4 — Hallstatt</h1>
   <div class="eye">Sun 1 Nov 2026</div>
-  <div class="sub">Day trip from Salzburg · Lake · Skywalk · Bone Chapel</div>
+  <div class="sub">Day trip from Salzburg · Village and lake first · Afternoon: Skywalk, or the Gosausee by bus</div>
   <div class="div"></div>
 </div>
 <div class="leg">
@@ -1180,64 +1230,64 @@ html.dlg-open{overflow:hidden}
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Salzburg+Hauptbahnhof%2C+5020+Salzburg&amp;query_place_id=ChIJT2PH83iQdkcRnEDVqlb-Avs" target="_blank">Salzburg Hbf</a> → <a href="https://www.google.com/maps/search/?api=1&amp;query=Hallstatt%2C+Hallstatt&amp;query_place_id=ChIJY0ZBbm82cUcRrcEmalllwRY" target="_blank">Hallstatt</a></div>
       <div class="cl">Train + Ferry <span class="chip-warn">Not booked yet</span></div>
       <h2 class="ct">07:30 Train to Hallstatt + ferry across the lake</h2>
-      <div class="cn">~1h30 total. Train to Hallstatt Bahnhof (on the lake's east shore), then <strong>ferry across</strong> (~10 min, EUR 3pp) — the village is on the west shore. <strong>⚠ Hallstatt train not booked yet.</strong> Trains fill up — book at oebb.at or use Eurail pass.</div>
+      <div class="cn">About <strong>2h15–2h45</strong> door to door: train to Attnang-Puchheim, change for Hallstatt Bahnhof (on the lake's east shore), then the <strong>ferry across</strong> (~10 min, ~EUR 3pp) to the village on the west shore. In the village by about 10:00. <strong>⚠ Not booked yet</strong>: book at oebb.at or use the Eurail pass. Sit on the ferry's open deck: in November it may be your only time on the water (see the boat ride below).</div>
     </div>
   </div>
 
-  <div class="sec">Morning · Village</div>
+  <div class="sec">Morning · The two Hallstatt anchors</div>
 
   <div class="bl ts anchor" data-id="d4-village-walk-lakeside-amp-ma">
-    <div class="bt">09:30</div><div class="bd"></div>
+    <div class="bt">~10:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Marktplatz+Hallstatt%2C+Marktplatz%2C+4830+Hallstatt&amp;query_place_id=ChIJJWh1Tm02cUcRMIiqBctIRhU" target="_blank">Hallstatt Market Square (Marktplatz)</a></div>
       <div class="cl">Sights</div>
       <h2 class="ct">Village walk — lakeside &amp; Market Square</h2>
-      <div class="cn">Hallstatt village is tiny — most of it is the lakeside promenade and main square. <strong>Marktplatz</strong> with the iconic church and mountains behind. Souvenir shops and cafés open early.</div>
+      <div class="cn">Hallstatt village is tiny — most of it is the lakeside promenade and main square. <strong>Marktplatz</strong> with the iconic church and mountains behind. Walk to the north end for the classic postcard view back over the rooftops.</div>
     </div>
   </div>
 
-  <div class="bl ts" data-id="d4-skywalk-welterbeblick-glass">
-    <div class="bt">10:30</div><div class="bd"></div>
+  <div class="bl ts anchor" data-id="d4-boat-ride-on-the-lake">
+    <div class="bt">~11:00</div><div class="bd"></div>
     <div class="card">
-      <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Hallstatt+Skywalk%2C+Salzberg+21%2C+4830+Hallstatt&amp;query_place_id=ChIJq7oizVA3cUcR4irrtZxljUk" target="_blank">Hallstatt Skywalk</a></div>
-      <div class="cl">Sights</div>
-      <h2 class="ct">Skywalk Welterbeblick — glass platform viewpoint</h2>
-      <div class="cn">Walk or take the funicular (EUR 15pp return) to the <strong>Skywalk</strong> glass viewing platform. <strong>Best view in Hallstatt</strong> — the village below, the lake, and the Alps. Allow ~1.5h up here.</div>
+      <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Hallst%C3%A4tter+See%2C+Hallst%C3%A4tter+See&amp;query_place_id=ChIJb6x8KAM2cUcR8gBKwDPdb2c" target="_blank">Hallstatt Lake</a></div>
+      <div class="cl">Activity <span class="chip-warn">Check it's open</span></div>
+      <h2 class="ct">Boat ride on the lake</h2>
+      <div class="cn">Rowboat or electric-boat hire on <strong>Hallstätter See</strong>. The view back to the village from the water is one of the best shots in Austria. ~EUR 10–15 for a rowboat hour. <strong>⚠ The hire places list their season as May–September</strong>, so it may be shut on 1 Nov. If so, the ferry crossing is your boat ride.</div>
     </div>
   </div>
-
-  <div class="sec">Midday · Lunch + Lake</div>
 
   <div class="bl te" data-id="d4-lunch">
     <div class="bt">~12:00</div><div class="bd"></div>
     <div class="card">
-      <div class="cl">Lunch</div>
+      <div class="cl">Lunch <span class="chip-warn">Check it's open</span></div>
       <div class="ol">Options</div>
       <div class="og">
         <div class="oc">
-          <div><div class="on"><a href="https://www.google.com/maps/search/?api=1&amp;query=Die+Kapelle+Hallstatt" target="_blank">Die Kapelle</a></div><div class="oo">Your saved place. Lakeside restaurant in Hallstatt village.</div></div>
+          <div><div class="on"><a href="https://www.google.com/maps/search/?api=1&amp;query=Die+Kapelle+Hallstatt" target="_blank">Die Kapelle</a></div><div class="oo">Your saved place. Lakeside restaurant in Hallstatt village. 1 Nov is a public holiday in low season: check it's open that day.</div></div>
           <div class="ot">Lakeside</div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="bl ts anchor" data-id="d4-boat-ride-on-the-lake">
-    <div class="bt">~12:00</div><div class="bd"></div>
+  <div class="sec">Afternoon · Pick one</div>
+
+  <div class="wb"><strong>Both anchors are done by lunch, so the afternoon is yours to choose.</strong> Option A stays in Hallstatt for the Skywalk and the Bone Chapel and goes home by train. Option B takes the bus to the Gosausee for the Dachstein view and goes home by bus. Decide on the day, by the weather. Sunset is around 16:40, so either way the light goes early.</div>
+
+  <div class="bl ts" style="margin-top:16px" data-id="d4-skywalk-welterbeblick-glass">
+    <div class="bt">~13:00</div><div class="bd"></div>
     <div class="card">
-      <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Hallst%C3%A4tter+See%2C+Hallst%C3%A4tter+See&amp;query_place_id=ChIJb6x8KAM2cUcR8gBKwDPdb2c" target="_blank">Hallstatt Lake</a></div>
-      <div class="cl">Activity</div>
-      <h2 class="ct">Boat ride on the lake</h2>
-      <div class="cn">Rowboat hire or guided boat trip on <strong>Hallstätter See</strong>. The view back to the village from the water is one of the best shots in Austria. ~EUR 10–15 for a rowboat hour.</div>
+      <div class="tag">🅐 Option A · <a href="https://www.google.com/maps/search/?api=1&amp;query=Hallstatt+Skywalk%2C+Salzberg+21%2C+4830+Hallstatt&amp;query_place_id=ChIJq7oizVA3cUcR4irrtZxljUk" target="_blank">Hallstatt Skywalk</a></div>
+      <div class="cl">Sights <span class="chip-warn">Check hours</span></div>
+      <h2 class="ct">Skywalk Welterbeblick — glass platform viewpoint</h2>
+      <div class="cn">The funicular up to the <strong>Skywalk</strong> was rebuilt and reopened in late summer 2026 (return ticket around EUR 24–29). <strong>Best view in Hallstatt</strong>: the village below, the lake and the Alps. Allow ~1.5h. Check the November opening hours at salzwelten.at before you go up.</div>
     </div>
   </div>
 
-  <div class="sec">Afternoon · Bone Chapel + Return</div>
-
   <div class="bl ts" data-id="d4-bone-chapel-painted-skulls-o">
-    <div class="bt">14:30</div><div class="bd"></div>
+    <div class="bt">~15:00</div><div class="bd"></div>
     <div class="card">
-      <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Beinhaus%2C+Friedhof+164%2C+4830+Hallstatt&amp;query_place_id=ChIJHQk3Xw02cUcRBO05NLajENc" target="_blank">Beinhaus (Bone Chapel)</a></div>
+      <div class="tag">🅐 Option A · <a href="https://www.google.com/maps/search/?api=1&amp;query=Beinhaus%2C+Friedhof+164%2C+4830+Hallstatt&amp;query_place_id=ChIJHQk3Xw02cUcRBO05NLajENc" target="_blank">Beinhaus (Bone Chapel)</a></div>
       <div class="cl">Sights</div>
       <h2 class="ct">Bone Chapel — painted skulls ossuary</h2>
       <div class="cn">Tiny chapel next to the parish church with over 1,200 <strong>painted and decorated skulls</strong> — a uniquely macabre Alpine tradition. EUR 1.50pp. Worth the 5 min detour. <br><strong>Optional:</strong> Salt Mine tour (~2h, EUR 35pp) if you want to go underground.</div>
@@ -1247,15 +1297,37 @@ html.dlg-open{overflow:hidden}
   <div class="bl ta" data-id="d4-return-ferry-train-to-salzbu">
     <div class="bt">~16:30</div><div class="bd"></div>
     <div class="card">
-      <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Hallstatt%2C+Hallstatt&amp;query_place_id=ChIJY0ZBbm82cUcRrcEmalllwRY" target="_blank">Hallstatt</a> → <a href="https://www.google.com/maps/search/?api=1&amp;query=Salzburg+Hauptbahnhof%2C+5020+Salzburg&amp;query_place_id=ChIJT2PH83iQdkcRnEDVqlb-Avs" target="_blank">Salzburg</a></div>
+      <div class="tag">🅐 Option A · <a href="https://www.google.com/maps/search/?api=1&amp;query=Hallstatt%2C+Hallstatt&amp;query_place_id=ChIJY0ZBbm82cUcRrcEmalllwRY" target="_blank">Hallstatt</a> → <a href="https://www.google.com/maps/search/?api=1&amp;query=Salzburg+Hauptbahnhof%2C+5020+Salzburg&amp;query_place_id=ChIJT2PH83iQdkcRnEDVqlb-Avs" target="_blank">Salzburg Hbf</a></div>
       <div class="cl">Transit</div>
       <h2 class="ct">Return ferry + train to Salzburg</h2>
-      <div class="cn">Ferry back across the lake, then train to Salzburg. Aim to arrive Salzburg by 18:00–18:30. Evening free — dinner at Die Weisse or Café Mozart.</div>
+      <div class="cn">Ferry back across the lake, then train via Attnang-Puchheim. Back in Salzburg around 19:00.</div>
     </div>
   </div>
 
+  <div class="bl ts plan-b" data-id="d4-gosausee-by-bus">
+    <div class="bt">Option B</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">🅑 Option B · <span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Vorderer+Gosausee%2C+Gosau" target="_blank">Vorderer Gosausee</a></div>
+      <div class="cl">Lake walk · by bus</div>
+      <h2 class="ct">Gosausee: the Dachstein reflected in the lake</h2>
+      <div class="cn"><strong>~13:00</strong> Bus from Hallstatt (Lahn stop, south end of the village) to <a href="https://www.google.com/maps/search/?api=1&amp;query=Gosaum%C3%BChle+bus+stop%2C+Hallstatt" target="_blank">Gosaumühle</a>, then change for Gosau, to the end of the line at the lake (Hintertal b. Gosau, Vorderer Gosausee). About an hour in all.<br><strong>~14:00</strong> Walk round the <strong>Vorderer Gosausee</strong>: about an hour on a flat path, with the Dachstein glacier reflected in the water.<br>Skip the 4-hour three-lakes hike the guide describes: it needs a full day of daylight, and November has about nine hours.</div>
+    </div>
+  </div>
+
+  <div class="bl ta plan-b" data-id="d4-gosau-bus-home">
+    <div class="bt">Option B</div><div class="bd"></div>
+    <div class="card">
+      <div class="tag">🅑 Option B · Gosausee → Bad Ischl → Salzburg</div>
+      <div class="cl">Transit · bus <span class="chip-warn">Check Sunday buses</span></div>
+      <h2 class="ct">Bus home via Bad Ischl</h2>
+      <div class="cn"><strong>~15:30</strong> Bus back to Gosaumühle, change to Bad Ischl, then <strong>bus 150</strong> to Salzburg. About 2h30; home around 18:30–19:00.<br><strong>If there's time</strong>, get off at Gosau Wirtsweg (one stop before Gosau Abzw. Pass Gschütt): walk up past the church to the pub at the top, then on to the Abzw. stop (~1h) and catch the next bus.<br><strong>Tickets:</strong> the Upper Austria <strong>Freizeit-Ticket</strong> (~EUR 26.50, for up to two adults) covers these buses all day on Sundays and holidays, and works out cheaper than single fares. Line 150 is covered only as far as Koppl, so buy the last stretch into Salzburg separately.<br><strong>Tips from the guide:</strong> plan each leg on its own in the ÖBB app (Scotty) and screenshot the other departures; in the lake area it's more accurate than Google Maps. The route number on a waiting bus can change before it leaves, so check the departure time before you get off and confirm the destination with the driver. Sunday buses are less frequent: don't miss the last-but-one.</div>
+    </div>
+  </div>
+
+  <div class="sec">Evening · Salzburg</div>
+
   <div class="bl te" data-id="d4-dinner-in-salzburg-pick-one">
-    <div class="bt">~19:00</div><div class="bd"></div>
+    <div class="bt">~19:30</div><div class="bd"></div>
     <div class="card">
       <div class="cl">Dinner in Salzburg — pick one</div>
       <div class="ol">Options</div>
@@ -1273,7 +1345,7 @@ html.dlg-open{overflow:hidden}
   </div>
 
 </div>
-<div class="wb"><strong>Hallstatt train not booked yet.</strong> Book at oebb.at — trains fill up, especially on weekends. Sunday 1 Nov is All Saints Day (public holiday in Austria) — check if any sites close early.</div>
+<div class="wb"><strong>Hallstatt train not booked yet.</strong> Book at oebb.at — trains fill up, especially on weekends. <strong>Sunday 1 Nov is All Saints' Day</strong>, a public holiday in Austria, and it's low season in Hallstatt: check Die Kapelle, the boat hire and the Skywalk hours, and expect Sunday bus and train timetables.</div>
 </div></div>
 
 <!-- ══════════════════════════════════════════════════════════
@@ -1929,6 +2001,22 @@ html.dlg-open{overflow:hidden}
 
 </div></div>
 
+<div class="page" id="todo">
+<div class="day-wrap">
+  <div class="header">
+    <h1 class="header-title">To do</h1>
+    <div class="header-sub">Bookings and checks before the trip. Tick them off as you go, and add your own.</div>
+  </div>
+  <div class="td-prog" id="tdProg"></div>
+  <form class="td-add" id="tdAdd" autocomplete="off">
+    <input id="tdIn" type="text" maxlength="200" placeholder="Add something to do…" aria-label="New to-do item" enterkeyhint="done">
+    <select id="tdDay" aria-label="For which day"><option value="">Any day</option></select>
+    <button type="submit"><span class="ms" aria-hidden="true">add</span>Add</button>
+  </form>
+  <div id="tdList"></div>
+  <p class="td-sync" id="tdSync"></p>
+</div>
+</div>
 <div class="page" id="search">
 <div class="day-wrap">
   <div class="header">
@@ -2117,8 +2205,14 @@ var SYNC=(function(){
     push:push,
     setBlock:function(id,v){push({kind:'block',id:id,value:v&&Object.keys(v).length?v:null});},
     block:function(id){return load(K.block,{})[id]||null;},
+    blocks:function(){return load(K.block,{});},
     original:function(id){var o=orig[id];return o?{day:o.day,start:hhmm(o.bt.replace(/<[^>]+>/g,' ')),end:o.end||''}:null;},
-    reset:function(){push({reset:true});save(K.wp,{});save(K.move,{});save(K.block,{});applyBlocks();changed('data');},
+    reset:function(){   // undo schedule edits, waypoints and moves; the to-do list stays
+      var b=load(K.block,{}),keep=Object.keys(b).filter(function(k){return k.indexOf('todo:')===0;});
+      push({reset:true});save(K.wp,{});save(K.move,{});save(K.block,{});applyBlocks();
+      keep.forEach(function(k){push({kind:'block',id:k,value:b[k]});});
+      changed('data');
+    },
     now:function(){return flush().then(pull);},
     onChange:function(f){hooks.push(f);},
     status:function(){return st;}
@@ -2195,6 +2289,8 @@ var TRIPMAP=(function(){
     skywalk:{n:"Hallstatt Skywalk",cat:"viewpoint",ll:[47.56132,13.643614],pid:"ChIJq7oizVA3cUcR4irrtZxljUk"},
     kapelle:{n:"Die Kapelle",cat:"restaurant",ll:[47.563037,13.648791],q:"Die Kapelle Hallstatt",chk:1},
     hallstaetter_see:{n:"Hallstätter See boat ride",cat:"boat",ll:[47.578608,13.662877],pid:"ChIJb6x8KAM2cUcR8gBKwDPdb2c"},
+    gosausee:{n:"Vorderer Gosausee",cat:"lake",ll:[47.527748,13.508147],q:"Vorderer Gosausee, Gosau",city:"HLT"},
+    gosaumuehle:{n:"Gosaumühle (bus change)",cat:"train",ll:[47.593126,13.651436],q:"Gosaumühle bus stop, Hallstatt",city:"HLT"},
     beinhaus:{n:"Beinhaus (Bone Chapel)",cat:"church",ll:[47.563628,13.648724],pid:"ChIJHQk3Xw02cUcRBO05NLajENc"},
     // Budapest
     keleti:{n:"Budapest-Keleti",cat:"train",ll:[47.500442,19.083988],pid:"ChIJn2oLxYncQUcRDTkAlLx_Ako"},
@@ -2644,6 +2740,7 @@ var TRIPMAP=(function(){
     "castle_hill":{"f": "images/castle_hill.jpg", "a": "Varius", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Budav%C3%A1ri_Palota,_ABCDEF_%C3%A9p%C3%BClet.jpg"},
     "central_market":{"f": "images/central_market.jpg", "a": "Thaler Tamas", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:VasarcsarnokFotoThalerTamas.JPG"},
     "chain_bridge":{"f": "images/chain_bridge.jpg", "a": "Wilfredor", "l": "CC0", "u": "https://commons.wikimedia.org/wiki/File:Sz%C3%A9chenyi_Chain_Bridge_in_Budapest_at_night.jpg"},
+    "gosausee":{"f": "images/gosausee.jpg", "a": "AtterseeMM", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Vorderer_Gosausee_mit_Dachstein.jpg"},
     "demel":{"f": "images/demel.jpg", "a": "Johann Werfring", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Demel_aussen.jpg"},
     "dohany":{"f": "images/dohany.jpg", "a": "The original uploader was OsvátA at Hungarian Wikipedia.", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Synagogue-Budapest.jpg"},
     "e:albertina":{"f": "images/x_albertina.jpg", "a": "C.Stadler/Bwag", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Wien_-_Albertina.JPG"},
@@ -3103,7 +3200,7 @@ var TRIPMAP=(function(){
   }
   function renderEdits(){
     var el=document.getElementById('mapEdits'),ids=Object.keys(S.moves),wds=Object.keys(S.wps),blocks=load('et_blocks')||{};
-    var wn=wds.reduce(function(n,d){return n+S.wps[d].length;},0),bn=Object.keys(blocks).length,st=window.SYNC&&SYNC.status(),on=st&&st.on;
+    var wn=wds.reduce(function(n,d){return n+S.wps[d].length;},0),bn=Object.keys(blocks).filter(function(k){return k.indexOf('todo:')!==0;}).length,st=window.SYNC&&SYNC.status(),on=st&&st.on;
     el.hidden=!on&&!ids.length&&!wn&&!bn;
     if(el.hidden)return;
     var what=[];
@@ -3793,24 +3890,14 @@ var SCHEDVIEW=(function(){
       prev=Math.max(prev,s);
     });
   }
-  function apply(){
-    document.querySelectorAll('.page[id^="day"]').forEach(function(pg){
+  function apply(only){   // only: one day page (opening a day); none: every day (the view switch, the clock)
+    (only ? [only] : document.querySelectorAll('.page[id^="day"]')).forEach(function(pg){
       pg.classList.toggle('cal-on',view==='cal');
       pg.querySelectorAll('.vt button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.v===view);});
       today(pg);
       if(view==='cal'&&pg.classList.contains('active'))build(pg);
     });
   }
-  // what still needs booking or confirming, across the whole trip
-  var todo=[];
-  document.querySelectorAll('.page[id^="day"]').forEach(function(pg){
-    var d=+pg.id.slice(3);
-    blocks(pg).forEach(function(b){
-      var c=b.querySelector('.card'),t=txt(c.querySelector('.ct,.card-title'));
-      if(c.querySelector('.chip-warn'))todo.push('<a href="#day'+d+'">'+esc(t)+'</a> (Day '+d+')');
-      else if(/\bTBC\b/.test(txt(c.querySelector('.tag,.cluster-tag'))))todo.push('<a href="#day'+d+'">'+esc(t)+' — pier to confirm</a> (Day '+d+')');
-    });
-  });
   var KEYHTML='<details class="key"><summary><span class="ms" aria-hidden="true">help</span>What the badges mean</summary><dl>'+
     '<dt>Anchor</dt><dd>A must-do for this day. It stays on this day on the map.</dd>'+
     '<dt>Waypoint</dt><dd>A place you confirmed for this day. It joins the route on the map (saved on this device).</dd>'+
@@ -3820,7 +3907,7 @@ var SCHEDVIEW=(function(){
   document.querySelectorAll('.page[id^="day"]').forEach(function(pg){
     var hdr=pg.querySelector('.hdr,.header'),tl=pg.querySelector('.tl,.timeline'),leg=pg.querySelector('.leg,.legend');
     hdr.insertAdjacentHTML('afterend','<div class="nowbar" role="status" hidden></div>'+
-      (todo.length?'<p class="tobook"><span class="ms" aria-hidden="true">warning</span><b>Still to sort:</b> '+todo.join(' · ')+'</p>':'')+
+      '<p class="tobook" hidden></p>'+   // filled by TODO: this day's open items
       '<div class="vt" role="tablist" aria-label="Schedule view">'+
       '<button type="button" role="tab" data-v="list"><span class="ms" aria-hidden="true">view_agenda</span>List</button>'+
       '<button type="button" role="tab" data-v="cal"><span class="ms" aria-hidden="true">calendar_view_day</span>Calendar</button></div>');
@@ -3840,11 +3927,124 @@ var SCHEDVIEW=(function(){
     checkOrder(pg);
   });
   apply();
-  setInterval(apply,60000);   // keep Now / Next and the now line current
+  setInterval(function(){apply();},60000);   // keep Now / Next and the now line current
   // where a block ends (its data-end, or worked out from its type and the next block)
   function endOf(b){var pg=b.closest('.page'),ev=pg&&events(pg).timed.filter(function(e){return e.b===b;})[0];return ev?clock(ev.e):'';}
   if(window.SYNC)SYNC.onChange(function(w){if(w==='data'){document.querySelectorAll('.page[id^="day"]').forEach(checkOrder);apply();}});
   return {refresh:apply,today:todayDay,endOf:endOf};
+})();
+</script>
+<script>
+/* ── TO DO ── what still needs booking or checking, plus anything you add.
+   Ticks and your own items are shared through the sheet like other changes (rows named todo:…).
+   blk: the schedule card(s) an item belongs to; their warning chip turns to "Done" when it's ticked. */
+var TODO=(function(){
+  var SEED=[
+    {id:'hallstatt-train',g:'book',day:4,blk:['d4-07-30-train-to-hallstatt-fer'],t:'Book the Salzburg → Hallstatt train (Sun 1 Nov, 07:30)',
+      n:'Trains fill up on weekends. One change at Attnang-Puchheim, then the ferry.',links:[['ÖBB tickets','https://www.oebb.at/en/']]},
+    {id:'hohenwerfen',g:'book',day:3,blk:['d3-werfen-hohenwerfen-castle-go'],t:'Book Hohenwerfen Castle entry (Sat 31 Oct)',
+      n:'Online tickets can\'t be cancelled; the ticket on your phone is scanned at the turnstile.',links:[['Hohenwerfen tickets','https://tickets.burg-hohenwerfen.at/en']]},
+    {id:'figlmueller',g:'book',day:1,blk:['d1-dinner-pick-one'],t:'Reserve a table at Figlmüller (Day 1 dinner)',
+      n:'No online booking page: phone +43 1 512 61 77, or see their FAQ. Bäckerstraße is easier for walk-ins.',links:[['Figlmüller FAQ','https://www.figlmueller.at/en/faq/']]},
+    {id:'prosecco',g:'book',day:7,blk:['d7-prosecco-boat-tour'],t:'Book the prosecco boat tour, and note its pier',
+      n:'Add the departure pier to Day 7 so it gets a pin on the map.'},
+    {id:'szechenyi',g:'book',day:8,blk:['d8-szechenyi-thermal-baths'],t:'Buy Széchenyi Baths tickets (optional)',
+      n:'Sales open 2–3 weeks before the date. No refunds or date changes.',links:[['Széchenyi webshop','https://tickets.szechenyibath.hu/']]},
+    {id:'d4-open',g:'check',day:4,blk:['d4-boat-ride-on-the-lake','d4-lunch','d4-skywalk-welterbeblick-glass'],t:'Check what\'s open in Hallstatt on Sun 1 Nov',
+      n:'All Saints\' Day (public holiday) in low season: Die Kapelle, the boat hire (listed May–September) and the Skywalk funicular\'s November hours.',links:[['Salzwelten (Skywalk)','https://www.salzwelten.at/en/']]},
+    {id:'d4-bus',g:'check',day:4,blk:['d4-gosau-bus-home'],t:'Going to the Gosausee? Check the Sunday bus times',
+      n:'The winter Sunday and holiday timetable has fewer buses. Plan each leg in the ÖBB app and screenshot the alternatives.',
+      links:[['ÖBB journey planner','https://fahrplan.oebb.at/'],['Bus 543 timetable','https://www.ooevv.at/fileadmin/OOEVV/Downloads/Fahrplaene/543.pdf']]},
+    {id:'werfen-monday',g:'check',day:3,t:'Plan B check: Hohenwerfen may be closed on Mondays',
+      n:'Day 3\'s Plan B moves Werfen to Day 5 (Mon 2 Nov). Check the castle\'s opening days before relying on it.',links:[['Hohenwerfen tickets','https://tickets.burg-hohenwerfen.at/en']]},
+    {id:'christkindl',g:'check',day:9,blk:['d9-vienna-christmas-market-step'],t:'Check the Christmas market opening date',
+      links:[['christkindlmarkt.at','https://www.christkindlmarkt.at/']]},
+    {id:'scoot-bags',g:'check',day:10,blk:['d10-arrive-airport-check-in-amp'],t:'Check the Scoot baggage allowance (TR711)',
+      links:[['Scoot','https://www.flyscoot.com/']]},
+    {id:'install',g:'prep',t:'Add this site to your home screen, and open it once with signal',
+      n:'It then opens without signal on the trip: schedules, photos and Find. The map shows the areas you\'ve already looked at.'},
+    {id:'offline-maps',g:'prep',t:'Download Google Maps offline areas: Vienna, Salzburg, Hallstatt and Gosau, Budapest',
+      n:'Every pin opens Google Maps, and offline areas keep its directions working without signal.'},
+    {id:'tickets-offline',g:'prep',t:'Save every ticket and booking PDF on your phone, not only in Google Drive'}
+  ];
+  var GROUPS=[['book','To book'],['check','To check'],['prep','Before you fly'],['mine','Added by you']];
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function rows(){return window.SYNC?SYNC.blocks():{};}
+  function set(id,v){if(window.SYNC)SYNC.setBlock('todo:'+id,v);}
+  function items(){
+    var b=rows(),out=[];
+    SEED.forEach(function(it){var v=b['todo:'+it.id],o={};for(var k in it)o[k]=it[k];o.done=!!(v&&v.d);out.push(o);});
+    Object.keys(b).forEach(function(k){
+      var v=b[k];if(k.indexOf('todo:u')!==0||!v||!v.t)return;
+      out.push({id:k.slice(5),g:'mine',t:v.t,day:v.day||null,done:!!v.d,mine:true,at:v.at||0});
+    });
+    return out;
+  }
+  function row(i){
+    var more=i.n||i.day||(i.links&&i.links.length)||i.mine;
+    return '<li class="td-i'+(i.done?' done':'')+'"><label class="td-c"><input type="checkbox" data-td="'+esc(i.id)+'"'+(i.done?' checked':'')+'>'+
+      '<span class="td-t">'+esc(i.t)+'</span></label>'+
+      (more?'<div class="td-x">'+(i.n?'<p class="td-n">'+esc(i.n)+'</p>':'')+'<div class="td-a">'+
+        (i.day?'<a class="td-day" href="#day'+i.day+'">Day '+i.day+'</a>':'')+
+        (i.links||[]).map(function(l){return '<a class="td-link" href="'+esc(l[1])+'" target="_blank" rel="noopener">'+esc(l[0])+'<span class="ms" aria-hidden="true">open_in_new</span></a>';}).join('')+
+        (i.mine?'<button type="button" class="td-del" data-del="'+esc(i.id)+'" aria-label="Remove: '+esc(i.t)+'"><span class="ms" aria-hidden="true">delete</span></button>':'')+
+      '</div></div>':'')+'</li>';
+  }
+  // the list page
+  function render(){
+    var el=document.getElementById('tdList');if(!el)return;
+    var all=items(),left=all.filter(function(i){return !i.done;}).length,h='';
+    document.getElementById('tdProg').innerHTML='<div class="td-bar"><span style="width:'+Math.round((all.length-left)/Math.max(1,all.length)*100)+'%"></span></div>'+
+      '<p><b>'+(all.length-left)+' of '+all.length+' done</b>'+(left?' · '+left+' to go':' · all done')+'</p>';
+    GROUPS.forEach(function(g){
+      var gi=all.filter(function(i){return i.g===g[0];});if(!gi.length)return;
+      gi.sort(function(a,b){return a.done-b.done||(a.day||99)-(b.day||99)||(a.at||0)-(b.at||0);});
+      var gl=gi.filter(function(i){return !i.done;}).length;
+      h+='<h2 class="td-h">'+g[1]+'<small>'+(gl?gl+' left':'all done')+'</small></h2><ul class="td-list">'+gi.map(row).join('')+'</ul>';
+    });
+    el.innerHTML=h;
+    var st=window.SYNC&&SYNC.status();
+    document.getElementById('tdSync').textContent=st&&st.on?(st.err||'Shared through the sheet with everyone on the trip.'):'Saved on this phone only.';
+  }
+  // everywhere else: the count on the tab, each day's "still to do" strip, and the warning chips
+  function marks(){
+    var all=items(),left=all.filter(function(i){return !i.done;});
+    var tn=document.getElementById('tdTabN');if(tn)tn.textContent=left.length?left.length+' left':'All done';
+    document.querySelectorAll('.page[id^="day"] .tobook').forEach(function(el){
+      var d=+el.closest('.page').id.slice(3),mine=left.filter(function(i){return i.day===d;});
+      el.hidden=!left.length;if(!left.length)return;
+      el.innerHTML='<span class="ms" aria-hidden="true">checklist</span><span>'+(mine.length?'<b>To do for this day:</b> '+mine.map(function(i){return esc(i.t);}).join(' · ')+' · ':'<b>Still to do:</b> ')+
+        '<a href="#todo">'+(mine.length?'See all '+left.length:left.length+' item'+(left.length>1?'s':'')+' on the to-do list')+'</a></span>';
+    });
+    all.forEach(function(i){
+      (i.blk||[]).forEach(function(id){
+        var c=document.querySelector('[data-id="'+id+'"] .chip-warn,[data-id="'+id+'"] .chip-ok[data-was]');if(!c)return;
+        if(i.done&&!c.dataset.was){c.dataset.was=c.textContent;c.className='chip-ok';c.textContent='Done';}
+        else if(!i.done&&c.dataset.was){c.className='chip-warn';c.textContent=c.dataset.was;delete c.dataset.was;}
+      });
+    });
+  }
+  var page=document.getElementById('todo');
+  page.addEventListener('change',function(e){
+    var cb=e.target.closest('[data-td]');if(!cb)return;
+    var id=cb.dataset.td,v=rows()['todo:'+id];
+    if(id.charAt(0)==='u'){if(v){v.d=cb.checked?1:0;set(id,v);}}
+    else set(id,cb.checked?{d:1}:null);
+  });
+  page.addEventListener('click',function(e){
+    var b=e.target.closest('[data-del]');if(b)set(b.dataset.del,null);
+  });
+  var form=document.getElementById('tdAdd'),inp=document.getElementById('tdIn'),sel=document.getElementById('tdDay');
+  for(var n=1;n<=10;n++)sel.insertAdjacentHTML('beforeend','<option value="'+n+'">Day '+n+'</option>');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var t=inp.value.trim().slice(0,200);if(!t)return;
+    set('u'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),{t:t,day:+sel.value||null,d:0,at:Date.now()});
+    inp.value='';inp.focus();
+  });
+  if(window.SYNC)SYNC.onChange(function(){render();marks();});
+  render();marks();
+  return {render:render,left:function(){return items().filter(function(i){return !i.done;}).length;}};
 })();
 </script>
 <script>
@@ -3875,23 +4075,33 @@ var SCHEDVIEW=(function(){
   // photos above the saved spot can still be loading on first open: go back to it once they're in
   window.addEventListener('load', function(){ if(!userMoved && shownId) window.scrollTo(0, pos[shownId] || 0); });
 
+  // keep the current day in the top row: only move the row when the tab is near or past an edge
+  var navEl = document.getElementById('nav');
+  function revealTab(at){
+    var w = navEl.clientWidth, l = at.offsetLeft, r = l + at.offsetWidth, s = navEl.scrollLeft, pad = at.offsetWidth*.75;
+    if(l - pad >= s && r + pad <= s + w) return;
+    var to = Math.max(0, Math.min(l - (w - at.offsetWidth)/2, navEl.scrollWidth - w));
+    navEl.scrollTo({left:to, behavior: still.matches ? 'auto' : 'smooth'});
+  }
+
   function show(n){
     var id = isNaN(n) ? n : 'day'+n;
     keepScroll();
     days.forEach(function(d){ d.classList.toggle('active', d.id===id); });
     shownId = id;
     window.scrollTo(0, pos[id] || 0);
-    if(window.SCHEDVIEW) SCHEDVIEW.refresh();
+    if(window.SCHEDVIEW && !isNaN(n)) SCHEDVIEW.refresh(document.getElementById(id));   // just the day being opened
     tabs.forEach(function(t){
       var on = t.dataset.day===String(n);
       t.classList.toggle('active', on); t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
     });
     var at = document.querySelector('.nav-tab.active');
-    if(at) at.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+    if(at && at.offsetWidth) revealTab(at);
     try{ localStorage.setItem('et_day', n); }catch(e){}
     if(window.updateBnav) updateBnav(n);
     if(n==='map' && window.TRIPMAP) TRIPMAP.show();
     if(n==='search' && window.TRIPMAP) TRIPMAP.search();
+    if(n==='todo' && window.TODO) TODO.render();
     if(!isNaN(n)) (window.requestIdleCallback || setTimeout)(function(){ warm(n); });
   }
   // fetch and decode the photos of the days either side, so a swipe doesn't show them popping in
@@ -3908,7 +4118,7 @@ var SCHEDVIEW=(function(){
     show(n);
   }
   function fromHash(){
-    if(location.hash==='#map' || location.hash==='#search') return location.hash.slice(1);
+    if(/^#(map|search|todo)$/.test(location.hash)) return location.hash.slice(1);
     var m = location.hash.match(/^#day(\d+)$/);
     return m ? parseInt(m[1],10) : null;
   }
@@ -3968,7 +4178,9 @@ var SCHEDVIEW=(function(){
     }
     var h = '<div class="dlg-sheet"><button type="button" class="dlg-x" aria-label="Close"><span class="ms" aria-hidden="true">close</span></button>'+
       '<div class="dlg-body"><h2 class="dpk-h">Go to</h2><div class="dpk-grid">';
-    order.filter(function(v){ return v!=='search'; }).forEach(function(v){
+    var tl = window.TODO ? TODO.left() : 0;   // Map and Find have their own buttons; the list doesn't
+    h += '<button type="button" class="dpk-tile dpk-todo'+(cur==='todo'?' on':'')+'" data-go="todo"><b>To do</b><small>'+(tl ? tl+' left' : 'All done')+'</small></button>';
+    order.filter(function(v){ return !isNaN(v); }).forEach(function(v){
       var t = tabFor(v), pg = document.getElementById(v==='map' ? 'map' : 'day'+v);
       var date = pg && pg.querySelector('.header-eyebrow,.eye');
       var city = t.querySelector('.nav-tab-city').textContent.split('·').pop().trim();
@@ -4061,8 +4273,14 @@ var SCHEDVIEW=(function(){
   // open on: the address, else today (during the trip), else the last day viewed
   var init = fromHash() || td;
   if(!init){ try{ var sv=localStorage.getItem('et_day')||'1'; init = isNaN(sv) ? sv : parseInt(sv,10); }catch(e){ init=1; } }
-  if(init!=='map' && init!=='search' && (!init || init<1 || init>10)) init=1;
+  if(isNaN(init) ? !tabFor(init) : (init<1 || init>10)) init=1;
   show(init);
 })();
+</script>
+<script>
+/* works offline after one visit with signal (sw.js); needs https, or localhost for testing */
+if('serviceWorker' in navigator && (location.protocol==='https:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname))){
+  window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(e){ console.warn('[offline] not available', e); }); });
+}
 </script>
 </body></html>

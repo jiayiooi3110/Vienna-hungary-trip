@@ -7,6 +7,8 @@
    EXTRAS keys in index.html ("e:" = an Extra). A place missing here is still found by
    its name, category and notes. */
 window.PLACE_TAGS={
+  "gosausee":"lake, view, dachstein, mountains, glacier, reflection, walk, hike, nature, gosau, salzkammergut, hallstatt",
+  "gosaumuehle":"bus, bus change, transport, gosau, hallstatt",
   "decentral":"coffee, melange, apfelstrudel, strudel, cake, cafe, open early, vienna, wien",
   "demel":"cake, chocolate, sachertorte, confectioner, pastry, cafe, coffee, vegetarian, vegan, outdoor seating, terrace, wheelchair accessible, vienna, wien",
   "stephansdom":"church, cathedral, catholic, wheelchair accessible, heritage, gothic, open early, vienna, wien",

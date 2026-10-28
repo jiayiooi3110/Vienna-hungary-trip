@@ -5,6 +5,7 @@ Everything you change on the trip site is shared between your phones through one
 - waypoints (✓)
 - day moves on the map
 - schedule edits: a block's start time, end time, day, and personal note
+- the to-do list: what's ticked off, and items you add
 
 Until this is set up, changes stay on the phone where you made them.
 
@@ -79,6 +80,10 @@ The `TripMap` tab is readable and you can edit it. The site picks up changes wit
 | `wp` | `5\|cafe_mozart` | `1` | Café Mozart is a waypoint on Day 5 |
 | `move` | `poeschl@5` | `9` | Gasthaus Pöschl moved from Day 5 to Day 9 on the map |
 | `block` | `d7-ervin-szabo-library` | `{"start":"15:00","end":"16:00","day":7,"note":"…"}` | That schedule block's new time, day or note |
+| `block` | `todo:hallstatt-train` | `{"d":1}` | A to-do from the list is ticked off |
+| `block` | `todo:ulx3k9a2b` | `{"t":"Buy the Freizeit-Ticket","day":4,"d":0}` | An item you added to the to-do list (`d`: 1 once ticked) |
+
+To-do rows use the `block` kind with a `todo:` id, so they work with the script you already deployed: no update needed. The map's **Reset** button undoes schedule edits, waypoints and moves, but keeps the to-do list.
 
 - **Undo one change:** delete its row.
 - **Find a block's id:** it's in `index.html` as `data-id="…"` on each card.
