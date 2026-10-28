@@ -3,7 +3,7 @@
 <title>Central Europe · Oct–Nov 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,500,1,0&icon_names=attractions,cake,calendar_month,calendar_view_day,castle,chevron_left,chevron_right,check,check_circle,church,close,directions,directions_boat,directions_car,directions_walk,edit,fastfood,flight,help,hot_tub,hotel,info,landscape,local_cafe,local_library,location_city,location_on,lock,map,museum,music_note,my_location,near_me,nightlife,open_in_new,park,restaurant,route,schedule,shopping_bag,star,storefront,synagogue,today,train,tune,view_agenda,warning,water,zoom_out_map&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,500,1,0&icon_names=attractions,cake,calendar_month,calendar_view_day,castle,chevron_left,chevron_right,check,check_circle,church,close,directions,directions_boat,directions_car,directions_walk,edit,event,explore,fastfood,flight,help,hot_tub,hotel,info,landscape,local_cafe,local_library,location_city,location_on,lock,map,museum,music_note,my_location,near_me,nightlife,open_in_new,park,restaurant,route,schedule,search,shopping_bag,star,storefront,synagogue,today,train,tune,view_agenda,warning,water,zoom_out_map&display=block" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.css">
 <style>
 /* ── tokens ─────────────────────────────────────────────── */
@@ -388,7 +388,7 @@ a{text-underline-offset:.18em}
 .chip.on .half{color:#fff}
 /* route time pills: walk + car per leg */
 .pin{z-index:1}
-.rleg{position:relative;display:inline-flex;align-items:center;gap:3px;padding:4px 9px 4px 6px;border-radius:999px;border:1px solid var(--border);
+.rleg{display:inline-flex;align-items:center;gap:3px;padding:4px 9px 4px 6px;border-radius:999px;border:1px solid var(--border);
   background:var(--card);color:var(--fg);box-shadow:0 1px 4px rgba(0,0,0,.18);text-decoration:none;white-space:nowrap;
   font:700 12px/1 'Inter',sans-serif;font-variant-numeric:tabular-nums;transition:transform 160ms var(--ease-out)}
 .rleg::after{content:'';position:absolute;inset:-9px -4px}   /* bigger tap area */
@@ -653,11 +653,66 @@ html.dlg-open{overflow:hidden}
 /* detail-sheet photo: the small version shows at once, the large one replaces it when loaded */
 .dlg-fig img{background:var(--accent-light) center/cover no-repeat}
 
+/* ── Find places ─────────────────────────────────────────── */
+.sq{position:sticky;top:var(--nav-h);z-index:50;margin:0 0 4px;padding:8px 0 6px;background:var(--bg);border-bottom:1px solid var(--border)}
+.sq-box{display:flex;align-items:center;gap:8px;min-height:52px;padding:0 6px 0 14px;border:1px solid var(--border);border-radius:14px;background:var(--card);
+  box-shadow:0 1px 2px rgba(26,23,20,.05);transition:border-color 150ms ease,box-shadow 150ms ease}
+.sq-box:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+.sq-box>.ms{font-size:22px;color:var(--muted)}
+.sq-box input{flex:1;min-width:0;min-height:48px;border:0;background:transparent;color:var(--fg);font:500 16px 'Inter',sans-serif;outline:none}
+.sq-box input::placeholder{color:var(--muted)}
+.sq-box input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+.sq-x{width:44px;height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:transparent;color:var(--muted);cursor:pointer}
+.sq-x .ms{font-size:20px}
+.sq .mf-top{margin-top:8px}
+.sq-count{margin:12px 0 0;font-size:13px;color:var(--muted)}
+.sr-h{display:flex;align-items:center;gap:8px;margin:22px 0 10px;font:700 19px/1.25 'Playfair Display',Georgia,serif}
+.sr-h .ms{font-size:20px;color:var(--accent)}
+.sr-h small{font:500 13px 'Inter',sans-serif;color:var(--muted)}
+.sr-list{list-style:none;display:grid;gap:10px}
+.sr{display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;align-items:start;padding:12px;border:1px solid var(--border);border-radius:14px;
+  background:var(--card);cursor:pointer;transition:border-color 150ms ease,box-shadow 150ms ease,transform 160ms var(--ease-out)}
+.sr:active{transform:scale(.99)}
+@media(hover:hover) and (pointer:fine){.sr:hover{border-color:color-mix(in srgb,var(--accent) 35%,var(--border));box-shadow:0 4px 14px -6px rgba(26,23,20,.18)}}
+.sr.anchor{border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}
+.sr.wp{border-color:color-mix(in srgb,var(--eat) 50%,var(--border))}
+.sr-ph{width:92px;height:92px;border-radius:10px;object-fit:cover;background:var(--accent-light)}
+.sr-ic{display:flex;align-items:center;justify-content:center;color:#fff}
+.sr-ic .ms{font-size:34px}
+.sr-main{min-width:0}
+.sr-n{font-size:16px;font-weight:600;line-height:1.3;text-wrap:balance}
+.sr-open{all:unset;cursor:pointer}
+.sr-open:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.sr-m{margin-top:3px;font-size:12px;line-height:1.5;color:var(--muted)}
+.sr-b{display:inline-flex;align-items:center;gap:2px;margin-right:6px;padding:1px 7px 1px 4px;border-radius:999px;color:#fff;font-size:11px;font-weight:600;vertical-align:1px}
+.sr-b .ms{font-size:13px}
+.sr-b.anchor{background:var(--accent)}.sr-b.wp{background:var(--eat)}
+.sr-s{margin-top:5px;font-size:13px;line-height:1.45;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sr-t{margin-top:5px;font-size:12px;line-height:1.5;color:var(--muted)}
+.dlg-tags{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 2px}
+.dlg-tags button{min-height:32px;padding:0 11px;border:1px solid var(--border);border-radius:999px;background:var(--bg);color:var(--fg);
+  font:500 13px/1 'Inter',sans-serif;cursor:pointer;transition:transform 160ms var(--ease-out),border-color 150ms ease}
+.dlg-tags button:active{transform:scale(.96)}
+@media(hover:hover) and (pointer:fine){.dlg-tags button:hover{border-color:var(--accent)}}
+.sr mark{background:color-mix(in srgb,var(--night) 32%,transparent);color:var(--fg);border-radius:3px;padding:0 1px}
+.sr-a{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.sr-btn{display:inline-flex;align-items:center;gap:5px;min-height:40px;padding:0 12px;border:1px solid var(--border);border-radius:10px;background:var(--bg);
+  color:var(--fg);font:600 13px/1 'Inter',sans-serif;text-decoration:none;cursor:pointer;transition:transform 160ms var(--ease-out)}
+.sr-btn:active{transform:scale(.97)}
+.sr-btn .ms{font-size:17px;color:var(--accent)}
+.sr-empty{margin-top:24px;padding:18px;border-radius:14px;background:var(--card);border:1px solid var(--border);font-size:14px;line-height:1.55;color:var(--muted)}
+.sr-empty b{color:var(--fg)}
+@media(max-width:420px){.sr{grid-template-columns:76px minmax(0,1fr);gap:12px}.sr-ph{width:76px;height:76px}}
+.dlg-add{grid-column:1/-1;display:grid;gap:5px;font-size:12px;font-weight:600;color:var(--muted)}
+.dlg-add select{width:100%;min-height:48px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--fg);font:500 16px 'Inter',sans-serif}
+.dlg-actions .dlg-sync{grid-column:1/-1}
+
 </style>
 </head><body>
 
 <!-- sticky day nav -->
 <nav class="nav" id="nav" role="tablist" aria-label="Day navigation">
+  <button class="nav-tab nav-tab-map" data-day="search" role="tab"><span class="nav-tab-day">Find</span><span class="nav-tab-city">Places</span></button>
   <button class="nav-tab nav-tab-map" data-day="map" role="tab"><span class="nav-tab-day">Map</span><span class="nav-tab-city">All days</span></button>
   <button class="nav-tab" data-day="1" role="tab"><span class="nav-tab-day">1</span><span class="nav-tab-city">Thu · Vienna</span></button>
   <button class="nav-tab" data-day="2" role="tab"><span class="nav-tab-day">2</span><span class="nav-tab-city">Fri · Vienna</span></button>
@@ -1863,6 +1918,32 @@ html.dlg-open{overflow:hidden}
 
 </div></div>
 
+<div class="page" id="search">
+<div class="day-wrap">
+  <div class="header">
+    <h1 class="header-title">Find places</h1>
+    <div class="header-sub">Every anchor, waypoint, stop and Extra. Search by name, type, or what a place is known for.</div>
+  </div>
+  <div class="sq">
+    <label class="sq-box"><span class="ms" aria-hidden="true">search</span>
+      <input id="sqIn" type="search" placeholder="Try “chocolate”, “view” or “Day 7”" autocomplete="off" enterkeyhint="search" aria-label="Search places">
+      <button type="button" class="sq-x" id="sqX" aria-label="Clear the search" hidden><span class="ms" aria-hidden="true">close</span></button>
+    </label>
+    <div class="mf-top">
+      <div class="mf-row" id="sqGroups" role="toolbar" aria-label="Show"></div>
+      <button type="button" class="chip mf-tog" id="sqTog" aria-expanded="false" aria-controls="sqMore"><span class="ms" aria-hidden="true">tune</span>Filters<b class="mf-n" id="sqN"></b></button>
+    </div>
+    <div id="sqMore" hidden>
+      <div class="mf-row" id="sqTypes" role="toolbar" aria-label="Type of place"></div>
+      <div class="mf-row" id="sqCities" role="toolbar" aria-label="City"></div>
+      <div class="mf-row" id="sqDays" role="toolbar" aria-label="Day"></div>
+    </div>
+  </div>
+  <p class="sq-count" id="sqCount" role="status"></p>
+  <div id="sqRes"></div>
+</div>
+</div>
+
 <div class="page" id="map">
 <div class="day-wrap map-wrap">
   <div class="header">
@@ -1889,6 +1970,7 @@ html.dlg-open{overflow:hidden}
 </div>
 </div>
 
+<script src="place-tags.js"></script>
 <script>
 /* ── SYNC ── everything you change on the site is shared through a Google Sheet tab:
    waypoints, map day moves, and schedule blocks (start / end time, day, note).
@@ -2495,7 +2577,7 @@ var TRIPMAP=(function(){
     if(!a.length)delete S.wps[d];
     save(WP_KEY,S.wps);
     if(window.SYNC)SYNC.push({kind:'wp',id:d+'|'+k,value:i>=0?null:1});
-    build();render(false);renderSched();renderThumbs();
+    build();render(false);renderSched();renderThumbs();searchStale();
     if(window.SCHEDVIEW)SCHEDVIEW.refresh();
   }
   // which PLACES entry a schedule link points to (null for links the map doesn't know)
@@ -3179,6 +3261,7 @@ var TRIPMAP=(function(){
     document.body.appendChild(dlg);
     dlg.addEventListener('click',function(e){
       if(e.target===dlg||e.target.closest('.dlg-x')){closeDlg();return;}
+      var tg=e.target.closest('[data-tag]');if(tg){closeDlg();findTag(tg.dataset.tag);return;}
       var b=e.target.closest('[data-act]');if(!b)return;
       if(b.dataset.act==='wp'){toggleWp(dlgCtx.p.key,dlgCtx.day);fillDlg();}
       else if(b.dataset.act==='save')saveEdit();
@@ -3186,6 +3269,11 @@ var TRIPMAP=(function(){
       else if(b.dataset.act==='map'){var c=dlgCtx;closeDlg();focusOnMap(c.day,c.p.key);}
     });
     dlg.addEventListener('close',function(){document.documentElement.classList.remove('dlg-open');});
+    dlg.addEventListener('change',function(e){
+      var sel=e.target.closest('[data-wpday]');if(!sel||!sel.value||!dlgCtx.place)return;
+      var d=+sel.value,had=((load(WP_KEY)||{})[d]||[]).indexOf(dlgCtx.place.key)>=0;
+      toggleWp(dlgCtx.place.key,d);dlgCtx.msg=had?'Removed from Day '+d+'.':'Added to Day '+d+' as a waypoint.';fillDlg();
+    });
     // drag the grabber down to dismiss: distance or a quick flick
     var g=dlg.querySelector('.dlg-grab'),sh=dlg.querySelector('.dlg-sheet'),y0=0,t0=0,dy=0,drag=false;
     g.addEventListener('pointerdown',function(e){drag=true;y0=e.clientY;t0=Date.now();dy=0;g.setPointerCapture(e.pointerId);sh.classList.remove('settle');sh.classList.add('dragging');});
@@ -3219,7 +3307,13 @@ var TRIPMAP=(function(){
     dlg.showModal();
     dlg.querySelector('.dlg-sheet').scrollTop=0;
   }
+  function tagChips(p){
+    var t=tagList(p);if(!t.length)return '';
+    return '<div class="dlg-tags" role="group" aria-label="Tags: tap one to find similar places">'+
+      t.map(function(x){return '<button type="button" data-tag="'+esc(x)+'">'+esc(x)+'</button>';}).join('')+'</div>';
+  }
   function fillDlg(){
+    if(dlgCtx.place){fillPlace();return;}
     dlgCtx.day=+dlgCtx.blk.closest('.page').id.slice(3);
     var blk=dlgCtx.blk,card=blk.querySelector('.card'),p=dlgCtx.p,day=dlgCtx.day,im=photo(p);
     var q=function(sel){return card.querySelector(sel);},html=function(el){return el?el.innerHTML:'';};
@@ -3235,6 +3329,7 @@ var TRIPMAP=(function(){
     h+='<h2 id="dlgTitle">'+esc(title)+'</h2>';
     if(tag)h+='<p class="dlg-where">'+tag.innerHTML+'</p>';
     if(note)h+='<div class="dlg-note">'+note.innerHTML+'</div>';
+    if(p)h+=tagChips(p);
     var opts=[].slice.call(card.querySelectorAll('.oc,.option-card'));
     if(opts.length){
       h+='<ul class="dlg-opts">'+opts.map(function(oc){
@@ -3285,6 +3380,7 @@ var TRIPMAP=(function(){
   function focusOnMap(day,key){pendingFocus={day:String(day),key:key};location.hash='#map';}
   function applyFocus(){
     var f=pendingFocus,p=placeOf(f.key);pendingFocus=null;
+    if(p&&p.extra&&f.day==='all')ex.on=true;
     sel.day=norm(f.day);render(false);
     document.getElementById('mapBox').scrollIntoView({block:'center'});
     if(!p||!p.ll)return;
@@ -3297,16 +3393,239 @@ var TRIPMAP=(function(){
   }
   function room0(el){el.classList.toggle('flip',el.getBoundingClientRect().top-map.getContainer().getBoundingClientRect().top<190);}
 
+  /* ── SEARCH ── one browsable page of every place: anchors, waypoints, schedule stops, Extras.
+     Matches names, types, the schedule's own notes, and each place's tags (place-tags.js). A word also finds its
+     related words (SYN), so "chocolate" finds Sachertorte and Mozartkugeln. */
+  // what places are, serve or are known for: place-tags.js (trip notes + each place's own OpenStreetMap entry)
+  var TAGS=window.PLACE_TAGS||{};
+  var TAG_HIDE={vienna:1,wien:1,salzburg:1,hallstatt:1,budapest:1,landmark:1,sightseeing:1,food:1,shopping:1,outdoors:1};
+  function tagList(p){
+    var t=TAGS[p.key];if(!t)return [];
+    return t.split(/\s*,\s*/).filter(function(x){return x&&!TAG_HIDE[x];});
+  }
+  // a search word also finds these
+  var SYN={
+    chocolate:['chocolate','sachertorte','mozartkugel','praline','cocoa'],
+    cake:['cake','torte','strudel','pastry','patisserie','konditorei','confectioner','dessert','buchteln','cukraszda'],
+    dessert:['dessert','cake','gelato','ice cream','strudel','pastry','chimney cake','marzipan','sweet','confectioner'],
+    sweet:['dessert','cake','chocolate','gelato','pastry','marzipan'],
+    'ice cream':['gelato','ice cream'],gelato:['gelato','ice cream'],
+    coffee:['coffee','cafe','coffeehouse','melange','espresso'],cafe:['cafe','coffee'],
+    beer:['beer','brewery','brau','beer hall','ruin bar'],wine:['wine','heuriger','winekitchen'],
+    drink:['bar','beer','wine','coffee'],pizza:['pizza'],schnitzel:['schnitzel','figlmuller'],
+    goulash:['goulash','hungarian'],breakfast:['breakfast','brunch','coffee'],lunch:['lunch','restaurant','food','market'],
+    dinner:['dinner','restaurant'],food:['food','restaurant','lunch','dinner','breakfast','bistro','street food','market'],
+    eat:['food','restaurant','cafe','street food'],
+    view:['view','viewpoint','panorama','lookout','hill','skywalk'],church:['church','cathedral','basilica','chapel'],
+    museum:['museum','gallery','art'],art:['art','museum','gallery','klimt','secession'],
+    shop:['shop','vintage','thrift','market','second-hand','mall'],shopping:['shop','vintage','thrift','market','second-hand','mall'],
+    vintage:['vintage','thrift','second-hand','flea'],market:['market','piac','zsibvasar'],
+    bath:['bath','thermal','spa'],spa:['spa','thermal','bath'],music:['concert','music','opera','mozart'],
+    night:['bar','nightlife','ruin bar','night'],bar:['bar','ruin bar','nightlife'],
+    castle:['castle','palace','fortress','burg'],palace:['palace','castle'],park:['park','garden','gardens','zoo'],
+    lake:['lake','see','boat'],boat:['boat','cruise','ferry'],train:['train','station','railjet','hbf'],
+    hotel:['hotel','airbnb','stay'],sausage:['sausage','wurstel'],sandwich:['sandwich','brotchen']
+  };
+  var STYPES={food:['restaurant','Food'],cafe:['local_cafe','Cafés'],dessert:['cake','Desserts'],sight:['museum','Sights'],
+    shop:['shopping_bag','Shops'],night:['nightlife','Night out'],travel:['train','Stay & travel']};
+  var SGROUPS=[['anchor','Anchors','star'],['wp','Waypoints','check_circle'],['plan','On the schedule','event'],['extra','Extras','explore'],['other','Not on any day','schedule']];
+  function stype(p){var c=p.cat;return c==='cafe'?'cafe':c==='dessert'?'dessert':(c==='restaurant'||c==='streetfood')?'food':
+    (c==='shop'||c==='market')?'shop':(c==='concert'||c==='nightlife')?'night':(c==='hotel'||c==='train'||c==='airport')?'travel':'sight';}
+  function fold(t){return String(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
+  // words only, each one preceded by a space, so a search matches the start of a word ("pizza" is not in "Lipizzaner")
+  function wf(t){return ' '+fold(t).replace(/[^a-z0-9]+/g,' ')+' ';}
+  var sq={q:'',group:'all',types:{},city:'',day:''},SX=null;
+  // one record per place: its days and times, anchor / waypoint, and every bit of text about it
+  function searchIndex(){
+    if(!S)build();
+    var by={},list=[];
+    function get(p){return by[p.key]||(list.push(by[p.key]={p:p,days:[],times:{},anchor:false,wp:false,texts:[],blocks:[]}),by[p.key]);}
+    S.stops.forEach(function(s){
+      var r=get(s.p);
+      if(s.day&&r.days.indexOf(s.day)<0)r.days.push(s.day);
+      if(s.day&&s.t)r.times[s.day]=s.t;
+      if(s.anchor)r.anchor=true;if(s.wp)r.wp=true;
+    });
+    document.querySelectorAll('.page[id^="day"] a[href*="google.com/maps"]:not([data-nomap])').forEach(function(a){
+      var p=linkPlace(a),r=p&&by[p.key],blk=a.closest('.bl,.block');if(!r||!blk)return;
+      var oc=a.closest('.oc,.option-card'),card=blk.querySelector('.card');
+      (oc?[oc.querySelector('.oo,.option-note'),oc.querySelector('.ot,.option-tag'),card.querySelector('.cl,.card-label')]:
+          [card.querySelector('.ct,.card-title'),card.querySelector('.cn,.card-note'),card.querySelector('.cl,.card-label'),card.querySelector('.unote')])
+        .forEach(function(e){var t=e&&e.textContent.replace(/^edit/,'').replace(/\s+/g,' ').trim();if(t&&r.texts.indexOf(t)<0)r.texts.push(t);});
+      if(r.blocks.indexOf(blk)<0)r.blocks.push(blk);
+    });
+    Object.keys(EXTRAS).forEach(function(k){var e=EXTRAS[k],r=get(e);if(e.note&&r.texts.indexOf(e.note)<0)r.texts.push(e.note);});
+    list.forEach(function(r){
+      var p=r.p;
+      if(p.ll&&p.city===undefined)p.city=cityOf(p.ll);
+      r.days.sort(function(a,b){return a-b;});
+      r.group=r.anchor?'anchor':r.wp?'wp':r.days.length?'plan':p.extra?'extra':'other';
+      r.type=stype(p);
+      r.fn=wf(p.n);
+      r.tags=tagList(p);
+      r.ft=wf((TAGS[p.key]||'')+' '+cat(p)[1]+' '+STYPES[r.type][1]);
+      r.fb=wf(r.texts.join(' ')+' '+(p.city?CITIES[p.city][0]:'')+' '+r.days.map(function(d){return 'day'+d;}).join(' '));
+    });
+    SX=list;
+  }
+  function terms(tok){
+    var t=fold(tok),out=[t];
+    // "choc" (still typing) and "cakes" (a plural) expand; "baroque" doesn't count as "bar"
+    Object.keys(SYN).forEach(function(k){if((t.length>2&&k.indexOf(t)===0)||(t.indexOf(k)===0&&t.length-k.length<=2))SYN[k].forEach(function(x){out.push(fold(x));});});
+    return out;
+  }
+  // every word has to match somewhere: name 3 points, tags 2, notes 1
+  function score(r,toks){
+    var s=0;
+    for(var i=0;i<toks.length;i++){
+      var best=0;
+      toks[i].forEach(function(t){
+        t=' '+t+(t.length<=3?' ':'');   // short words whole ("bar" isn't "baroque"), longer ones as you type
+        if(r.fn.indexOf(t)>=0)best=Math.max(best,3);
+        else if(r.ft.indexOf(t)>=0)best=Math.max(best,2);
+        else if(r.fb.indexOf(t)>=0)best=Math.max(best,1);
+      });
+      if(!best)return 0;s+=best;
+    }
+    return s||1;
+  }
+  function hl(text,toks){
+    var h=esc(text);
+    if(!toks.length)return h;
+    var words=[].concat.apply([],toks).filter(function(t){return t.length>1;}).sort(function(a,b){return b.length-a.length;});
+    var re=new RegExp('('+words.map(function(w){return w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}).join('|')+')','gi');
+    return h.replace(re,'<mark>$1</mark>');
+  }
+  // a short piece of the notes, around the first match
+  function snippet(r,toks){
+    if(!r.texts.length)return '';
+    var flat=[].concat.apply([],toks),t=r.texts.filter(function(x){var f=fold(x);return flat.some(function(w){return f.indexOf(w)>=0;});})[0]||r.texts[0];
+    if(flat.length){
+      var f=fold(t),at=-1;flat.some(function(w){at=f.indexOf(w);return at>=0;});
+      if(at>70)t='…'+t.slice(at-50);
+    }
+    return hl(t,toks);
+  }
+  function cardTags(r,toks){
+    var hit=function(t){var f=wf(t);return toks.some(function(alts){return alts.some(function(w){return f.indexOf(' '+w)>=0;});});};
+    var on=r.tags.filter(hit),rest=r.tags.filter(function(t){return !hit(t);});
+    return on.concat(rest).slice(0,Math.max(5,on.length)).map(function(t){return hit(t)?'<mark>'+esc(t)+'</mark>':esc(t);}).join(' · ');
+  }
+  function srCard(r,toks){
+    var p=r.p,c=cat(p),im=photo(p);
+    var when=r.days.length?r.days.map(function(d){return 'Day '+d+(r.times[d]?' '+r.times[d]:'');}).join(', '):p.extra?'Extra':'Not on any day';
+    var meta=esc(c[1])+' · '+esc(when)+(p.city?' · '+CITIES[p.city][0]:'')+(showEta()&&p.ll?' · <span class="eta">'+eta(p.ll)+'</span>':'');
+    var badge=r.anchor?'<span class="sr-b anchor"><span class="ms" aria-hidden="true">star</span>Anchor</span>':r.wp?'<span class="sr-b wp"><span class="ms" aria-hidden="true">check</span>Waypoint</span>':'';
+    var snip=snippet(r,toks),tl=cardTags(r,toks);
+    return '<li class="sr '+r.group+'" data-k="'+esc(p.key)+'">'+
+      (im?'<img class="sr-ph" src="'+esc(im.f)+'" alt="" loading="lazy">':'<span class="sr-ph sr-ic g-'+grp(p)+'"><span class="ms" aria-hidden="true">'+c[0]+'</span></span>')+
+      '<div class="sr-main"><h3 class="sr-n"><button type="button" class="sr-open">'+hl(p.n,toks)+'</button></h3>'+
+      '<p class="sr-m">'+badge+meta+'</p>'+(snip?'<p class="sr-s">'+snip+'</p>':'')+(tl?'<p class="sr-t">'+tl+'</p>':'')+
+      '<div class="sr-a"><a class="sr-btn" href="'+esc(gurl(p))+'" target="_blank" rel="noopener"><span class="ms" aria-hidden="true">map</span>Google Maps</a>'+
+      (p.ll?'<button type="button" class="sr-btn" data-sr="map"><span class="ms" aria-hidden="true">location_on</span>On the map</button>':'')+'</div></div></li>';
+  }
+  var elSq=document.getElementById('sqIn');
+  function chip(attr,val,label,on,count,icon){
+    return '<button type="button" class="chip'+(on?' on':'')+'" '+attr+'="'+val+'" aria-pressed="'+!!on+'">'+(icon?'<span class="ms" aria-hidden="true">'+icon+'</span>':'')+label+
+      (count!=null?'<small>'+count+'</small>':'')+'</button>';
+  }
+  function renderSearch(){
+    if(!SX)searchIndex();
+    var toks=sq.q.replace(/\bday\s*(\d+)/gi,'day$1').split(/[^\p{L}\p{N}]+/u).filter(Boolean).map(terms);
+    var base=SX.map(function(r){return {r:r,s:toks.length?score(r,toks):1};}).filter(function(x){
+      var r=x.r;
+      return x.s>0&&(!Object.keys(sq.types).length||sq.types[r.type])&&(!sq.city||r.p.city===sq.city)&&(!sq.day||r.days.indexOf(+sq.day)>=0);
+    });
+    var gc={};base.forEach(function(x){gc[x.r.group]=(gc[x.r.group]||0)+1;});
+    var shown=base.filter(function(x){return sq.group==='all'||x.r.group===sq.group;});
+    shown.sort(function(a,b){return b.s-a.s||(a.r.days[0]||99)-(b.r.days[0]||99)||a.r.p.n.localeCompare(b.r.p.n);});
+    // filter chips
+    document.getElementById('sqGroups').innerHTML=chip('data-g','all','All',sq.group==='all',base.length)+
+      SGROUPS.filter(function(g){return gc[g[0]]||sq.group===g[0];}).map(function(g){return chip('data-g',g[0],g[1],sq.group===g[0],gc[g[0]]||0,g[2]);}).join('');
+    document.getElementById('sqTypes').innerHTML=chip('data-t','','All types',!Object.keys(sq.types).length)+
+      Object.keys(STYPES).map(function(t){return chip('data-t',t,STYPES[t][1],sq.types[t],null,STYPES[t][0]);}).join('');
+    document.getElementById('sqCities').innerHTML=chip('data-c','','Every city',!sq.city)+
+      ['VIE','SZG','HLT','BUD'].map(function(c){return chip('data-c',c,CITIES[c][0],sq.city===c);}).join('');
+    var dh=chip('data-d','','Any day',!sq.day);for(var d=1;d<=10;d++)dh+=chip('data-d',String(d),'Day '+d,sq.day===String(d));
+    document.getElementById('sqDays').innerHTML=dh;
+    var nf=Object.keys(sq.types).length+(sq.city?1:0)+(sq.day?1:0);
+    document.getElementById('sqN').textContent=nf||'';
+    document.getElementById('sqX').hidden=!sq.q;
+    document.getElementById('sqCount').textContent=shown.length?(shown.length+' place'+(shown.length>1?'s':'')+(sq.q?' for “'+sq.q.trim()+'”':'')):'';
+    // results, in sections when browsing everything
+    var h='';
+    if(!shown.length)h='<div class="sr-empty"><p><b>Nothing matches'+(sq.q?' “'+esc(sq.q.trim())+'”':'')+'.</b></p><p>Try a broader word (“cake”, “view”, “museum”) or clear the filters.</p></div>';
+    else SGROUPS.forEach(function(g){
+      var rs=shown.filter(function(x){return x.r.group===g[0];});if(!rs.length)return;
+      h+='<h2 class="sr-h"><span class="ms" aria-hidden="true">'+g[2]+'</span>'+g[1]+'<small>'+rs.length+'</small></h2><ul class="sr-list">'+rs.map(function(x){return srCard(x.r,toks);}).join('')+'</ul>';
+    });
+    document.getElementById('sqRes').innerHTML=h;
+  }
+  var sqT;
+  elSq.addEventListener('input',function(){clearTimeout(sqT);sqT=setTimeout(function(){sq.q=elSq.value;renderSearch();},120);});
+  document.getElementById('sqX').addEventListener('click',function(){elSq.value='';sq.q='';renderSearch();elSq.focus();});
+  var sqTog=document.getElementById('sqTog'),sqMore=document.getElementById('sqMore');
+  sqTog.addEventListener('click',function(){var o=sqMore.hidden;sqMore.hidden=!o;sqTog.setAttribute('aria-expanded',o);});
+  document.getElementById('search').addEventListener('click',function(e){
+    var b=e.target.closest('[data-g],[data-t],[data-c],[data-d]');
+    if(b){
+      if(b.hasAttribute('data-g'))sq.group=b.dataset.g;
+      else if(b.hasAttribute('data-t')){var t=b.dataset.t;if(!t)sq.types={};else if(sq.types[t])delete sq.types[t];else sq.types[t]=1;}
+      else if(b.hasAttribute('data-c'))sq.city=b.dataset.c;
+      else sq.day=b.dataset.d;
+      renderSearch();return;
+    }
+    var li=e.target.closest('.sr');if(!li||e.target.closest('a'))return;
+    var r=SX.filter(function(x){return x.p.key===li.dataset.k;})[0];if(!r)return;
+    if(e.target.closest('[data-sr="map"]')){focusOnMap(r.days[0]||'all',r.p.key);return;}
+    if(r.blocks.length)openDetail(r.blocks[0]);else openPlace(r);
+  });
+  // a place that isn't a schedule card (an Extra, or a place on no day): its own detail sheet
+  // open Find with a search filled in (from a tag in a detail sheet)
+  function findTag(t){
+    elSq.value=t;sq.q=t;sq.group='all';sq.types={};sq.city='';sq.day='';
+    var tab=document.querySelector('.nav-tab[data-day="search"]');
+    if(document.getElementById('search').classList.contains('active'))renderSearch();else if(tab)tab.click();
+    window.scrollTo(0,0);
+  }
+  function searchStale(){SX=null;if(document.getElementById('search').classList.contains('active'))renderSearch();}
+  function openPlace(r){
+    if(!dlg)makeDlg();
+    dlgCtx={place:r.p,rec:r,p:r.p,day:r.days[0]||'all'};
+    fillDlg();
+    document.documentElement.classList.add('dlg-open');
+    dlg.showModal();
+    dlg.querySelector('.dlg-sheet').scrollTop=0;
+  }
+  function fillPlace(){
+    var p=dlgCtx.place,r=dlgCtx.rec,im=photo(p),c=cat(p),w=load(WP_KEY)||{},h='';
+    if(im)h+='<figure class="dlg-fig"><img src="'+esc(im.f.replace('images/','images/large/'))+'" alt="'+esc(p.n)+'" style="background-image:url(\''+esc(im.f)+'\')"'+
+      ' onerror="this.onerror=null;this.src=\''+esc(im.f)+'\'"><figcaption>Photo: '+esc(im.a)+' · '+esc(im.l)+' · <a href="'+esc(im.u)+'" target="_blank" rel="noopener">Wikimedia Commons</a></figcaption></figure>';
+    h+='<div class="dlg-body"><div class="dlg-meta"><span>'+esc(c[1])+'</span><span>'+(p.extra?'Extra':'Not on any day')+'</span></div>'+
+      '<h2 id="dlgTitle">'+esc(p.n)+'</h2>'+(p.q?'<p class="dlg-where"><span class="ms" aria-hidden="true">location_on</span>'+esc(p.q)+'</p>':'')+
+      (r.texts.length?'<div class="dlg-note">'+esc(r.texts.join(' · '))+'</div>':'')+tagChips(p);
+    var opts='<option value="">Choose a day…</option>';
+    for(var n=1;n<=10;n++){var on=(w[n]||[]).indexOf(p.key)>=0;opts+='<option value="'+n+'">Day '+n+(on?' (added: choose to remove)':'')+'</option>';}
+    h+='<div class="dlg-actions"><a class="dlg-btn pri" href="'+esc(gurl(p))+'" target="_blank" rel="noopener"><span class="ms" aria-hidden="true">map</span>Open in Google Maps</a>'+
+      '<a class="dlg-btn" href="'+esc(dirUrl(p))+'" target="_blank" rel="noopener"><span class="ms" aria-hidden="true">directions_walk</span>Directions</a>'+
+      (p.ll?'<button type="button" class="dlg-btn" data-act="map"><span class="ms" aria-hidden="true">location_on</span>Show on map</button>':'')+
+      '<label class="dlg-add">Add as a waypoint to<select data-wpday>'+opts+'</select></label>'+
+      (dlgCtx.msg?'<p class="dlg-sync"><b>'+esc(dlgCtx.msg)+'</b></p>':'')+'</div></div>';
+    dlgCtx.msg='';
+    dlg.classList.toggle('noimg',!im);
+    dlg.querySelector('.dlg-in').innerHTML=h;
+  }
+
   // shared changes arrived (or were made here): redraw what depends on them
   if(window.SYNC)SYNC.onChange(function(what){
-    if(what==='data'){if(S){build();render(false);}renderSched();renderThumbs();if(dlg&&dlg.open&&dlgCtx)fillDlg();}
+    if(what==='data'){if(S){build();render(false);}renderSched();renderThumbs();searchStale();if(dlg&&dlg.open&&dlgCtx)fillDlg();}
     else if(S)renderEdits();
     if(dlg&&dlg.open&&dlgCtx){var ds=dlg.querySelector('.dlg-sync');if(ds)ds.innerHTML=syncLine();}
   });
   renderSched();   // waypoints show on the day pages straight away, not only after opening the map
   renderThumbs();
   var first=true;
-  return {detail:openDetail,show:function(){
+  return {detail:openDetail,search:renderSearch,show:function(){
     build();render(false);
     setTimeout(function(){
       if(!initMap())return;
@@ -3447,7 +3766,7 @@ var SCHEDVIEW=(function(){
     if(next){
       var d=dirTo(next.b);
       h+='<div class="nowbar-row"><span class="nowbar-k">Next</span><span class="nowbar-t">'+esc(next.title)+'<small>'+clock(next.s)+' · in '+hm(next.s-nm)+'</small></span>'+
-        (d?'<a href="'+esc(d)+'" target="_blank" rel="noopener"><span class="ms" aria-hidden="true">directions_walk</span>Directions</a>':'')+'</div>';
+        (d?'<a href="'+esc(d)+'" target="_blank" rel="noopener" data-nomap><span class="ms" aria-hidden="true">directions_walk</span>Directions</a>':'')+'</div>';
     }
     bar.innerHTML=h;bar.hidden=!h;
   }
@@ -3524,7 +3843,7 @@ var SCHEDVIEW=(function(){
   var td = window.SCHEDVIEW && SCHEDVIEW.today();
 
   tabs.forEach(function(t){
-    var id = t.dataset.day==='map' ? 'map' : 'day'+t.dataset.day;
+    var id = isNaN(t.dataset.day) ? t.dataset.day : 'day'+t.dataset.day;
     t.id = 'tab-'+id; t.setAttribute('aria-controls', id);
     var pg = document.getElementById(id);
     if(pg){ pg.setAttribute('role','tabpanel'); pg.setAttribute('aria-labelledby', t.id); }
@@ -3532,7 +3851,7 @@ var SCHEDVIEW=(function(){
   });
 
   function show(n){
-    var id = n==='map' ? 'map' : 'day'+n;
+    var id = isNaN(n) ? n : 'day'+n;
     days.forEach(function(d){ d.classList.toggle('active', d.id===id); });
     if(window.SCHEDVIEW) SCHEDVIEW.refresh();
     tabs.forEach(function(t){
@@ -3544,14 +3863,15 @@ var SCHEDVIEW=(function(){
     try{ localStorage.setItem('et_day', n); }catch(e){}
     if(window.updateBnav) updateBnav(n);
     if(n==='map' && window.TRIPMAP) TRIPMAP.show();
+    if(n==='search' && window.TRIPMAP) TRIPMAP.search();
   }
   function go(t){
-    var n = t.dataset.day==='map' ? 'map' : parseInt(t.dataset.day,10);
-    history.pushState(null,'', n==='map' ? '#map' : '#day'+n);
+    var n = isNaN(t.dataset.day) ? t.dataset.day : parseInt(t.dataset.day,10);
+    history.pushState(null,'', isNaN(n) ? '#'+n : '#day'+n);
     show(n);
   }
   function fromHash(){
-    if(location.hash==='#map') return 'map';
+    if(location.hash==='#map' || location.hash==='#search') return location.hash.slice(1);
     var m = location.hash.match(/^#day(\d+)$/);
     return m ? parseInt(m[1],10) : null;
   }
@@ -3573,19 +3893,19 @@ var SCHEDVIEW=(function(){
   bnav.innerHTML =
     '<button type="button" data-b="prev"><span class="ms" aria-hidden="true">chevron_left</span><span>Prev</span></button>'+
     '<button type="button" data-b="days" aria-haspopup="dialog"><span class="ms" aria-hidden="true">calendar_month</span><span class="bnav-cur">Days</span></button>'+
-    (td ? '<button type="button" data-b="today"><span class="ms" aria-hidden="true">today</span><span>Today</span></button>' : '')+
+    '<button type="button" data-b="search"><span class="ms" aria-hidden="true">search</span><span>Find</span></button>'+
     '<button type="button" data-b="map"><span class="ms" aria-hidden="true">map</span><span>Map</span></button>'+
     '<button type="button" data-b="next"><span class="ms" aria-hidden="true">chevron_right</span><span>Next</span></button>';
   document.body.appendChild(bnav);
   function tabFor(v){ return tabs.filter(function(t){ return t.dataset.day===String(v); })[0]; }
   window.updateBnav = function(n){
     cur = n;
-    var d = n==='map' ? null : n;
+    var d = isNaN(n) ? null : n;
     bnav.querySelector('.bnav-cur').textContent = d ? 'Day '+d : 'Days';
     bnav.querySelector('[data-b="prev"]').disabled = !d || d<=1;
     bnav.querySelector('[data-b="next"]').disabled = !d || d>=10;
     bnav.querySelector('[data-b="map"]').classList.toggle('on', n==='map');
-    var tb = bnav.querySelector('[data-b="today"]'); if(tb) tb.classList.toggle('on', d===td);
+    bnav.querySelector('[data-b="search"]').classList.toggle('on', n==='search');
   };
   bnav.addEventListener('click', function(e){
     var b = e.target.closest('[data-b]'); if(!b || b.disabled) return;
@@ -3593,7 +3913,7 @@ var SCHEDVIEW=(function(){
     if(k==='prev') go(tabFor(cur-1));
     else if(k==='next') go(tabFor(cur+1));
     else if(k==='map') go(tabFor('map'));
-    else if(k==='today') go(tabFor(td));
+    else if(k==='search') go(tabFor('search'));
     else openPicker();
     if(k!=='days') window.scrollTo({top:0});
   });
@@ -3612,7 +3932,7 @@ var SCHEDVIEW=(function(){
     }
     var h = '<div class="dlg-sheet"><button type="button" class="dlg-x" aria-label="Close"><span class="ms" aria-hidden="true">close</span></button>'+
       '<div class="dlg-body"><h2 class="dpk-h">Go to</h2><div class="dpk-grid">';
-    order.forEach(function(v){
+    order.filter(function(v){ return v!=='search'; }).forEach(function(v){
       var t = tabFor(v), pg = document.getElementById(v==='map' ? 'map' : 'day'+v);
       var date = pg && pg.querySelector('.header-eyebrow,.eye');
       var city = t.querySelector('.nav-tab-city').textContent.split('·').pop().trim();
@@ -3626,8 +3946,8 @@ var SCHEDVIEW=(function(){
 
   // open on: the address, else today (during the trip), else the last day viewed
   var init = fromHash() || td;
-  if(!init){ try{ var sv=localStorage.getItem('et_day')||'1'; init = sv==='map' ? 'map' : parseInt(sv,10); }catch(e){ init=1; } }
-  if(init!=='map' && (!init || init<1 || init>10)) init=1;
+  if(!init){ try{ var sv=localStorage.getItem('et_day')||'1'; init = isNaN(sv) ? sv : parseInt(sv,10); }catch(e){ init=1; } }
+  if(init!=='map' && init!=='search' && (!init || init<1 || init>10)) init=1;
   show(init);
 })();
 </script>
