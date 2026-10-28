@@ -3,7 +3,7 @@
 <title>Central Europe · Oct–Nov 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,500,1,0&icon_names=attractions,cake,calendar_view_day,castle,check,check_circle,church,close,directions,directions_boat,directions_car,directions_walk,fastfood,flight,help,hot_tub,hotel,info,landscape,local_cafe,local_library,location_city,location_on,lock,map,museum,music_note,my_location,near_me,nightlife,open_in_new,park,restaurant,route,schedule,shopping_bag,star,storefront,synagogue,train,tune,view_agenda,warning,water,zoom_out_map&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,500,1,0&icon_names=attractions,cake,calendar_month,calendar_view_day,castle,chevron_left,chevron_right,check,check_circle,church,close,directions,directions_boat,directions_car,directions_walk,edit,fastfood,flight,help,hot_tub,hotel,info,landscape,local_cafe,local_library,location_city,location_on,lock,map,museum,music_note,my_location,near_me,nightlife,open_in_new,park,restaurant,route,schedule,shopping_bag,star,storefront,synagogue,today,train,tune,view_agenda,warning,water,zoom_out_map&display=block" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.css">
 <style>
 /* ── tokens ─────────────────────────────────────────────── */
@@ -595,6 +595,64 @@ html.dlg-open{overflow:hidden}
 .dlg-btn.wp.on{background:var(--eat);border-color:var(--eat);color:#fff}
 @media(hover:hover) and (pointer:fine){.dlg-btn:not(.pri):not(.on):hover{background:var(--accent-light);border-color:color-mix(in srgb,var(--accent) 30%,var(--border))}}
 
+/* ── edited blocks and personal notes ────────────────────── */
+.bt.edited,.block-time.edited{color:var(--accent)}
+.unote{display:flex;align-items:flex-start;gap:6px;margin-top:10px;padding:8px 10px;border-radius:8px;background:var(--accent-light);
+  font-size:13px;line-height:1.45;color:var(--fg)}
+.unote .ms{font-size:16px;color:var(--accent);margin-top:1px}
+.map-edits span b{font-weight:600;color:var(--fg)}
+
+/* ── edit form in the detail sheet ───────────────────────── */
+.dlg-edit{margin-top:20px;padding-top:4px;border-top:1px solid var(--border)}
+.dlg-edit summary{display:inline-flex;align-items:center;gap:6px;min-height:46px;cursor:pointer;font-weight:600;font-size:15px;color:var(--accent);list-style:none}
+.dlg-edit summary::-webkit-details-marker{display:none}
+.dlg-edit summary .ms{font-size:19px}
+.dlg-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:6px}
+.dlg-form label{display:grid;gap:5px;font-size:12px;font-weight:600;color:var(--muted)}
+.dlg-form .full{grid-column:1/-1}
+.dlg-form input,.dlg-form select,.dlg-form textarea{width:100%;min-height:48px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;
+  background:var(--bg);color:var(--fg);font:500 16px/1.3 'Inter',sans-serif}
+.dlg-form textarea{min-height:72px;resize:vertical}
+.dlg-form :is(input,select,textarea):focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+.dlg-form-btns{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dlg-form-btns .dlg-btn.pri{grid-column:auto}
+.dlg-form-btns .dlg-btn:only-child{grid-column:1/-1}
+.dlg-sync{grid-column:1/-1;font-size:13px;color:var(--muted);line-height:1.45}
+.dlg-sync b{color:var(--eat)}
+@media(max-width:420px){.dlg-form{grid-template-columns:1fr 1fr}.dlg-form label:nth-child(3){grid-column:1/-1}}
+
+/* ── bottom bar (phones) ─────────────────────────────────── */
+.bnav{display:none}
+@media(max-width:760px){
+  body{padding-bottom:calc(70px + env(safe-area-inset-bottom,0px))}
+  .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:100;gap:2px;background:var(--bg);border-top:1px solid var(--border);
+    padding:6px max(8px,env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-right,0px))}
+}
+.bnav button{flex:1;min-width:0;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  border:0;border-radius:12px;background:transparent;color:var(--muted);font:600 11px/1.2 'Inter',sans-serif;cursor:pointer;
+  transition:background-color 150ms ease,color 150ms ease,transform 160ms var(--ease-out)}
+.bnav button .ms{font-size:24px}
+.bnav button:active{transform:scale(.95);background:var(--accent-light)}
+.bnav button:disabled{opacity:.35;cursor:default}
+.bnav button:disabled:active{transform:none;background:transparent}
+.bnav button.on{color:var(--accent)}
+.bnav [data-b="days"]{color:var(--fg)}
+.bnav-cur{font-size:12px;font-weight:700}
+
+/* ── day picker ──────────────────────────────────────────── */
+.dpk-h{margin:0 0 14px;font:700 24px/1.2 'Playfair Display',Georgia,serif}
+.dpk-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.dpk-tile{display:grid;gap:3px;min-height:66px;padding:12px 14px;text-align:left;border:1px solid var(--border);border-radius:12px;
+  background:var(--card);color:var(--fg);cursor:pointer;font:500 13px/1.3 'Inter',sans-serif;transition:transform 160ms var(--ease-out),background-color 150ms ease}
+.dpk-tile b{font-size:16px;font-weight:700}
+.dpk-tile small{font-size:12px;color:var(--muted)}
+.dpk-tile:active{transform:scale(.97)}
+.dpk-tile.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.dpk-tile.on small{color:#fff;opacity:.85}
+.dpk-tile.today b::after{content:'Today';margin-left:8px;padding:2px 8px;border-radius:999px;background:var(--eat);color:#fff;font-size:11px;font-weight:600;vertical-align:2px}
+/* detail-sheet photo: the small version shows at once, the large one replaces it when loaded */
+.dlg-fig img{background:var(--accent-light) center/cover no-repeat}
+
 </style>
 </head><body>
 
@@ -636,7 +694,7 @@ html.dlg-open{overflow:hidden}
 
 <div class="timeline">
 
-  <div class="block type-arrive anchor">
+  <div class="block type-arrive anchor" data-id="d1-vienna-airport-city">
     <div class="block-time">08:20</div>
     <div class="block-dot"></div>
     <div class="card">
@@ -649,7 +707,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="section-label">Morning · 1st District</div>
 
-  <div class="block type-eat">
+  <div class="block type-eat" data-id="d1-decentral-cafe-central-s-sta">
     <div class="block-time">10:30</div>
     <div class="block-dot"></div>
     <div class="card">
@@ -660,7 +718,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="block type-see anchor">
+  <div class="block type-see anchor" data-id="d1-st-stephen-s-cathedral-grabe">
     <div class="block-time">~12:00</div>
     <div class="block-dot"></div>
     <div class="card">
@@ -671,7 +729,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="block type-see anchor">
+  <div class="block type-see anchor" data-id="d1-hofburg-palace-heldenplatz">
     <div class="block-time">~13:30</div>
     <div class="block-dot"></div>
     <div class="card">
@@ -682,7 +740,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="block type-see">
+  <div class="block type-see" data-id="d1-kaiserliche-schatzkammer-cro">
     <div class="block-time">~14:00</div>
     <div class="block-dot"></div>
     <div class="card">
@@ -693,7 +751,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="block type-eat">
+  <div class="block type-eat" data-id="d1-coffee-stop-pick-one">
     <div class="block-time">~15:00</div>
     <div class="block-dot"></div>
     <div class="card">
@@ -718,7 +776,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="section-label">Afternoon · Naschmarkt &amp; surrounds</div>
 
-  <div class="block type-shop anchor">
+  <div class="block type-shop anchor" data-id="d1-naschmarkt-flea-market-wild">
     <div class="block-time">~16:30</div>
     <div class="block-dot"></div>
     <div class="card">
@@ -729,7 +787,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="block type-shop">
+  <div class="block type-shop" data-id="d1-carla-mittersteig-secondhand">
     <div class="block-time">~17:00</div>
     <div class="block-dot"></div>
     <div class="card">
@@ -742,7 +800,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="section-label">Evening · Dinner</div>
 
-  <div class="block type-eat">
+  <div class="block type-eat" data-id="d1-dinner-pick-one">
     <div class="block-time">~19:00</div>
     <div class="block-dot"></div>
     <div class="card">
@@ -761,7 +819,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="block type-night">
+  <div class="block type-night" data-id="d1-zollergasse-nightlife-strip">
     <div class="block-time">~21:00</div>
     <div class="block-dot"></div>
     <div class="card">
@@ -771,7 +829,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="block type-hotel">
+  <div class="block type-hotel" data-id="d1-ibis-wien-hauptbahnhof">
     <div class="block-time">Late</div>
     <div class="block-dot"></div>
     <div class="card">
@@ -807,7 +865,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Morning · Breakfast + Schönbrunn</div>
 
-  <div class="bl te anchor">
+  <div class="bl te anchor" data-id="d2-breakfast-at-mani-im-vierten">
     <div class="bt">08:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=mani+im+vierten%2C+Schleifm%C3%BChlgasse+7%2C+1040+Wien&amp;query_place_id=ChIJPySTC40HbUcRD9iS-bDdz0I" target="_blank">mani im vierten</a> · 4th District, near Naschmarkt</div>
@@ -817,7 +875,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ts anchor">
+  <div class="bl ts anchor" data-id="d2-schonbrunn-palace-grand-tour">
     <div class="bt">09:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Sch%C3%B6nbrunn+Palace%2C+Sch%C3%B6nbrunner+Schlo%C3%9Fstra%C3%9Fe+47%2C+1130+Wien&amp;query_place_id=ChIJv3zAHAmobUcRyYvq5F26aU4" target="_blank">Schönbrunn Palace</a> · 13th District</div>
@@ -827,7 +885,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d2-gloriette-hilltop-views-over">
     <div class="bt">~11:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Gloriette+Sch%C3%B6nbrunn%2C+Gloriettestra%C3%9Fe%2C+1130+Wien&amp;query_place_id=ChIJtyTF8lqpbUcRgncv_koB670" target="_blank">Gloriette</a> · Schönbrunn hilltop</div>
@@ -837,7 +895,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl te">
+  <div class="bl te" data-id="d2-lunch-pick-one">
     <div class="bt">~12:30</div><div class="bd"></div>
     <div class="card">
       <div class="cl">Lunch — pick one</div>
@@ -857,7 +915,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Afternoon · Belvedere</div>
 
-  <div class="bl ts anchor">
+  <div class="bl ts anchor" data-id="d2-upper-belvedere-klimt-s-the">
     <div class="bt">~14:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Belvedere+Palace%2C+1030+Wien&amp;query_place_id=ChIJpZ4LAn0HbUcRB3aToFL8ZUo" target="_blank">Belvedere Palace</a> · 3rd District</div>
@@ -867,7 +925,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl te">
+  <div class="bl te" data-id="d2-coffee-stop">
     <div class="bt">~16:30</div><div class="bd"></div>
     <div class="card">
       <div class="cl">Coffee stop</div>
@@ -881,7 +939,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ts anchor">
+  <div class="bl ts anchor" data-id="d2-ringstrasse-at-dusk">
     <div class="bt">~18:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Vienna+State+Opera%2C+Opernring+2%2C+1010+Wien&amp;query_place_id=ChIJ1b8dhpwHbUcRVn03JY0mWf0" target="_blank">Ringstrasse</a> — 1st District</div>
@@ -893,7 +951,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Evening · Dinner &amp; bar</div>
 
-  <div class="bl te">
+  <div class="bl te" data-id="d2-dinner-pick-one">
     <div class="bt">~18:30</div><div class="bd"></div>
     <div class="card">
       <div class="cl">Dinner — pick one</div>
@@ -911,7 +969,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl th anchor">
+  <div class="bl th anchor" data-id="d2-return-to-ibis-pack-salzburg">
     <div class="bt">Late</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=ibis+Wien+Hauptbahnhof%2C+Canettistra%C3%9Fe+8%2C+1100+Wien&amp;query_place_id=ChIJYVTcYdepbUcRmN7UhYEEt1g" target="_blank">ibis Wien Hauptbahnhof</a></div>
@@ -946,7 +1004,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Morning · Vienna → Salzburg</div>
 
-  <div class="bl ta anchor">
+  <div class="bl ta anchor" data-id="d3-09-30-wien-hbf-salzburg-hbf">
     <div class="bt">09:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Wien+Hauptbahnhof%2C+Am+Hauptbahnhof+1%2C+1100+Wien&amp;query_place_id=ChIJUU071tupbUcRyFdx20Nwgqg" target="_blank">Wien Hbf</a> → <a href="https://www.google.com/maps/search/?api=1&amp;query=Salzburg+Hauptbahnhof%2C+5020+Salzburg&amp;query_place_id=ChIJT2PH83iQdkcRnEDVqlb-Avs" target="_blank">Salzburg Hbf</a></div>
@@ -956,7 +1014,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl th">
+  <div class="bl th" data-id="d3-salzburg-airbnb-2-nights">
     <div class="bt">~12:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Vogelweiderstra%C3%9Fe+33%2C+Vogelweiderstra%C3%9Fe+33%2C+5020+Salzburg&amp;query_place_id=ChIJgb3GhICQdkcRDEnPmqioKEU" target="_blank">Vogelweiderstraße 33, Salzburg</a></div>
@@ -970,7 +1028,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="wb"><strong>Werfen is the plan.</strong> Only if the weather rules it out, switch to Plan B: swap with Day 5 morning — do the Salzburg Old Town today, and try Werfen on Day 5 morning instead (train to Vienna is 12:07, so only if time allows).</div>
 
-  <div class="bl ts anchor" style="margin-top:16px">
+  <div class="bl ts anchor" style="margin-top:16px" data-id="d3-werfen-hohenwerfen-castle-go">
     <div class="bt">~13:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag">🅐 Plan A · <a href="https://www.google.com/maps/search/?api=1&amp;query=Burg+Hohenwerfen%2C+Burgstra%C3%9Fe+2%2C+5450+Werfen&amp;query_place_id=ChIJCymTk7PEdkcRk2e9_wpDY8k" target="_blank">Werfen day hike</a></div>
@@ -980,7 +1038,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ts plan-b">
+  <div class="bl ts plan-b" data-id="d3-salzburg-old-town-instead-of">
     <div class="bt">Plan B</div><div class="bd"></div>
     <div class="card">
       <div class="tag">🅑 Plan B · bad weather only</div>
@@ -992,7 +1050,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Evening · Mirabell + Dinner</div>
 
-  <div class="bl ts anchor">
+  <div class="bl ts anchor" data-id="d3-mirabell-gardens-at-dusk">
     <div class="bt">~17:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Mirabell+Gardens%2C+Mirabellplatz+3%2C+5020+Salzburg&amp;query_place_id=ChIJxWcjzGSQdkcRN1WEyql2-Uk" target="_blank">Mirabell Palace Gardens</a></div>
@@ -1002,7 +1060,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d3-love-lock-bridge-over-the-sa">
     <div class="bt">~18:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Marko-Feingold-Steg%2C+Marko-Feingold-Steg%2C+5020+Salzburg&amp;query_place_id=ChIJFagkZWSQdkcR8hzfB_pWdXQ" target="_blank">Marko-Feingold-Steg bridge</a></div>
@@ -1012,7 +1070,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl te">
+  <div class="bl te" data-id="d3-dinner">
     <div class="bt">~19:30</div><div class="bd"></div>
     <div class="card">
       <div class="cl">Dinner</div>
@@ -1050,7 +1108,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Early morning · Salzburg → Hallstatt</div>
 
-  <div class="bl ta anchor">
+  <div class="bl ta anchor" data-id="d4-07-30-train-to-hallstatt-fer">
     <div class="bt">07:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Salzburg+Hauptbahnhof%2C+5020+Salzburg&amp;query_place_id=ChIJT2PH83iQdkcRnEDVqlb-Avs" target="_blank">Salzburg Hbf</a> → <a href="https://www.google.com/maps/search/?api=1&amp;query=Hallstatt%2C+Hallstatt&amp;query_place_id=ChIJY0ZBbm82cUcRrcEmalllwRY" target="_blank">Hallstatt</a></div>
@@ -1062,7 +1120,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Morning · Village</div>
 
-  <div class="bl ts anchor">
+  <div class="bl ts anchor" data-id="d4-village-walk-lakeside-amp-ma">
     <div class="bt">09:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Marktplatz+Hallstatt%2C+Marktplatz%2C+4830+Hallstatt&amp;query_place_id=ChIJJWh1Tm02cUcRMIiqBctIRhU" target="_blank">Hallstatt Market Square (Marktplatz)</a></div>
@@ -1072,7 +1130,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d4-skywalk-welterbeblick-glass">
     <div class="bt">10:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Hallstatt+Skywalk%2C+Salzberg+21%2C+4830+Hallstatt&amp;query_place_id=ChIJq7oizVA3cUcR4irrtZxljUk" target="_blank">Hallstatt Skywalk</a></div>
@@ -1084,7 +1142,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Midday · Lunch + Lake</div>
 
-  <div class="bl te">
+  <div class="bl te" data-id="d4-lunch">
     <div class="bt">~12:00</div><div class="bd"></div>
     <div class="card">
       <div class="cl">Lunch</div>
@@ -1098,7 +1156,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ts anchor">
+  <div class="bl ts anchor" data-id="d4-boat-ride-on-the-lake">
     <div class="bt">~12:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Hallst%C3%A4tter+See%2C+Hallst%C3%A4tter+See&amp;query_place_id=ChIJb6x8KAM2cUcR8gBKwDPdb2c" target="_blank">Hallstatt Lake</a></div>
@@ -1110,7 +1168,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Afternoon · Bone Chapel + Return</div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d4-bone-chapel-painted-skulls-o">
     <div class="bt">14:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Beinhaus%2C+Friedhof+164%2C+4830+Hallstatt&amp;query_place_id=ChIJHQk3Xw02cUcRBO05NLajENc" target="_blank">Beinhaus (Bone Chapel)</a></div>
@@ -1120,7 +1178,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ta">
+  <div class="bl ta" data-id="d4-return-ferry-train-to-salzbu">
     <div class="bt">~16:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Hallstatt%2C+Hallstatt&amp;query_place_id=ChIJY0ZBbm82cUcRrcEmalllwRY" target="_blank">Hallstatt</a> → <a href="https://www.google.com/maps/search/?api=1&amp;query=Salzburg+Hauptbahnhof%2C+5020+Salzburg&amp;query_place_id=ChIJT2PH83iQdkcRnEDVqlb-Avs" target="_blank">Salzburg</a></div>
@@ -1130,7 +1188,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl te">
+  <div class="bl te" data-id="d4-dinner-in-salzburg-pick-one">
     <div class="bt">~19:00</div><div class="bd"></div>
     <div class="card">
       <div class="cl">Dinner in Salzburg — pick one</div>
@@ -1175,7 +1233,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Morning · Salzburg Old Town (before the 12:07 train)</div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d5-hohensalzburg-fortress-funic">
     <div class="bt">~09:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Fortress+Hohensalzburg%2C+M%C3%B6nchsberg+34%2C+5020+Salzburg&amp;query_place_id=ChIJvQMhJ2CQdkcRa1Xs6dO-dys" target="_blank">Hohensalzburg Fortress</a></div>
@@ -1185,7 +1243,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d5-getreidegasse-mozart-birthpl">
     <div class="bt">~10:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span>Old Town · <a href="https://www.google.com/maps/search/?api=1&amp;query=Caf%C3%A9+Mozart%2C+Getreidegasse+22%2C+5020+Salzburg&amp;query_place_id=ChIJLYtD-GOQdkcRoZys-k2xBrE" target="_blank">Café Mozart</a> for coffee</div>
@@ -1195,7 +1253,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d5-hellbrunn-palace-trick-fount">
     <div class="bt">Alt.</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Hellbrunn+Palace%2C+F%C3%BCrstenweg+37%2C+5020+Salzburg&amp;query_place_id=ChIJ6R6cMzqRdkcRiFyJj2CZ4X0" target="_blank">Hellbrunn Palace</a> · or <a href="https://www.google.com/maps/search/?api=1&amp;query=Untersbergbahn%2C+Dr.-Friedrich-Oedl-Weg+2%2C+5083+Gr%C3%B6dig&amp;query_place_id=ChIJ5Wur8ueTdkcRTQ-DLbWBpMY" target="_blank">Untersbergbahn</a></div>
@@ -1207,7 +1265,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Midday · Salzburg → Vienna</div>
 
-  <div class="bl ta anchor">
+  <div class="bl ta anchor" data-id="d5-12-07-salzburg-hbf-wien-hbf">
     <div class="bt">12:07</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Salzburg+Hauptbahnhof%2C+5020+Salzburg&amp;query_place_id=ChIJT2PH83iQdkcRnEDVqlb-Avs" target="_blank">Salzburg Hbf</a> → <a href="https://www.google.com/maps/search/?api=1&amp;query=Wien+Hauptbahnhof%2C+Am+Hauptbahnhof+1%2C+1100+Wien&amp;query_place_id=ChIJUU071tupbUcRyFdx20Nwgqg" target="_blank">Wien Hbf</a></div>
@@ -1217,7 +1275,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl th">
+  <div class="bl th" data-id="d5-ibis-collect-main-luggage-fr">
     <div class="bt">~14:45</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=ibis+Wien+Hauptbahnhof%2C+Canettistra%C3%9Fe+8%2C+1100+Wien&amp;query_place_id=ChIJYVTcYdepbUcRmN7UhYEEt1g" target="_blank">ibis Wien Hauptbahnhof</a></div>
@@ -1229,7 +1287,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Afternoon · Karlsplatz</div>
 
-  <div class="block type-see">
+  <div class="block type-see" data-id="d5-st-charles-s-church-karlskir">
     <div class="block-time">~16:30</div>
     <div class="block-dot"></div>
     <div class="card">
@@ -1241,7 +1299,7 @@ html.dlg-open{overflow:hidden}
   </div>
 
 
-  <div class="bl te">
+  <div class="bl te" data-id="d5-dinner-near-karlsplatz">
     <div class="bt">~18:00</div><div class="bd"></div>
     <div class="card">
       <div class="cl">Dinner near Karlsplatz</div>
@@ -1251,7 +1309,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Evening · Concert</div>
 
-  <div class="bl tn anchor">
+  <div class="bl tn anchor" data-id="d5-mozart-amp-strauss-musikvere">
     <div class="bt">20:15</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Musikverein+Wien%2C+Musikvereinsplatz+1%2C+1010+Wien&amp;query_place_id=ChIJx-raUZ0HbUcRT4MxN8ArwYI" target="_blank">Musikverein</a> · Golden Hall</div>
@@ -1287,7 +1345,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Morning · Vienna (Prater area)</div>
 
-  <div class="bl ts anchor">
+  <div class="bl ts anchor" data-id="d6-prater-park-riesenrad-ferris">
     <div class="bt">09:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Prater%2C+1020+Wien&amp;query_place_id=ChIJY6GrTT8HbUcR9LGo6Zxp5_w" target="_blank">Prater park</a>, 2nd District</div>
@@ -1297,7 +1355,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ta">
+  <div class="bl ta" data-id="d6-leave-main-luggage-at-ibis-w">
     <div class="bt">~10:00</div><div class="bd"></div>
     <div class="card">
       <div class="cl">Before leaving Vienna</div>
@@ -1308,7 +1366,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Midday · Vienna → Budapest</div>
 
-  <div class="bl ta anchor">
+  <div class="bl ta anchor" data-id="d6-10-00-wien-hbf-budapest-kele">
     <div class="bt">~10:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Wien+Hauptbahnhof%2C+Am+Hauptbahnhof+1%2C+1100+Wien&amp;query_place_id=ChIJUU071tupbUcRyFdx20Nwgqg" target="_blank">Wien Hbf</a> → <a href="https://www.google.com/maps/search/?api=1&amp;query=Budapest-Keleti%2C+Kerepesi+%C3%BAt+2-4%2C+1087+Budapest&amp;query_place_id=ChIJn2oLxYncQUcRDTkAlLx_Ako" target="_blank">Budapest Keleti</a></div>
@@ -1318,7 +1376,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl th">
+  <div class="bl th" data-id="d6-budapest-airbnb-jewish-quart">
     <div class="bt">~13:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Ak%C3%A1cfa+u.+12-14%2C+Ak%C3%A1cfa+u.+12-14%2C+1072+Budapest&amp;query_place_id=ChIJ9bafsGfcQUcRq9TxHoKuWK0" target="_blank">Akácfa u. 12-14 — Jewish Quarter</a></div>
@@ -1330,7 +1388,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Afternoon &amp; evening · Free in the Jewish Quarter</div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d6-settle-in-and-wander-near-th">
     <div class="bt">~15:00</div><div class="bd"></div>
     <div class="card">
       <div class="cl">Free time</div>
@@ -1362,7 +1420,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Morning · Parliament &amp; Basilica</div>
 
-  <div class="bl ts anchor">
+  <div class="bl ts anchor" data-id="d7-hungarian-parliament-interio">
     <div class="bt">10:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Hungarian+Parliament+Building%2C+Kossuth+Lajos+t%C3%A9r+1-3%2C+1055+Budapest&amp;query_place_id=ChIJPaPURhDcQUcRbg-P_7giITQ" target="_blank">Kossuth Lajos tér</a> — 5th District</div>
@@ -1372,7 +1430,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d7-shoes-on-the-danube-bank">
     <div class="bt">~10:50</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Shoes+on+the+Danube+Bank%2C+1054+Budapest&amp;query_place_id=ChIJ32QtdBbcQUcR1mrLvmwZjvY" target="_blank">Shoes on the Danube Bank</a> · 350 m from Parliament</div>
@@ -1382,7 +1440,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ts anchor">
+  <div class="bl ts anchor" data-id="d7-st-stephen-s-basilica-dome-c">
     <div class="bt">11:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=St.+Stephen%27s+Basilica%2C+Szent+Istv%C3%A1n+t%C3%A9r+1%2C+1051+Budapest&amp;query_place_id=ChIJ982jOl7BQUcRy7x_rqz8Qt0" target="_blank">St Stephen's Basilica</a> · 5th District</div>
@@ -1394,7 +1452,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Midday · Central Market Hall</div>
 
-  <div class="bl ts anchor">
+  <div class="bl ts anchor" data-id="d7-great-market-hall-langos-amp">
     <div class="bt">~12:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Central+Market+Hall%2C+F%C5%91v%C3%A1m+t%C3%A9r%2C+1093+Budapest&amp;query_place_id=ChIJ98Kx4k_cQUcRzC66ex41jKA" target="_blank">Central Market Hall</a> · 9th District</div>
@@ -1404,7 +1462,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d7-ervin-szabo-library">
     <div class="bt">~13:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Metropolitan+Ervin+Szab%C3%B3+Library%2C+Reviczky+u.+1%2C+1088+Budapest&amp;query_place_id=ChIJiXQRTVrcQUcRd_BsnojC1Ds" target="_blank">Metropolitan Ervin Szabó Library</a> · 8th District</div>
@@ -1416,7 +1474,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Afternoon · Buda Castle</div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d7-walk-over-the-chain-bridge-t">
     <div class="bt">~13:45</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Sz%C3%A9chenyi+Chain+Bridge%2C+Sz%C3%A9chenyi+L%C3%A1nch%C3%ADd%2C+1051+Budapest&amp;query_place_id=ChIJKRqatz_cQUcRpMnQhdf-QB4" target="_blank">Széchenyi Chain Bridge</a> → Clark Ádám tér funicular</div>
@@ -1426,7 +1484,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ts anchor">
+  <div class="bl ts anchor" data-id="d7-buda-castle-matthias-church">
     <div class="bt">~14:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Castle+Hill%2C+Castle+Hill%2C+Budapest&amp;query_place_id=ChIJK72q4yLcQUcRmRgchz9iepc" target="_blank">Castle Hill</a> · Buda</div>
@@ -1436,7 +1494,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d7-gellert-hill-citadella-amp-d">
     <div class="bt">~16:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Gell%C3%A9rt+Hill%2C+Gell%C3%A9rt+Hill%2C+1016+Budapest&amp;query_place_id=ChIJibrLEzbcQUcRDpPMb5am4qw" target="_blank">Gellért Hill</a> · Buda, by Liberty Bridge</div>
@@ -1448,7 +1506,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Evening · Prosecco boat tour</div>
 
-  <div class="bl te">
+  <div class="bl te" data-id="d7-dinner-before-the-boat-tour">
     <div class="bt">~17:30</div><div class="bd"></div>
     <div class="card">
       <div class="cl">Dinner before the boat tour</div>
@@ -1462,7 +1520,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl tn anchor">
+  <div class="bl tn anchor" data-id="d7-prosecco-boat-tour">
     <div class="bt">19:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Budapest+prosecco+boat+tour" target="_blank">Danube pier — TBC</a></div>
@@ -1497,7 +1555,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Morning · 7th District</div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d8-great-synagogue-on-dohany-ut">
     <div class="bt">10:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Doh%C3%A1ny+Street+Synagogue%2C+Doh%C3%A1ny+u.+2%2C+1074+Budapest&amp;query_place_id=ChIJz0F9UELcQUcRCIZQ0GOvKEE" target="_blank">Dohány Street Synagogue</a> · 7th District</div>
@@ -1509,7 +1567,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Midday · Andrássy út &amp; City Park</div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d8-andrassy-avenue-walk">
     <div class="bt">11:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Andr%C3%A1ssy+%C3%BAt%2C+Andr%C3%A1ssy+%C3%BAt%2C+Budapest&amp;query_place_id=ChIJMSwV53HcQUcRCwP5HvIgKfw" target="_blank">Andrássy út</a> — UNESCO boulevard</div>
@@ -1519,7 +1577,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d8-heroes-square-vajdahunyad-ca">
     <div class="bt">13:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Heroes%27+Square%2C+H%C5%91s%C3%B6k+tere%2C+1146+Budapest&amp;query_place_id=ChIJaSHx-YfbQUcRPylIurx8QTQ" target="_blank">Hősök tere (Heroes' Square)</a> · City Park</div>
@@ -1529,7 +1587,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl te">
+  <div class="bl te" data-id="d8-lunch-in-city-park-area">
     <div class="bt">~14:00</div><div class="bd"></div>
     <div class="card">
       <div class="cl">Lunch in City Park area</div>
@@ -1543,7 +1601,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl tn">
+  <div class="bl tn" data-id="d8-szechenyi-thermal-baths">
     <div class="bt">~15:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Sz%C3%A9chenyi+Thermal+Bath%2C+%C3%81llatkerti+krt.+9-11%2C+1146+Budapest&amp;query_place_id=ChIJd1VnBYbbQUcREiSNtgjDwMs" target="_blank">Széchenyi Thermal Baths</a> · City Park</div>
@@ -1555,7 +1613,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Afternoon · Thrift Shopping</div>
 
-  <div class="bl tsh">
+  <div class="bl tsh" data-id="d8-budapest-vintage-amp-second">
     <div class="bt">~16:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span>Various districts</div>
@@ -1572,7 +1630,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl te">
+  <div class="bl te" data-id="d8-dinner">
     <div class="bt">~19:00</div><div class="bd"></div>
     <div class="card">
       <div class="cl">Dinner</div>
@@ -1588,7 +1646,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Evening · Ruin Bar</div>
 
-  <div class="bl tn anchor">
+  <div class="bl tn anchor" data-id="d8-szimpla-kert-budapest-s-orig">
     <div class="bt">21:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Szimpla+Kert%2C+Kazinczy+u.+14%2C+1075+Budapest&amp;query_place_id=ChIJ5Q3SoELcQUcRpB0x-9NCdyY" target="_blank">Szimpla Kert</a> · 7th District</div>
@@ -1623,7 +1681,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Morning · Budapest checkout</div>
 
-  <div class="bl th">
+  <div class="bl th" data-id="d9-budapest-airbnb-checkout">
     <div class="bt">09:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Ak%C3%A1cfa+u.+12-14%2C+Ak%C3%A1cfa+u.+12-14%2C+1072+Budapest&amp;query_place_id=ChIJ9bafsGfcQUcRq9TxHoKuWK0" target="_blank">Akácfa u. 12-14</a> — Jewish Quarter</div>
@@ -1633,7 +1691,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl tsh">
+  <div class="bl tsh" data-id="d9-last-minute-shopping-next-to">
     <div class="bt">~10:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Primark%2C+Kerepesi+%C3%BAt+9%2C+1087+Budapest&amp;query_place_id=ChIJ_SzcNgDdQUcRPkoYXiq7710" target="_blank">Arena Mall (Primark)</a> · next to Keleti</div>
@@ -1645,7 +1703,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Midday · Budapest → Vienna</div>
 
-  <div class="bl ta anchor">
+  <div class="bl ta anchor" data-id="d9-11-30-budapest-keleti-wien-h">
     <div class="bt">11:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Budapest-Keleti%2C+Kerepesi+%C3%BAt+2-4%2C+1087+Budapest&amp;query_place_id=ChIJn2oLxYncQUcRDTkAlLx_Ako" target="_blank">Budapest Keleti</a> → <a href="https://www.google.com/maps/search/?api=1&amp;query=Wien+Hauptbahnhof%2C+Am+Hauptbahnhof+1%2C+1100+Wien&amp;query_place_id=ChIJUU071tupbUcRyFdx20Nwgqg" target="_blank">Wien Hbf</a></div>
@@ -1655,7 +1713,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl th">
+  <div class="bl th" data-id="d9-ibis-collect-stored-luggage">
     <div class="bt">~15:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=ibis+Wien+Hauptbahnhof%2C+Canettistra%C3%9Fe+8%2C+1100+Wien&amp;query_place_id=ChIJYVTcYdepbUcRmN7UhYEEt1g" target="_blank">ibis Wien Hauptbahnhof</a></div>
@@ -1667,7 +1725,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Afternoon · KHM</div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d9-khm-world-class-art-museum">
     <div class="bt">15:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Kunsthistorisches+Museum+Wien%2C+Maria-Theresien-Platz%2C+1010+Wien&amp;query_place_id=ChIJ8XfPY5oHbUcRQbimbLVSYG8" target="_blank">Kunsthistorisches Museum (KHM)</a> · 1st District</div>
@@ -1679,7 +1737,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Evening · Christmas Market + Final Dinner</div>
 
-  <div class="bl ts">
+  <div class="bl ts" data-id="d9-vienna-christmas-market-step">
     <div class="bt">~18:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Stephansplatz%2C+Stephansplatz%2C+1010+Wien&amp;query_place_id=ChIJgcJpPp8HbUcR3h-qVsFjBQI" target="_blank">Stephansplatz</a> · 1st District</div>
@@ -1689,7 +1747,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl te anchor">
+  <div class="bl te anchor" data-id="d9-final-dinner-in-vienna-pick">
     <div class="bt">19:30</div><div class="bd"></div>
     <div class="card">
       <div class="cl">Final dinner in Vienna — pick one</div>
@@ -1707,7 +1765,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl th">
+  <div class="bl th" data-id="d9-return-to-ibis-pack-fully-to">
     <div class="bt">21:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=ibis+Wien+Hauptbahnhof%2C+Canettistra%C3%9Fe+8%2C+1100+Wien&amp;query_place_id=ChIJYVTcYdepbUcRmN7UhYEEt1g" target="_blank">ibis Wien Hauptbahnhof</a></div>
@@ -1741,7 +1799,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Early morning</div>
 
-  <div class="bl th anchor">
+  <div class="bl th anchor" data-id="d10-05-30-wake-set-two-alarms">
     <div class="bt">05:30</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=ibis+Wien+Hauptbahnhof%2C+Canettistra%C3%9Fe+8%2C+1100+Wien&amp;query_place_id=ChIJYVTcYdepbUcRmN7UhYEEt1g" target="_blank">ibis Wien Hauptbahnhof</a></div>
@@ -1751,7 +1809,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ta anchor">
+  <div class="bl ta anchor" data-id="d10-s-bahn-s7-to-vienna-airport">
     <div class="bt">06:15</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Wien+Hauptbahnhof%2C+Am+Hauptbahnhof+1%2C+1100+Wien&amp;query_place_id=ChIJUU071tupbUcRyFdx20Nwgqg" target="_blank">Wien Hbf</a> → <a href="https://www.google.com/maps/search/?api=1&amp;query=Vienna+International+Airport%2C+1300+Schwechat&amp;query_place_id=ChIJm74aR6tVbEcRS5vSjRBSeiQ" target="_blank">Vienna Airport (VIE)</a></div>
@@ -1761,7 +1819,7 @@ html.dlg-open{overflow:hidden}
     </div>
   </div>
 
-  <div class="bl ta anchor">
+  <div class="bl ta anchor" data-id="d10-arrive-airport-check-in-amp">
     <div class="bt">07:00</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Vienna+International+Airport%2C+1300+Schwechat&amp;query_place_id=ChIJm74aR6tVbEcRS5vSjRBSeiQ" target="_blank">Vienna International Airport (VIE)</a></div>
@@ -1773,7 +1831,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Departure</div>
 
-  <div class="bl ta anchor">
+  <div class="bl ta anchor" data-id="d10-09-35-vienna-singapore-scoot">
     <div class="bt">09:35</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Vienna+International+Airport%2C+1300+Schwechat&amp;query_place_id=ChIJm74aR6tVbEcRS5vSjRBSeiQ" target="_blank">VIE</a> → <a href="https://www.google.com/maps/search/?api=1&amp;query=Singapore+Changi+Airport+T1%2C+Terminal+1%2C+Singapore&amp;query_place_id=ChIJ1XgwjIk82jER3GYMUrMC4RM" target="_blank">SIN</a> · Scoot TR711</div>
@@ -1785,7 +1843,7 @@ html.dlg-open{overflow:hidden}
 
   <div class="sec">Arrival</div>
 
-  <div class="bl ta anchor">
+  <div class="bl ta anchor" data-id="d10-changi-terminal-1-home">
     <div class="bt">03:40<br>+1</div><div class="bd"></div>
     <div class="card">
       <div class="tag"><span class="ms" aria-hidden="true">location_on</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Singapore+Changi+Airport+T1%2C+Terminal+1%2C+Singapore&amp;query_place_id=ChIJ1XgwjIk82jER3GYMUrMC4RM" target="_blank">Singapore Changi Airport T1</a> · Sun 8 Nov</div>
@@ -1831,6 +1889,149 @@ html.dlg-open{overflow:hidden}
 </div>
 </div>
 
+<script>
+/* ── SYNC ── everything you change on the site is shared through a Google Sheet tab:
+   waypoints, map day moves, and schedule blocks (start / end time, day, note).
+   Paste the Apps Script web-app URL into SYNC_URL (setup: SHEET-SYNC-SETUP.md).
+   Left empty, changes stay on this device. Writes need the edit code, asked for once per phone. */
+var SYNC=(function(){
+  var SYNC_URL='';   // e.g. 'https://script.google.com/macros/s/…/exec'
+  var K={wp:'et_map_waypoints',move:'et_map_moves',block:'et_blocks',queue:'et_sync_queue',code:'et_sync_code',dev:'et_sync_device',at:'et_sync_at'};
+  function load(k,d){try{var v=JSON.parse(localStorage.getItem(k)||'null');return v==null?d:v;}catch(e){return d;}}
+  function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function mins(t){var m=/(\d{1,2}):(\d{2})/.exec(t||'');return m?+m[1]*60+ +m[2]:null;}
+  function hhmm(t){var m=mins(t);return m==null?'':('0'+Math.floor(m/60)).slice(-2)+':'+('0'+m%60).slice(-2);}
+  var dev=load(K.dev,null);
+  if(!dev){var ua=navigator.userAgent;dev=(/iphone|ipad/i.test(ua)?'iPhone':/android/i.test(ua)?'Android':'Computer')+' '+Math.random().toString(36).slice(2,6);save(K.dev,dev);}
+  var hooks=[],busy=false,st={on:!!SYNC_URL,at:load(K.at,null),err:'',pending:load(K.queue,[]).length};
+  function changed(what){hooks.forEach(function(f){try{f(what||'status');}catch(e){console.error(e);}});}
+
+  // ── schedule block edits: {id:{start,end,day,note}} laid over the day pages ──
+  var orig={};   // id → where the block was, its original time and end
+  function remember(){
+    document.querySelectorAll('.page[id^="day"] [data-id]').forEach(function(b){
+      var id=b.dataset.id;if(orig[id])return;
+      var ph=document.createComment(' '+id+' ');b.parentNode.insertBefore(ph,b);
+      var bt=b.querySelector('.bt,.block-time');
+      orig[id]={ph:ph,bt:bt?bt.innerHTML:'',end:b.getAttribute('data-end'),day:+b.closest('.page').id.slice(3)};
+    });
+  }
+  function timeOf(b){var bt=b.querySelector('.bt,.block-time'),t=bt?bt.textContent:'';return /late/i.test(t)?23*60:mins(t);}
+  // put a block into a day's timeline in time order (above the section label it would otherwise land under)
+  function place(b,day,start){
+    var tl=document.querySelector('#day'+day+' .tl,#day'+day+' .timeline');if(!tl)return;
+    var kids=[].filter.call(tl.children,function(c){return c!==b&&c.matches('.bl,.block')&&!c.closest('.wp-sec');}),before=null;
+    for(var i=0;i<kids.length;i++){var t=timeOf(kids[i]);if(t!=null&&t>start){before=kids[i];break;}}
+    if(before){var prev=before.previousElementSibling;if(prev&&prev.matches('.sec,.section-label'))before=prev;tl.insertBefore(b,before);}
+    else tl.insertBefore(b,tl.querySelector(':scope > .wp-sec'));
+  }
+  function applyBlocks(){
+    remember();
+    var ov=load(K.block,{});
+    Object.keys(orig).forEach(function(id){   // back to the original first…
+      var o=orig[id],b=document.querySelector('[data-id="'+id+'"]');if(!b)return;
+      o.ph.parentNode.insertBefore(b,o.ph.nextSibling);
+      var bt=b.querySelector('.bt,.block-time');if(bt){bt.innerHTML=o.bt;bt.classList.remove('edited');}
+      if(o.end)b.setAttribute('data-end',o.end);else b.removeAttribute('data-end');
+      b.classList.remove('edited');
+      var n=b.querySelector('.unote');if(n)n.remove();
+    });
+    Object.keys(ov).forEach(function(id){   // …then the edits on top
+      var b=document.querySelector('[data-id="'+id+'"]'),v=ov[id],o=orig[id];if(!b||!v||!o)return;
+      var bt=b.querySelector('.bt,.block-time');
+      if(v.start&&bt){bt.textContent=v.start;bt.classList.add('edited');bt.title='Changed';}
+      if(v.end)b.setAttribute('data-end',v.end);
+      if(v.note)b.querySelector('.card').insertAdjacentHTML('beforeend','<p class="unote"><span class="ms" aria-hidden="true">edit</span>'+esc(v.note)+'</p>');
+      b.classList.add('edited');
+      if(v.start||(v.day&&v.day!==o.day))place(b,v.day||o.day,v.start?mins(v.start):(mins(o.bt)==null?24*60:mins(o.bt)));
+    });
+  }
+
+  // ── local state ⇄ sheet rows ──
+  function fromItems(items){
+    var s={wp:{},move:{},block:{}};
+    (items||[]).forEach(function(it){
+      var v=String(it.value).replace(/^'/,'');
+      if(it.kind==='wp'){var i=it.id.indexOf('|');if(i>0)(s.wp[it.id.slice(0,i)]=s.wp[it.id.slice(0,i)]||[]).push(it.id.slice(i+1));}
+      else if(it.kind==='move'&&!isNaN(+v))s.move[it.id]=+v;
+      else if(it.kind==='block'){try{s.block[it.id]=JSON.parse(v);}catch(e){}}
+    });
+    return s;
+  }
+  function applyOp(s,op){
+    if(op.reset){s.wp={};s.move={};s.block={};return;}
+    if(op.kind==='wp'){
+      var i=op.id.indexOf('|'),d=op.id.slice(0,i),k=op.id.slice(i+1),a=s.wp[d]||(s.wp[d]=[]),j=a.indexOf(k);
+      if(op.value==null){if(j>=0)a.splice(j,1);if(!a.length)delete s.wp[d];}else if(j<0)a.push(k);
+    }else if(op.kind==='move'){if(op.value==null)delete s.move[op.id];else s.move[op.id]=op.value;}
+    else if(op.kind==='block'){if(op.value==null)delete s.block[op.id];else s.block[op.id]=op.value;}
+  }
+  function local(){return {wp:load(K.wp,{}),move:load(K.move,{}),block:load(K.block,{})};}
+  function store(s){
+    var before=JSON.stringify(local());
+    save(K.wp,s.wp);save(K.move,s.move);save(K.block,s.block);
+    if(JSON.stringify(local())!==before){applyBlocks();changed('data');}
+  }
+
+  // ── talking to the sheet ──
+  function code(){
+    var c=load(K.code,'');
+    if(!c){c=(window.prompt('Enter the trip edit code to save changes to the shared sheet:')||'').trim();if(c)save(K.code,c);}
+    return c;
+  }
+  function done(at){st.at=at;save(K.at,at);st.err='';}
+  function pull(){
+    if(!SYNC_URL||busy)return Promise.resolve();
+    return fetch(SYNC_URL,{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
+      if(!j||!j.ok)throw new Error(j&&j.error||'Sync failed');
+      var s=fromItems(j.items);load(K.queue,[]).forEach(function(op){applyOp(s,op);});   // keep edits not sent yet
+      store(s);done(Date.now());
+    }).catch(function(e){st.err=navigator.onLine?'Could not reach the shared sheet':'Offline: changes will sync when you are back online';})
+      .then(changed);
+  }
+  function flush(){
+    var q=load(K.queue,[]);st.pending=q.length;
+    if(!SYNC_URL||!q.length||busy)return Promise.resolve();
+    var c=code();if(!c){st.err='Changes are saved on this phone. Add the edit code to share them.';changed();return Promise.resolve();}
+    var last=-1;q.forEach(function(op,i){if(op.reset)last=i;});
+    busy=true;
+    return fetch(SYNC_URL,{method:'POST',body:JSON.stringify({code:c,by:dev,reset:last>=0,ops:q.slice(last+1)})})
+      .then(function(r){return r.json();}).then(function(j){
+        if(!j||!j.ok){if(j&&/edit code/i.test(j.error||''))save(K.code,'');throw new Error(j&&j.error||'Sync failed');}
+        var rest=load(K.queue,[]).slice(q.length);save(K.queue,rest);st.pending=rest.length;
+        var s=fromItems(j.items);rest.forEach(function(op){applyOp(s,op);});
+        busy=false;store(s);done(Date.now());
+      }).catch(function(e){busy=false;st.err=/edit code/i.test(e.message)?'Wrong edit code: it will be asked again next time':navigator.onLine?'Could not reach the shared sheet. Will retry.':'Offline: changes will sync when you are back online';})
+      .then(changed);
+  }
+  // record a change locally right away, then send it
+  function push(op){
+    var s=local();applyOp(s,op);save(K.wp,s.wp);save(K.move,s.move);save(K.block,s.block);
+    if(op.kind==='block'||op.reset)applyBlocks();
+    if(SYNC_URL){var q=load(K.queue,[]);q.push(op);save(K.queue,q);st.pending=q.length;flush();}
+    changed('data');
+  }
+
+  applyBlocks();
+  if(SYNC_URL){
+    flush().then(pull);
+    setInterval(function(){if(!document.hidden)flush().then(pull);},60000);
+    document.addEventListener('visibilitychange',function(){if(!document.hidden)flush().then(pull);});
+    window.addEventListener('online',function(){flush().then(pull);});
+  }
+  return {
+    push:push,
+    setBlock:function(id,v){push({kind:'block',id:id,value:v&&Object.keys(v).length?v:null});},
+    block:function(id){return load(K.block,{})[id]||null;},
+    original:function(id){var o=orig[id];return o?{day:o.day,start:hhmm(o.bt.replace(/<[^>]+>/g,' ')),end:o.end||''}:null;},
+    reset:function(){push({reset:true});save(K.wp,{});save(K.move,{});save(K.block,{});applyBlocks();changed('data');},
+    now:function(){return flush().then(pull);},
+    onChange:function(f){hooks.push(f);},
+    status:function(){return st;}
+  };
+})();
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.js"></script>
 <script>
 var TRIPMAP=(function(){
@@ -2293,6 +2494,7 @@ var TRIPMAP=(function(){
     if(i>=0)a.splice(i,1);else a.push(k);
     if(!a.length)delete S.wps[d];
     save(WP_KEY,S.wps);
+    if(window.SYNC)SYNC.push({kind:'wp',id:d+'|'+k,value:i>=0?null:1});
     build();render(false);renderSched();renderThumbs();
     if(window.SCHEDVIEW)SCHEDVIEW.refresh();
   }
@@ -2795,22 +2997,36 @@ var TRIPMAP=(function(){
     var id=k+'@'+from;
     if(to===from)delete S.moves[id];else S.moves[id]=to;
     save(MOVES_KEY,S.moves);
+    if(window.SYNC)SYNC.push({kind:'move',id:id,value:to===from?null:to});
     build();render(false);
   }
+  // the changes bar: how many changes there are and where they live (shared sheet or this device)
+  function syncLine(){
+    var st=window.SYNC&&SYNC.status();
+    if(!st||!st.on)return 'Saved on this device only (the shared sheet isn\'t set up).';
+    if(st.err)return st.err;
+    if(st.pending)return 'Sending '+st.pending+' change'+(st.pending>1?'s':'')+' to the shared sheet…';
+    return st.at?'Shared via your Google Sheet · synced '+new Date(st.at).toTimeString().slice(0,5):'Connecting to the shared sheet…';
+  }
   function renderEdits(){
-    var el=document.getElementById('mapEdits'),ids=Object.keys(S.moves),wds=Object.keys(S.wps);
-    var wn=wds.reduce(function(n,d){return n+S.wps[d].length;},0);
-    el.hidden=!ids.length&&!wn;
+    var el=document.getElementById('mapEdits'),ids=Object.keys(S.moves),wds=Object.keys(S.wps),blocks=load('et_blocks')||{};
+    var wn=wds.reduce(function(n,d){return n+S.wps[d].length;},0),bn=Object.keys(blocks).length,st=window.SYNC&&SYNC.status(),on=st&&st.on;
+    el.hidden=!on&&!ids.length&&!wn&&!bn;
     if(el.hidden)return;
     var what=[];
-    if(ids.length)what.push(ids.length+' day move'+(ids.length>1?'s':''));
+    if(bn)what.push(bn+' schedule edit'+(bn>1?'s':''));
     if(wn)what.push(wn+' waypoint'+(wn>1?'s':''));
-    el.innerHTML='<span>'+what.join(' and ')+' saved on this device.</span>'+
-      '<button class="pri" data-a="copy">Copy changes</button><button data-a="reset">Reset</button>';
+    if(ids.length)what.push(ids.length+' day move'+(ids.length>1?'s':''));
+    el.innerHTML='<span><b>'+(what.length?what.join(' · '):'No changes yet')+'</b><br>'+esc(syncLine())+'</span>'+
+      (on?'<button class="pri" data-a="sync">Sync now</button>':'<button class="pri" data-a="copy">Copy changes</button>')+
+      (what.length?'<button data-a="reset">Reset</button>':'');
     el.onclick=function(e){
       var b=e.target.closest('button');if(!b)return;
+      if(b.dataset.a==='sync'){b.textContent='Syncing…';SYNC.now();return;}
       if(b.dataset.a==='reset'){
-        if(confirm('Undo all day moves and waypoints on this device?')){S.moves={};S.wps={};save(MOVES_KEY,{});save(WP_KEY,{});build();render(false);renderSched();}
+        if(confirm('Undo all schedule edits, waypoints and day moves'+(on?' for everyone sharing the sheet?':' on this device?'))){
+          if(window.SYNC)SYNC.reset();S.moves={};S.wps={};save(MOVES_KEY,{});save(WP_KEY,{});build();render(false);renderSched();
+        }
         return;
       }
       var txt='Trip map changes:\n'+ids.map(function(id){
@@ -2818,7 +3034,7 @@ var TRIPMAP=(function(){
         return '• Move '+(p?p.n:id.slice(0,i))+': '+dayName(+id.slice(i+1))+' → '+dayName(S.moves[id]);
       }).concat(wds.sort(function(a,b){return a-b;}).map(function(d){
         return S.wps[d].map(function(k){var p=placeOf(k);return '• Waypoint, Day '+d+': '+p.n+(p.extra?' (Extra — '+p.q+')':'');}).join('\n');
-      })).join('\n');
+      })).concat(Object.keys(blocks).map(function(id){return '• Edit '+id+': '+JSON.stringify(blocks[id]);})).join('\n');
       var done=function(){b.textContent='Copied ✓';setTimeout(function(){b.textContent='Copy changes';},1800);};
       if(navigator.clipboard)navigator.clipboard.writeText(txt).then(done,function(){prompt('Copy these changes:',txt);});
       else prompt('Copy these changes:',txt);
@@ -2965,6 +3181,8 @@ var TRIPMAP=(function(){
       if(e.target===dlg||e.target.closest('.dlg-x')){closeDlg();return;}
       var b=e.target.closest('[data-act]');if(!b)return;
       if(b.dataset.act==='wp'){toggleWp(dlgCtx.p.key,dlgCtx.day);fillDlg();}
+      else if(b.dataset.act==='save')saveEdit();
+      else if(b.dataset.act==='revert'){dlgCtx.msg='Back to the original plan.';SYNC.setBlock(dlgCtx.blk.dataset.id,null);fillDlg();}
       else if(b.dataset.act==='map'){var c=dlgCtx;closeDlg();focusOnMap(c.day,c.p.key);}
     });
     dlg.addEventListener('close',function(){document.documentElement.classList.remove('dlg-open');});
@@ -2980,6 +3198,19 @@ var TRIPMAP=(function(){
     g.addEventListener('pointerup',end);g.addEventListener('pointercancel',end);
   }
   function closeDlg(){if(dlg&&dlg.open)dlg.close();}
+  // save the edit form: only what differs from the original plan is stored
+  function saveEdit(){
+    var f=dlg.querySelector('.dlg-form').elements,id=dlgCtx.blk.dataset.id,o=SYNC.original(id)||{},prev=SYNC.block(id)||{},v={};
+    var st=f.start.value,en=f.end.value,dy=+f.day.value,nt=f.note.value.trim();
+    if(st&&st!==o.start)v.start=st;
+    if(en&&en!==dlgCtx.endShown)v.end=en;else if(prev.end&&en)v.end=prev.end;
+    if(dy&&dy!==o.day)v.day=dy;
+    if(nt)v.note=nt;
+    if(v.end&&v.end<=(v.start||o.start||'00:00')){dlgCtx.msg='The end time has to be after the start.';dlgCtx.editOpen=true;fillDlg();return;}
+    dlgCtx.editOpen=false;dlgCtx.msg=Object.keys(v).length?'Saved.':'Back to the original plan.';
+    SYNC.setBlock(id,v);
+    fillDlg();
+  }
   function openDetail(blk){
     if(!dlg)makeDlg();
     dlgCtx={blk:blk,day:+blk.closest('.page').id.slice(3),p:blockPlace(blk)};
@@ -2989,13 +3220,15 @@ var TRIPMAP=(function(){
     dlg.querySelector('.dlg-sheet').scrollTop=0;
   }
   function fillDlg(){
+    dlgCtx.day=+dlgCtx.blk.closest('.page').id.slice(3);
     var blk=dlgCtx.blk,card=blk.querySelector('.card'),p=dlgCtx.p,day=dlgCtx.day,im=photo(p);
     var q=function(sel){return card.querySelector(sel);},html=function(el){return el?el.innerHTML:'';};
     var t=blk.querySelector('.bt,.block-time'),ttl=q('.ct,.card-title'),lab=q('.cl,.card-label'),tag=q('.tag,.cluster-tag'),note=q('.cn,.card-note');
     var anchor=blk.classList.contains('anchor'),wp=p&&isWp(day,p.key);
     var title=ttl?ttl.textContent:[].map.call(card.querySelectorAll('.on,.option-name'),function(e){return e.textContent;}).join(' or ')||(lab?lab.textContent:'');
     var h='';
-    if(im)h+='<figure class="dlg-fig"><img src="'+esc(im.f)+'" alt="'+esc(p.n)+'"><figcaption>Photo: '+esc(im.a)+' · '+esc(im.l)+' · <a href="'+esc(im.u)+'" target="_blank" rel="noopener">Wikimedia Commons</a></figcaption></figure>';
+    if(im)h+='<figure class="dlg-fig"><img src="'+esc(im.f.replace('images/','images/large/'))+'" alt="'+esc(p.n)+'" style="background-image:url(\''+esc(im.f)+'\')"'+
+      ' onerror="this.onerror=null;this.src=\''+esc(im.f)+'\'"><figcaption>Photo: '+esc(im.a)+' · '+esc(im.l)+' · <a href="'+esc(im.u)+'" target="_blank" rel="noopener">Wikimedia Commons</a></figcaption></figure>';
     h+='<div class="dlg-body"><div class="dlg-meta">'+(t&&t.textContent.trim()?'<span class="dlg-time">'+esc(t.textContent.replace(/\s+/g,' ').trim())+'</span>':'')+
       (lab?'<span>'+lab.innerHTML+'</span>':'')+
       (anchor?'<span class="dlg-badge anchor"><span class="ms" aria-hidden="true">star</span>Anchor</span>':wp?'<span class="dlg-badge wp"><span class="ms" aria-hidden="true">check</span>Waypoint</span>':'')+'</div>';
@@ -3018,6 +3251,23 @@ var TRIPMAP=(function(){
         (p.ll?'<button type="button" class="dlg-btn" data-act="map"><span class="ms" aria-hidden="true">location_on</span>Show on map</button>':'')+
         (!anchor&&day>0?'<button type="button" class="dlg-btn wp'+(wp?' on':'')+'" data-act="wp" aria-pressed="'+!!wp+'"><span class="ms" aria-hidden="true">check_circle</span>'+(wp?'Waypoint · remove':'Confirm as waypoint')+'</button>':'')+
         '</div>';
+    }
+    // change this block's time, day or add a note (shared through the sheet when sync is set up)
+    var bid=blk.dataset.id;
+    if(bid&&window.SYNC){
+      var o=SYNC.original(bid)||{},v=SYNC.block(bid)||{},endNow=(window.SCHEDVIEW&&SCHEDVIEW.endOf(blk))||'';
+      dlgCtx.endShown=v.end||endNow;
+      var dayOpts='';for(var n=1;n<=10;n++)dayOpts+='<option value="'+n+'"'+((v.day||o.day)===n?' selected':'')+'>Day '+n+'</option>';
+      h+='<details class="dlg-edit"'+(dlgCtx.editOpen?' open':'')+'><summary><span class="ms" aria-hidden="true">edit</span>Change time, day or add a note</summary>'+
+        '<form class="dlg-form" onsubmit="return false">'+
+        '<label>Starts<input type="time" name="start" value="'+esc(v.start||o.start||'')+'"></label>'+
+        '<label>Ends<input type="time" name="end" value="'+esc(dlgCtx.endShown)+'"></label>'+
+        '<label>Day<select name="day">'+dayOpts+'</select></label>'+
+        '<label class="full">Note<textarea name="note" rows="2" maxlength="300" placeholder="Booking reference, meeting point…">'+esc(v.note||'')+'</textarea></label>'+
+        '<div class="dlg-form-btns"><button type="button" class="dlg-btn pri" data-act="save">Save change</button>'+
+        (Object.keys(v).length?'<button type="button" class="dlg-btn" data-act="revert">Undo my changes</button>':'')+'</div>'+
+        '<p class="dlg-sync" role="status">'+(dlgCtx.msg?'<b>'+esc(dlgCtx.msg)+'</b> ':'')+esc(syncLine())+'</p></form></details>';
+      dlgCtx.msg='';
     }
     h+='</div>';
     dlg.classList.toggle('noimg',!im);
@@ -3047,6 +3297,12 @@ var TRIPMAP=(function(){
   }
   function room0(el){el.classList.toggle('flip',el.getBoundingClientRect().top-map.getContainer().getBoundingClientRect().top<190);}
 
+  // shared changes arrived (or were made here): redraw what depends on them
+  if(window.SYNC)SYNC.onChange(function(what){
+    if(what==='data'){if(S){build();render(false);}renderSched();renderThumbs();if(dlg&&dlg.open&&dlgCtx)fillDlg();}
+    else if(S)renderEdits();
+    if(dlg&&dlg.open&&dlgCtx){var ds=dlg.querySelector('.dlg-sync');if(ds)ds.innerHTML=syncLine();}
+  });
   renderSched();   // waypoints show on the day pages straight away, not only after opening the map
   renderThumbs();
   var first=true;
@@ -3254,7 +3510,10 @@ var SCHEDVIEW=(function(){
   });
   apply();
   setInterval(apply,60000);   // keep Now / Next and the now line current
-  return {refresh:apply,today:todayDay};
+  // where a block ends (its data-end, or worked out from its type and the next block)
+  function endOf(b){var pg=b.closest('.page'),ev=pg&&events(pg).timed.filter(function(e){return e.b===b;})[0];return ev?clock(ev.e):'';}
+  if(window.SYNC)SYNC.onChange(function(w){if(w==='data'){document.querySelectorAll('.page[id^="day"]').forEach(checkOrder);apply();}});
+  return {refresh:apply,today:todayDay,endOf:endOf};
 })();
 </script>
 <script>
@@ -3283,6 +3542,7 @@ var SCHEDVIEW=(function(){
     var at = document.querySelector('.nav-tab.active');
     if(at) at.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
     try{ localStorage.setItem('et_day', n); }catch(e){}
+    if(window.updateBnav) updateBnav(n);
     if(n==='map' && window.TRIPMAP) TRIPMAP.show();
   }
   function go(t){
@@ -3305,6 +3565,63 @@ var SCHEDVIEW=(function(){
     e.preventDefault(); j = (j+tabs.length)%tabs.length;
     tabs[j].focus(); go(tabs[j]);
   });
+  // ── bottom bar on phones: previous day, day picker, today, map, next day ──
+  var order = tabs.map(function(t){ return t.dataset.day; });   // map, 1 … 10
+  var cur = null;
+  var bnav = document.createElement('nav');
+  bnav.className = 'bnav'; bnav.setAttribute('aria-label','Quick day navigation');
+  bnav.innerHTML =
+    '<button type="button" data-b="prev"><span class="ms" aria-hidden="true">chevron_left</span><span>Prev</span></button>'+
+    '<button type="button" data-b="days" aria-haspopup="dialog"><span class="ms" aria-hidden="true">calendar_month</span><span class="bnav-cur">Days</span></button>'+
+    (td ? '<button type="button" data-b="today"><span class="ms" aria-hidden="true">today</span><span>Today</span></button>' : '')+
+    '<button type="button" data-b="map"><span class="ms" aria-hidden="true">map</span><span>Map</span></button>'+
+    '<button type="button" data-b="next"><span class="ms" aria-hidden="true">chevron_right</span><span>Next</span></button>';
+  document.body.appendChild(bnav);
+  function tabFor(v){ return tabs.filter(function(t){ return t.dataset.day===String(v); })[0]; }
+  window.updateBnav = function(n){
+    cur = n;
+    var d = n==='map' ? null : n;
+    bnav.querySelector('.bnav-cur').textContent = d ? 'Day '+d : 'Days';
+    bnav.querySelector('[data-b="prev"]').disabled = !d || d<=1;
+    bnav.querySelector('[data-b="next"]').disabled = !d || d>=10;
+    bnav.querySelector('[data-b="map"]').classList.toggle('on', n==='map');
+    var tb = bnav.querySelector('[data-b="today"]'); if(tb) tb.classList.toggle('on', d===td);
+  };
+  bnav.addEventListener('click', function(e){
+    var b = e.target.closest('[data-b]'); if(!b || b.disabled) return;
+    var k = b.dataset.b;
+    if(k==='prev') go(tabFor(cur-1));
+    else if(k==='next') go(tabFor(cur+1));
+    else if(k==='map') go(tabFor('map'));
+    else if(k==='today') go(tabFor(td));
+    else openPicker();
+    if(k!=='days') window.scrollTo({top:0});
+  });
+  // the day picker: every day as a big tile, in a bottom sheet
+  var pk;
+  function openPicker(){
+    if(!pk){
+      pk = document.createElement('dialog');
+      pk.className = 'dlg noimg dpk'; pk.setAttribute('aria-label','Choose a day');
+      document.body.appendChild(pk);
+      pk.addEventListener('click', function(e){
+        if(e.target===pk || e.target.closest('.dlg-x')){ pk.close(); return; }
+        var t = e.target.closest('[data-go]'); if(!t) return;
+        pk.close(); go(tabFor(t.dataset.go)); window.scrollTo({top:0});
+      });
+    }
+    var h = '<div class="dlg-sheet"><button type="button" class="dlg-x" aria-label="Close"><span class="ms" aria-hidden="true">close</span></button>'+
+      '<div class="dlg-body"><h2 class="dpk-h">Go to</h2><div class="dpk-grid">';
+    order.forEach(function(v){
+      var t = tabFor(v), pg = document.getElementById(v==='map' ? 'map' : 'day'+v);
+      var date = pg && pg.querySelector('.header-eyebrow,.eye');
+      var city = t.querySelector('.nav-tab-city').textContent.split('·').pop().trim();
+      h += '<button type="button" class="dpk-tile'+(String(cur)===v?' on':'')+(td && String(td)===v?' today':'')+'" data-go="'+v+'">'+
+        '<b>'+(v==='map' ? 'Trip map' : 'Day '+v)+'</b><small>'+(v==='map' ? 'All days' : (date ? date.textContent.replace(/ 2026.*$/,'') : '')+' · '+city)+'</small></button>';
+    });
+    pk.innerHTML = h + '</div></div></div>';
+    pk.showModal();
+  }
   window.addEventListener('popstate', function(){ var n = fromHash(); if(n) show(n); });
 
   // open on: the address, else today (during the trip), else the last day viewed
