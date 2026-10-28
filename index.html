@@ -629,6 +629,7 @@ html.dlg-open{overflow:hidden}
   body{padding-bottom:calc(70px + env(safe-area-inset-bottom,0px))}
   .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:100;gap:2px;background:var(--bg);border-top:1px solid var(--border);
     padding:6px max(8px,env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-right,0px))}
+  .nav-tab-map{display:none}   /* Find and Map live in the bottom bar; the top row is just the days you swipe through */
 }
 .bnav button{flex:1;min-width:0;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
   border:0;border-radius:12px;background:transparent;color:var(--muted);font:600 11px/1.2 'Inter',sans-serif;cursor:pointer;
@@ -3891,6 +3892,15 @@ var SCHEDVIEW=(function(){
     if(window.updateBnav) updateBnav(n);
     if(n==='map' && window.TRIPMAP) TRIPMAP.show();
     if(n==='search' && window.TRIPMAP) TRIPMAP.search();
+    if(!isNaN(n)) (window.requestIdleCallback || setTimeout)(function(){ warm(n); });
+  }
+  // fetch and decode the photos of the days either side, so a swipe doesn't show them popping in
+  function warm(n){
+    [n-1, n+1].forEach(function(d){
+      var pg = document.getElementById('day'+d); if(!pg || pg.dataset.warm) return;
+      pg.dataset.warm = 1;
+      pg.querySelectorAll('img[loading="lazy"]').forEach(function(im){ im.loading = 'eager'; if(im.decode) im.decode().catch(function(){}); });
+    });
   }
   function go(t){
     var n = isNaN(t.dataset.day) ? t.dataset.day : parseInt(t.dataset.day,10);
@@ -3979,48 +3989,70 @@ var SCHEDVIEW=(function(){
   }
   document.addEventListener('touchstart', function(e){
     sw = null;
-    if(e.touches.length!==1 || isNaN(cur) || document.querySelector('dialog[open]')) return;
+    if(busy || e.touches.length!==1 || isNaN(cur) || document.querySelector('dialog[open]')) return;
     var t = e.touches[0], x = t.clientX;
     if(x < 24 || x > window.innerWidth-24) return;   // screen edges belong to the phone's back gesture
     if(e.target.closest('.maplibregl-map,input,textarea,select,#nav,.bnav') || sideScroller(e.target)) return;
-    sw = {x:x, y:t.clientY, t:Date.now(), dx:0, lock:null, pg:document.getElementById('day'+cur)};
+    var now = performance.now();
+    sw = {x:x, y:t.clientY, dx:0, lock:null, raf:0, pg:document.getElementById('day'+cur), hist:[{x:x, t:now}]};
   }, {passive:true});
   document.addEventListener('touchmove', function(e){
     if(!sw) return;
     if(e.touches.length!==1){ snapBack(sw.pg); sw = null; return; }   // a second finger: pinch, not swipe
     var t = e.touches[0], dx = t.clientX-sw.x, dy = t.clientY-sw.y;
     if(!sw.lock){
-      if(Math.abs(dx) < 12 && Math.abs(dy) < 12) return;
-      sw.lock = Math.abs(dx) > Math.abs(dy)*1.7 ? 'x' : 'y';
+      if(Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+      sw.lock = Math.abs(dx) > Math.abs(dy)*1.5 ? 'x' : 'y';
+      if(sw.lock==='x' && !still.matches){ sw.pg.style.transition = 'none'; sw.pg.style.willChange = 'transform,opacity'; }
     }
     if(sw.lock!=='x') return;
     sw.dx = dx;
-    if(still.matches) return;
-    var edge = (dx>0 && cur<=1) || (dx<0 && cur>=10);   // nothing that way: resist harder
-    sw.pg.style.transition = 'none';
-    sw.pg.style.transform = 'translateX('+(dx*(edge ? .12 : .35))+'px)';
+    sw.hist.push({x:t.clientX, t:performance.now()}); if(sw.hist.length > 5) sw.hist.shift();
+    if(!still.matches && !sw.raf) sw.raf = requestAnimationFrame(paint);
   }, {passive:true});
+  // the page sits under the finger; past the first / last day it stretches instead
+  function paint(){
+    if(!sw) return;
+    sw.raf = 0;
+    var dx = sw.dx, edge = (dx>0 && cur<=1) || (dx<0 && cur>=10);
+    var x = edge ? dx/(1+Math.abs(dx)/120)*.6 : dx;
+    sw.pg.style.transform = 'translateX('+x+'px)';
+    sw.pg.style.opacity = edge ? '' : 1-Math.min(.3, Math.abs(dx)/window.innerWidth*.45);
+  }
+  var busy = false;
   function swipeEnd(){
     if(!sw) return;
-    var s = sw, dx = s.dx, v = Math.abs(dx)/Math.max(1, Date.now()-s.t);
-    sw = null;
+    var s = sw; sw = null;
+    if(s.raf) cancelAnimationFrame(s.raf);
     if(s.lock!=='x') return;
-    var to = dx<0 ? cur+1 : cur-1;
-    var go_ = (Math.abs(dx) > 80 || (v > .35 && Math.abs(dx) > 30)) && to>=1 && to<=10;
-    if(!go_){ snapBack(s.pg); return; }
-    s.pg.style.transition = ''; s.pg.style.transform = '';
-    go(tabFor(to));
-    if(still.matches) return;
-    // the new day slides in from the side the finger came from
-    var pg = document.getElementById('day'+to);
-    pg.animate([{transform:'translateX('+(dx<0 ? 48 : -48)+'px)', opacity:.4}, {transform:'none', opacity:1}],
-               {duration:240, easing:'cubic-bezier(.23,1,.32,1)'});
+    var h = s.hist, a = h[0], b = h[h.length-1], v = (b.x-a.x)/Math.max(1, b.t-a.t);   // px/ms over the last few moves
+    var dx = s.dx, w = window.innerWidth, to = dx<0 ? cur+1 : cur-1;
+    var flick = Math.abs(v) > .35 && (v<0)===(dx<0) && Math.abs(dx) > 24;
+    if(to<1 || to>10 || !(Math.abs(dx) > w*.28 || flick)){ snapBack(s.pg); return; }
+    if(still.matches){ clearSwipe(s.pg); go(tabFor(to)); return; }
+    // the day carries on the way it was thrown, about as fast as the finger, then the next one comes in
+    busy = true; setTimeout(function(){ busy = false; }, 800);   // never stuck, even if an animation doesn't report back
+    var dir = dx<0 ? -1 : 1, rest = w*.45;
+    var out = s.pg.animate([{transform:s.pg.style.transform||'none', opacity:s.pg.style.opacity||1},
+                            {transform:'translateX('+(dx+dir*rest)+'px)', opacity:0}],
+                           {duration:Math.max(90, Math.min(170, rest/Math.max(Math.abs(v), 1.4))), easing:'cubic-bezier(.25,.6,.4,1)', fill:'forwards'});
+    out.onfinish = function(){
+      clearSwipe(s.pg); out.cancel();
+      go(tabFor(to));
+      var pg = document.getElementById('day'+to);
+      pg.style.willChange = 'transform,opacity';
+      var inn = pg.animate([{transform:'translateX('+(-dir*w*.28)+'px)', opacity:0}, {transform:'none', opacity:1}],
+                           {duration:260, easing:'cubic-bezier(.23,1,.32,1)'});
+      inn.onfinish = inn.oncancel = function(){ pg.style.willChange = ''; busy = false; };
+    };
   }
   document.addEventListener('touchend', swipeEnd);
+  function clearSwipe(pg){ pg.style.transform = ''; pg.style.opacity = ''; pg.style.transition = ''; pg.style.willChange = ''; }
   function snapBack(pg){
-    if(!pg || !pg.style.transform) return;
-    pg.style.transition = 'transform 220ms cubic-bezier(.23,1,.32,1)';
-    pg.style.transform = '';
+    if(!pg) return;
+    pg.style.transition = 'transform 260ms cubic-bezier(.23,1,.32,1),opacity 260ms ease';
+    pg.style.transform = ''; pg.style.opacity = '';
+    setTimeout(function(){ if(!sw) pg.style.willChange = ''; }, 300);
   }
   document.addEventListener('touchcancel', function(){ if(sw) snapBack(sw.pg); sw = null; });
 
