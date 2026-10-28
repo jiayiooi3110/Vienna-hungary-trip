@@ -3,7 +3,7 @@
 <title>Central Europe · Oct–Nov 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,500,1,0&icon_names=attractions,bridge,cake,castle,check_circle,church,directions_boat,fastfood,flight,hot_tub,hotel,landscape,local_cafe,local_library,location_city,lock,museum,music_note,my_location,near_me,nightlife,park,restaurant,route,shopping_bag,star,storefront,synagogue,train,water,zoom_out_map&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,500,1,0&icon_names=attractions,bridge,cake,calendar_view_day,castle,check_circle,church,directions_boat,directions_car,directions_walk,fastfood,flight,hot_tub,hotel,landscape,local_cafe,local_library,location_city,lock,museum,music_note,my_location,near_me,nightlife,park,restaurant,route,shopping_bag,star,storefront,synagogue,train,view_agenda,water,zoom_out_map&display=block" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.css">
 <style>
 /* ── tokens ─────────────────────────────────────────────── */
@@ -217,6 +217,63 @@ body{
 .plan-b>.card{border-style:dashed}
 .plan-b>.bd{background:var(--muted)}
 
+/* ── schedule view: List / Calendar ──────────────────────── */
+:root{--ease-out:cubic-bezier(.23,1,.32,1)}
+.vt{display:inline-flex;gap:2px;padding:3px;margin:-8px 0 22px;border:1px solid var(--border);border-radius:999px;background:var(--card)}
+.vt button{display:inline-flex;align-items:center;gap:6px;border:0;background:transparent;color:var(--muted);cursor:pointer;
+  font:600 12px/1 'Inter',sans-serif;padding:8px 14px;border-radius:999px;
+  transition:background-color 160ms ease,color 160ms ease,transform 160ms var(--ease-out)}
+.vt button .ms{font-size:16px}
+.vt button[aria-selected="true"]{background:var(--accent);color:#fff}
+.vt button:active{transform:scale(.97)}
+.vt button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.cal{display:none;--cal-gut:52px}
+.cal-on .tl,.cal-on .timeline{display:none}
+.cal-on .cal{display:block;animation:cal-in 200ms var(--ease-out)}
+@keyframes cal-in{from{opacity:0;transform:translateY(4px)}}
+.cal-tray{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:16px}
+.cal-tray>span{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.cal-chip{border:1px solid var(--border);border-left:3px solid var(--c);background:var(--card);color:var(--fg);cursor:pointer;
+  font:500 12px/1.3 'Inter',sans-serif;padding:6px 10px;border-radius:8px;transition:transform 160ms var(--ease-out)}
+.cal-chip:active{transform:scale(.97)}
+.cal-grid{position:relative;margin:8px 0 28px}
+.cal-hr{position:absolute;left:var(--cal-gut);right:0;border-top:1px solid var(--border)}
+.cal-hr span{position:absolute;right:calc(100% + 8px);top:-8px;font:600 10px/16px 'Inter',sans-serif;color:var(--muted);font-variant-numeric:tabular-nums}
+.cal-free{position:absolute;left:var(--cal-gut);right:0;display:flex;align-items:center;justify-content:center;border-radius:10px;
+  background:repeating-linear-gradient(135deg,transparent 0 7px,var(--border) 7px 8px)}
+.cal-free span{font:600 11px/1 'Inter',sans-serif;color:var(--muted);background:var(--bg);padding:4px 9px;border-radius:999px}
+.cal-ev{position:absolute;z-index:1;display:flex;flex-direction:column;align-items:flex-start;gap:2px;overflow:hidden;text-align:left;cursor:pointer;
+  padding:6px 9px;border:0;border-left:3px solid var(--c);border-radius:8px;background:var(--cl);color:var(--fg);
+  transition:transform 160ms var(--ease-out)}
+.cal-ev:active{transform:scale(.98)}
+.cal-ev:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.cal-ev b{font:600 12.5px/1.3 'Inter',sans-serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cal-ev small{font:500 11px/1.3 'Inter',sans-serif;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.cal-ev.short{flex-direction:row;align-items:center;gap:8px;padding-top:2px;padding-bottom:2px}
+.cal-ev.short b{-webkit-line-clamp:1;flex-shrink:1;min-width:0}
+.cal-ev.anchor{box-shadow:inset 0 0 0 1.5px var(--accent)}
+.cal-ev.wp{box-shadow:inset 0 0 0 1.5px var(--eat)}
+.t-see{--c:var(--see);--cl:var(--see-light)}.t-eat{--c:var(--eat);--cl:var(--eat-light)}.t-shop{--c:var(--shop);--cl:var(--shop-light)}
+.t-stay{--c:var(--hotel);--cl:var(--hotel-light)}.t-transit{--c:var(--accent);--cl:var(--accent-light)}.t-night{--c:var(--night);--cl:var(--accent-light)}
+.cal-now{position:absolute;z-index:2;left:calc(var(--cal-gut) - 5px);right:0;border-top:2px solid #D93025}
+.cal-now::before{content:'';position:absolute;left:0;top:-6px;width:10px;height:10px;border-radius:50%;background:#D93025}
+.cal-empty{color:var(--muted);font-size:13px;padding:12px 0}
+.flash>.card{animation:flash 1.4s var(--ease-out)}
+@keyframes flash{from{box-shadow:0 0 0 4px var(--accent)}to{box-shadow:0 0 0 0 transparent}}
+@media(prefers-reduced-motion:reduce){.cal-on .cal{animation:none}.flash>.card{animation-duration:.01ms}}
+
+/* ── photos ──────────────────────────────────────────────── */
+.card{display:flow-root}
+.card-img{float:right;width:84px;height:84px;margin:0 0 8px 14px;border-radius:10px;object-fit:cover;background:var(--accent-light);
+  opacity:0;transition:opacity 300ms var(--ease-out)}
+.opt-img{width:44px;height:44px;flex-shrink:0;border-radius:8px;object-fit:cover;background:var(--accent-light);opacity:0;transition:opacity 300ms var(--ease-out)}
+.oc>div:not([class]),.option-card>div:not([class]){flex:1;min-width:0}
+.oc,.option-card{align-items:center}
+.card-img.in,.opt-img.in,.pin-img.in{opacity:1}
+@media(max-width:480px){.card-img{width:68px;height:68px}}
+.photo-credits{font-size:10.5px;line-height:1.6;color:var(--muted);margin-top:22px}
+.photo-credits a{color:var(--muted)}
+
 /* ── arrival card (Day 10) ───────────────────────────────── */
 .arr{
   background:var(--accent-light);border:2px solid var(--accent);
@@ -301,6 +358,8 @@ body{
 .pin-l b{font-weight:700}
 @media(hover:hover){.pin:hover .pin-l{display:block;pointer-events:auto}}
 .pin-l::before{content:'';position:absolute;left:0;right:0;top:100%;height:12px}   /* lets the mouse reach the label */
+.pin.flip .pin-l{bottom:auto;top:calc(100% + 8px)}
+.pin.flip .pin-l::before{top:auto;bottom:100%}
 .pin:focus-visible .pin-l,.pin.hl .pin-l,.pin.open .pin-l{display:block}
 .pin.open{z-index:6}
 .pin.open .pin-l{pointer-events:auto;cursor:pointer;padding:9px 12px;font-size:13px;max-width:240px}
@@ -309,6 +368,21 @@ body{
 #locBtn.on{background:var(--accent);color:#fff}
 .chip .half{font-weight:800;color:var(--accent)}
 .chip.on .half{color:#fff}
+/* route time pills: walk + car per leg */
+.pin{z-index:1}
+.rleg{display:inline-flex;align-items:center;gap:3px;padding:4px 9px 4px 6px;border-radius:999px;border:1px solid var(--border);
+  background:var(--card);color:var(--fg);box-shadow:0 1px 4px rgba(0,0,0,.18);text-decoration:none;white-space:nowrap;
+  font:700 11px/1 'Inter',sans-serif;font-variant-numeric:tabular-nums;transition:transform 160ms var(--ease-out)}
+.rleg .ms{font-size:14px;color:var(--accent)}
+.rleg .ms:not(:first-child){margin-left:6px}
+.rleg:active{transform:scale(.96)}
+.rleg-wait{color:var(--muted);padding:0 4px}
+.legs-off .rleg{display:none}
+.rs-t{display:inline-flex;align-items:center;gap:3px;font-weight:700;font-variant-numeric:tabular-nums}
+.rs-t .ms{font-size:15px}
+.rs-t .ms:not(:first-child){margin-left:6px}
+.pin-img{display:block;width:100%;height:96px;margin:-2px 0 7px;border-radius:6px;object-fit:cover;background:var(--accent-light);
+  opacity:0;transition:opacity 200ms var(--ease-out)}
 /* waypoints (✓), route numbers and Extras (✦) */
 .pin.wp{z-index:2;box-shadow:0 0 0 3px var(--eat),0 2px 8px rgba(0,0,0,.4)}
 .pin-w{position:absolute;top:-7px;left:-7px;width:18px;height:18px;border-radius:50%;border:2px solid #fff;
@@ -2087,7 +2161,8 @@ var TRIPMAP=(function(){
     if(i>=0)a.splice(i,1);else a.push(k);
     if(!a.length)delete S.wps[d];
     save(WP_KEY,S.wps);
-    build();render(false);renderSched();
+    build();render(false);renderSched();renderThumbs();
+    if(window.SCHEDVIEW)SCHEDVIEW.refresh();
   }
   // which PLACES entry a schedule link points to (null for links the map doesn't know)
   function linkPlace(a){
@@ -2131,6 +2206,102 @@ var TRIPMAP=(function(){
     var b=e.target.closest('.wpb-rm');
     if(b)toggleWp(b.dataset.k,+b.dataset.day);
   });
+
+  /* ── PHOTOS ── freely licensed Wikimedia Commons photos saved in images/, keyed like
+     PLACES (Extras as "e:key"). Places without a free photo simply show none.
+     f: file, a: author, l: licence, u: source page */
+  var IMAGES={
+    "andrassy":{"f": "images/andrassy.jpg", "a": "Civertan", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Andr%C3%A1ssi%C3%BAtl%C3%A9gifot%C3%B3.jpg"},
+    "basilica":{"f": "images/basilica.jpg", "a": "Marc Ryckaert (MJJR)", "l": "CC BY 3.0", "u": "https://commons.wikimedia.org/wiki/File:Budapest_Szent_Istvan_Bazilika_R01.jpg"},
+    "belvedere":{"f": "images/belvedere.jpg", "a": "Diego Delso", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Palacio_Belvedere,_Viena,_Austria,_2020-02-01,_DD_93-95_HDR.jpg"},
+    "castle_hill":{"f": "images/castle_hill.jpg", "a": "Varius", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Budav%C3%A1ri_Palota,_ABCDEF_%C3%A9p%C3%BClet.jpg"},
+    "central_market":{"f": "images/central_market.jpg", "a": "Thaler Tamas", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:VasarcsarnokFotoThalerTamas.JPG"},
+    "chain_bridge":{"f": "images/chain_bridge.jpg", "a": "Wilfredor", "l": "CC0", "u": "https://commons.wikimedia.org/wiki/File:Sz%C3%A9chenyi_Chain_Bridge_in_Budapest_at_night.jpg"},
+    "demel":{"f": "images/demel.jpg", "a": "Johann Werfring", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Demel_aussen.jpg"},
+    "dohany":{"f": "images/dohany.jpg", "a": "The original uploader was OsvátA at Hungarian Wikipedia.", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Synagogue-Budapest.jpg"},
+    "e:albertina":{"f": "images/x_albertina.jpg", "a": "C.Stadler/Bwag", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Wien_-_Albertina.JPG"},
+    "e:bazar":{"f": "images/x_bazar.jpg", "a": "MyName (Luckyprof (talk))", "l": "CC BY-SA 3.0 at", "u": "https://commons.wikimedia.org/wiki/File:Basar-Schwarzstrasse.jpg"},
+    "e:dom_szg":{"f": "images/x_dom_szg.jpg", "a": "Bede735c", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Salzburg_Cathedral_1.jpg"},
+    "e:dommayer":{"f": "images/x_dommayer.jpg", "a": "C.Stadler/Bwag", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Hietzing_(Wien)_-_Caf%C3%A9_Dommayer.JPG"},
+    "e:gerbeaud":{"f": "images/x_gerbeaud.jpg", "a": "BKP", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Cafe_Gerbeaud_01.JPG"},
+    "e:hawelka":{"f": "images/x_hawelka.jpg", "a": "Priwo", "l": "Public domain", "u": "https://commons.wikimedia.org/wiki/File:Hawelka01.jpg"},
+    "e:hundertwasser":{"f": "images/x_hundertwasser.jpg", "a": "C.Stadler/Bwag", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Wien_-_Hundertwasserhaus_(03).JPG"},
+    "e:landtmann":{"f": "images/x_landtmann.jpg", "a": "Gryffindor", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Palais_Lieben-Auspitz_Vienna.jpg"},
+    "e:margitsziget":{"f": "images/x_margitsziget.jpg", "a": "Darkone (talk · contribs)", "l": "CC BY-SA 2.0", "u": "https://commons.wikimedia.org/wiki/File:Budapest_Donauinsel_2.jpg"},
+    "e:matthias":{"f": "images/x_matthias.jpg", "a": "Thaler Tamas", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:MatyasTemplomFotoThalerTamas20162.JPG"},
+    "e:moenchsberg":{"f": "images/x_moenchsberg.jpg", "a": "MatthiasKabel", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Museum_der_Moderne_M%C3%B6nchsberg_from_Hohensalzburg.jpg"},
+    "e:mq":{"f": "images/x_mq.jpg", "a": "Roland Töfferl", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:MQ_24_MuseumsQuartier_Wien_2025.jpg"},
+    "e:nat_museum":{"f": "images/x_nat_museum.jpg", "a": "hu:user:Pasztilla", "l": "Public domain", "u": "https://commons.wikimedia.org/wiki/File:Magyar_Nemzeti_M%C3%BAzeum.jpg"},
+    "e:opera_bud":{"f": "images/x_opera_bud.jpg", "a": "Snóbli Iván", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Opera_blue.jpg"},
+    "e:petersfriedhof":{"f": "images/x_petersfriedhof.jpg", "a": "Ich", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Stift_St_Peter2.JPG"},
+    "e:prueckel":{"f": "images/x_prueckel.jpg", "a": "Theo Zasche", "l": "Public domain", "u": "https://commons.wikimedia.org/wiki/File:Theodor_Zasche_Kartenspieler_im_Kaffeehaus.jpg"},
+    "e:rumbach":{"f": "images/x_rumbach.jpg", "a": "Original uploader was Misibacsi at hu.wikipedia", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Rumbach_zsinagoga_P8050091.jpg"},
+    "e:secession":{"f": "images/x_secession.jpg", "a": "Thomas Ledl", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Secession_2016,_Vienna.jpg"},
+    "e:sperl":{"f": "images/x_sperl.jpg", "a": "Bahnfrend", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Caf%C3%A9_Sperl,_front,_2006.JPG"},
+    "e:stadtpark":{"f": "images/x_stadtpark.jpg", "a": "KF at English Wikipedia", "l": "Public domain", "u": "https://commons.wikimedia.org/wiki/File:Stadtpark_station.JPG"},
+    "e:stiftskulinarium":{"f": "images/x_stiftskulinarium.jpg", "a": "Testsieger73", "l": "Public domain", "u": "https://commons.wikimedia.org/wiki/File:Stiftskeller_salzburg.jpg"},
+    "e:tomaselli":{"f": "images/x_tomaselli.jpg", "a": "Photo: Andreas Praefcke", "l": "CC BY 3.0", "u": "https://commons.wikimedia.org/wiki/File:Caf%C3%A9_Tomaselli_Salzburg.jpg"},
+    "e:zoo":{"f": "images/x_zoo.jpg", "a": "Daniel Zupanc", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Gro%C3%9Fe_Pandas_Yang_Yang_und_Fu_Long.jpg"},
+    "fishermans_bastion":{"f": "images/fishermans_bastion.jpg", "a": "Brian Adamson", "l": "CC BY 2.0", "u": "https://commons.wikimedia.org/wiki/File:Hal%C3%A1szb%C3%A1stya_2017.jpg"},
+    "gellert_hill":{"f": "images/gellert_hill.jpg", "a": "Unknown", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Gell%C3%A9rtHillSkyline.jpg"},
+    "getreidegasse":{"f": "images/getreidegasse.jpg", "a": "Snotty", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Getreidegasse_am_Nachmittag,_Salzburg.jpg"},
+    "hallstaetter_see":{"f": "images/hallstaetter_see.jpg", "a": "Tigerente", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Hallst%C3%A4tter_See_20210918.jpg"},
+    "hallstatt":{"f": "images/hallstatt.jpg", "a": "C.Stadler/Bwag", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Hallstatt_-_Zentrum_.JPG"},
+    "hellbrunn":{"f": "images/hellbrunn.jpg", "a": "Nicholas Even (own work)", "l": "CC BY 2.5", "u": "https://commons.wikimedia.org/wiki/File:Hellbrunn2.JPG"},
+    "hofburg":{"f": "images/hofburg.jpg", "a": "C.Stadler/Bwag", "l": "CC BY-SA 3.0 at", "u": "https://commons.wikimedia.org/wiki/File:Wien_-_Neue_Hofburg.JPG"},
+    "hohensalzburg":{"f": "images/hohensalzburg.jpg", "a": "C.Stadler/Bwag", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Salzburg_-_Festung_Hohensalzburg.JPG"},
+    "hohenwerfen":{"f": "images/hohenwerfen.jpg", "a": "Arne Müseler", "l": "CC BY-SA 3.0 de", "u": "https://commons.wikimedia.org/wiki/File:Hohenwerfen_castle.jpg"},
+    "karlskirche":{"f": "images/karlskirche.jpg", "a": "Thomas Ledl", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Karlskirche_Abendsonne_1.jpg"},
+    "liberty_bridge":{"f": "images/liberty_bridge.jpg", "a": "Felix König", "l": "CC BY 3.0", "u": "https://commons.wikimedia.org/wiki/File:Szabads%C3%A1g_h%C3%ADd_Budapest_September_2013.JPG"},
+    "mirabell":{"f": "images/mirabell.jpg", "a": "Cezar Suceveanu", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:Palatul_Mirabell1.jpg"},
+    "mozart_birthplace":{"f": "images/mozart_birthplace.jpg", "a": "Andreas Stiasny", "l": "CC BY-SA 3.0 at", "u": "https://commons.wikimedia.org/wiki/File:Salzburg,_Getreidegasse_9,_Mozarts_Geburtshaus.jpg"},
+    "musikverein":{"f": "images/musikverein.jpg", "a": "C.Stadler/Bwag", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Wien_-_Haus_des_Wiener_Musikvereins_(1).JPG"},
+    "naschmarkt":{"f": "images/naschmarkt.jpg", "a": "C.Stadler/Bwag", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Wien_-_Naschmarkt.JPG"},
+    "new_york_cafe":{"f": "images/new_york_cafe.jpg", "a": "Mark Ahsmann", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:20130612_Budapest_190.jpg"},
+    "parliament":{"f": "images/parliament.jpg", "a": "Kilyann Le Hen", "l": "CC BY 4.0", "u": "https://commons.wikimedia.org/wiki/File:Hungarian_Parliament_Building_from_across_the_Danube,_2025-01-11.jpg"},
+    "prater":{"f": "images/prater.jpg", "a": "Gugerell", "l": "CC0", "u": "https://commons.wikimedia.org/wiki/File:Wien_02_Prater_a.jpg"},
+    "residenzplatz":{"f": "images/residenzplatz.jpg", "a": "Andrew Bossi", "l": "CC BY-SA 2.5", "u": "https://commons.wikimedia.org/wiki/File:1578_-_Salzburg_-_Residenzplatz_-_Glockenspiel.JPG"},
+    "riesenrad":{"f": "images/riesenrad.jpg", "a": "Thomas Ledl", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Wien_Riesenrad.jpg"},
+    "ringstrasse":{"f": "images/ringstrasse.jpg", "a": "Wiener Staatsoper GmbH", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Wiener_Staatsoper_Front.jpg"},
+    "salzburg_hbf":{"f": "images/salzburg_hbf.jpg", "a": "Simon Legner (User:simon04)", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Salzburg_Hauptbahnhof_(20190623_170409).jpg"},
+    "schoenbrunn":{"f": "images/schoenbrunn.jpg", "a": "C.Stadler/Bwag", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Wien_-_Schloss_Sch%C3%B6nbrunn.JPG"},
+    "stephansdom":{"f": "images/stephansdom.jpg", "a": "C.Stadler/Bwag", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Wien_-_Stephansdom_(1).JPG"},
+    "stephansplatz":{"f": "images/stephansplatz.jpg", "a": "C.Stadler/Bwag", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Wien_-_Stephansdom_(1).JPG"},
+    "szechenyi_bath":{"f": "images/szechenyi_bath.jpg", "a": "Marc Ryckaert (MJJR)", "l": "CC BY 3.0", "u": "https://commons.wikimedia.org/wiki/File:Budapest_Sz%C3%A9chenyi_Baths_R02.jpg"},
+    "szimpla":{"f": "images/szimpla.jpg", "a": "JoshuaCrawford", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Szimpla_Kert_Trabant.jpg"},
+    "untersbergbahn":{"f": "images/untersbergbahn.jpg", "a": "Arne Müseler", "l": "CC BY-SA 3.0 de", "u": "https://commons.wikimedia.org/wiki/File:Untersberg_Salzburg_Austria.jpg"},
+    "vajdahunyad":{"f": "images/vajdahunyad.jpg", "a": "Felix König", "l": "CC BY 3.0", "u": "https://commons.wikimedia.org/wiki/File:Vajdahunyad_v%C3%A1ra_Budapest_September_2013.jpg"},
+    "vie":{"f": "images/vie.jpg", "a": "Hansueli Krapf  This   file was uploaded  with Commonist.", "l": "CC BY-SA 3.0", "u": "https://commons.wikimedia.org/wiki/File:2011-06-14_10-23-56_Austria_Nieder%C3%B6sterreich_Fischamend_Markt.jpg"},
+    "wien_hbf":{"f": "images/wien_hbf.jpg", "a": "Geolina163", "l": "CC BY-SA 4.0", "u": "https://commons.wikimedia.org/wiki/File:Wien_Hbf_2023_07.jpg"}
+  };
+  function photo(p){return p&&IMAGES[p.key];}
+  function credit(im){return 'Photo: '+im.a+' · '+im.l+' · Wikimedia Commons';}
+  function img(im,cls,alt){
+    return '<img class="'+cls+'" src="'+esc(im.f)+'" alt="'+esc(alt)+'" title="'+esc(credit(im))+'" loading="lazy" decoding="async" onload="this.classList.add(\'in\')">';
+  }
+  // a photo on each schedule card (its first place that has one), small ones on option lists, credits per day
+  function renderThumbs(){
+    document.querySelectorAll('.page[id^="day"]').forEach(function(pg){
+      var used={},credits=[];
+      pg.querySelectorAll('.card-img,.opt-img,.photo-credits').forEach(function(x){x.remove();});
+      var note=function(p,im){if(!used[p.key]){used[p.key]=1;credits.push('<a href="'+esc(im.u)+'" target="_blank" rel="noopener">'+esc(p.n)+'</a> — '+esc(im.a)+' ('+esc(im.l)+')');}};
+      pg.querySelectorAll('.bl>.card,.block>.card').forEach(function(card){
+        var rm=card.querySelector('.wpb-rm'),cands=rm?[placeOf(rm.dataset.k)]:
+          [].map.call(card.querySelectorAll('.tag a,.cluster-tag a,.ct a,.card-title a'),linkPlace);
+        var p=cands.filter(function(x){return photo(x);})[0];
+        if(p){card.insertAdjacentHTML('afterbegin',img(photo(p),'card-img',p.n));note(p,photo(p));}
+        card.querySelectorAll('.oc,.option-card').forEach(function(oc){
+          var a=oc.querySelector('a'),q=a&&linkPlace(a);
+          if(q&&photo(q)){oc.insertAdjacentHTML('afterbegin',img(photo(q),'opt-img',q.n));note(q,photo(q));}
+        });
+      });
+      if(credits.length){
+        var tl=pg.querySelector('.tl,.timeline'),c=document.createElement('p');
+        c.className='photo-credits';c.innerHTML='Photos from Wikimedia Commons: '+credits.join(' · ');
+        tl.parentNode.insertBefore(c,tl.nextSibling);
+      }
+    });
+  }
 
   // ── map: MapLibre + OpenFreeMap (free vector tiles, no API key) ──
   var map,styleUrl,styleReady=false,markers={},bubbles=[],live=[],pts=[],meMark;   // styleReady: safe to add map layers
@@ -2196,7 +2367,7 @@ var TRIPMAP=(function(){
   function showEta(){return locOn&&me;}
 
   // ── route: the day's anchors and waypoints in order, drawn per city ──
-  var routeOn=load(ROUTE_KEY)!==false,walkCache={};
+  var routeOn=load(ROUTE_KEY)!==false;
   function RouteCtl(){}
   RouteCtl.prototype.onAdd=function(){
     var d=document.createElement('div');d.className='maplibregl-ctrl maplibregl-ctrl-group';
@@ -2235,47 +2406,76 @@ var TRIPMAP=(function(){
   function routeOrder(){var n=0,o={};routeSegs().forEach(function(seq){seq.forEach(function(s){o[s.p.key]=++n;});});return o;}
   function accentColor(){return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#8B4A2F';}
   function line(c,k){return {type:'Feature',geometry:{type:'LineString',coordinates:c},properties:{k:k}};}
-  // short legs follow walking paths (free OSM routing service), longer ones are dashed (take transit)
+  // "15m", "1h 12m", "2h"
+  function hm(sec){var m=Math.max(1,Math.round(sec/60));return m<60?m+'m':Math.floor(m/60)+'h'+(m%60?' '+m%60+'m':'');}
+  // Each leg: walking + driving time and the walking path, from the free OSM routing service.
+  // Kept on the device so a day's route doesn't need refetching. Car times assume no traffic.
+  var LEGS_KEY='et_map_legs',legs=load(LEGS_KEY)||{},legMarks=[];
+  Object.keys(legs).forEach(function(id){var L=legs[id];if(L.pending||(!L.walk&&!L.car))delete legs[id];});   // retry unfinished lookups
+  function osrm(profile,a,b,full){
+    return fetch('https://routing.openstreetmap.de/routed-'+profile+'/route/v1/driving/'+a[1]+','+a[0]+';'+b[1]+','+b[0]+
+      '?overview='+(full?'full&geometries=geojson':'false'))
+      .then(function(r){return r.json();}).then(function(j){return j.routes&&j.routes[0]||null;}).catch(function(){return null;});
+  }
+  function fetchLeg(id,a,b){
+    legs[id]={pending:1};
+    Promise.all([osrm('foot',a,b,km(a,b)<=WALK_KM),osrm('car',a,b,false)]).then(function(r){
+      legs[id]={walk:r[0]&&r[0].duration,car:r[1]&&r[1].duration,geom:r[0]&&r[0].geometry?r[0].geometry.coordinates:null};
+      save(LEGS_KEY,legs);
+      clearTimeout(fetchLeg.t);fetchLeg.t=setTimeout(function(){drawRoute();if(oneDay())renderList();},150);
+    });
+  }
+  // short legs follow walking paths, longer ones are dotted (take transit); every leg gets a time pill
   function drawRoute(){
     if(!map||!styleReady)return;
     var fs=[];
+    legMarks.forEach(function(m){m.remove();});legMarks=[];
     routeSegs().forEach(function(seq){
       for(var i=1;i<seq.length;i++){
-        var a=seq[i-1].p.ll,b=seq[i].p.ll,id=a+'>'+b;
-        if(km(a,b)>WALK_KM){fs.push(line([lnglat(a),lnglat(b)],'far'));continue;}
-        fs.push(line(walkCache[id]||[lnglat(a),lnglat(b)],'walk'));
-        if(walkCache[id]===undefined)fetchWalk(id,a,b);
+        var a=seq[i-1].p.ll,b=seq[i].p.ll,id=a+'>'+b,L=legs[id],far=km(a,b)>WALK_KM;
+        if(!L)fetchLeg(id,a,b);
+        var c=!far&&L&&L.geom?L.geom:[lnglat(a),lnglat(b)];
+        fs.push(line(c,far?'far':'walk'));
+        legMarks.push(legPill(a,b,L,c[Math.floor(c.length/2)],c.length===2));
       }
     });
     var data={type:'FeatureCollection',features:fs},src=map.getSource('route');
-    if(src){src.setData(data);return;}
-    map.addSource('route',{type:'geojson',data:data});
-    map.addLayer({id:'route-far',type:'line',source:'route',filter:['==',['get','k'],'far'],layout:{'line-cap':'round'},
-      paint:{'line-color':accentColor(),'line-width':2.5,'line-opacity':.7,'line-dasharray':[1,2.5]}});
-    map.addLayer({id:'route-walk',type:'line',source:'route',filter:['==',['get','k'],'walk'],layout:{'line-cap':'round','line-join':'round'},
-      paint:{'line-color':accentColor(),'line-width':4,'line-opacity':.75}});
+    if(src)src.setData(data);
+    else{
+      map.addSource('route',{type:'geojson',data:data});
+      map.addLayer({id:'route-far',type:'line',source:'route',filter:['==',['get','k'],'far'],layout:{'line-cap':'round'},
+        paint:{'line-color':accentColor(),'line-width':2.5,'line-opacity':.7,'line-dasharray':[1,2.5]}});
+      map.addLayer({id:'route-walk',type:'line',source:'route',filter:['==',['get','k'],'walk'],layout:{'line-cap':'round','line-join':'round'},
+        paint:{'line-color':accentColor(),'line-width':4,'line-opacity':.75}});
+    }
   }
-  function fetchWalk(id,a,b){
-    walkCache[id]=null;   // pending
-    fetch('https://routing.openstreetmap.de/routed-foot/route/v1/driving/'+a[1]+','+a[0]+';'+b[1]+','+b[0]+'?overview=full&geometries=geojson')
-      .then(function(r){return r.json();})
-      .then(function(j){walkCache[id]=j.routes&&j.routes[0]?j.routes[0].geometry.coordinates:false;})
-      .catch(function(){walkCache[id]=false;})
-      .then(function(){clearTimeout(fetchWalk.t);fetchWalk.t=setTimeout(drawRoute,150);});
+  // the pill sits halfway along the leg and opens Google Maps directions for it
+  function legPill(a,b,L,mid,straight){
+    var el=document.createElement('a'),t=function(v){return v?hm(v):'–';};
+    el.className='rleg';el.target='_blank';el.rel='noopener';
+    el.href='https://www.google.com/maps/dir/?api=1&origin='+a.join(',')+'&destination='+b.join(',');
+    el.innerHTML=L&&!L.pending?'<span class="ms">directions_walk</span>'+t(L.walk)+'<span class="ms">directions_car</span>'+t(L.car):'<span class="rleg-wait">…</span>';
+    el.setAttribute('aria-label',L&&!L.pending?'Walk '+t(L.walk)+', drive '+t(L.car)+'. Open directions in Google Maps':'Loading travel times');
+    if(straight)mid=[(a[1]+b[1])/2,(a[0]+b[0])/2];
+    return new maplibregl.Marker({element:el}).setLngLat(mid).addTo(map);
   }
   function routeSummary(){
     var segs=routeSegs().filter(function(q){return q.length>1;});
     if(!segs.length)return '';
-    var walk=0,far=0,stops=0;
+    var stops=0,tw=0,tc=0,known=true;
     segs.forEach(function(seq){
       stops+=seq.length;
-      for(var i=1;i<seq.length;i++){var d=km(seq[i-1].p.ll,seq[i].p.ll);if(d<=WALK_KM)walk+=d*1.3;else far++;}
+      for(var i=1;i<seq.length;i++){
+        var L=legs[seq[i-1].p.ll+'>'+seq[i].p.ll];
+        if(L&&L.walk&&L.car){tw+=L.walk;tc+=L.car;}else known=false;
+      }
     });
     var main=segs.slice().sort(function(a,b){return b.length-a.length;})[0],pt=function(s){return s.p.ll.join(',');};
     var url='https://www.google.com/maps/dir/?api=1&origin='+pt(main[0])+'&destination='+pt(main[main.length-1])+
       (main.length>2?'&waypoints='+main.slice(1,-1).slice(0,9).map(pt).join('%7C'):'');
-    return '<div class="route-sum"><span class="ms">route</span><span>Route · '+stops+' stops · ~'+walk.toFixed(1)+' km on foot'+
-      (far?' + '+far+' transit leg'+(far>1?'s':''):'')+'</span><a href="'+url+'" target="_blank" rel="noopener">Open in Google Maps ↗</a></div>';
+    return '<div class="route-sum"><span class="ms">route</span><span>Route · '+stops+' stops</span>'+
+      (known?'<span class="rs-t" title="Total time between stops"><span class="ms">directions_walk</span>'+hm(tw)+'<span class="ms">directions_car</span>'+hm(tc)+'</span>':'<span class="rs-t">Getting travel times…</span>')+
+      '<a href="'+url+'" target="_blank" rel="noopener">Open in Google Maps ↗</a></div>';
   }
 
   function initMap(){
@@ -2294,6 +2494,9 @@ var TRIPMAP=(function(){
     map.on('click',closePin);
     map.on('style.load',function(){styleReady=true;drawRings();drawRoute();});
     map.on('zoomend',cluster);
+    // time pills only once zoomed into a city; at country scale they'd pile up
+    var legZoom=function(){map.getContainer().classList.toggle('legs-off',map.getZoom()<11.5);};
+    map.on('zoomend',legZoom);legZoom();
     try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',retheme);}catch(e){}
     new MutationObserver(retheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
     return true;
@@ -2352,7 +2555,13 @@ var TRIPMAP=(function(){
     el.innerHTML='<span class="ms">'+cat(p)[0]+'</span>'+(x.anchor?'<b class="pin-a"><span class="ms">star</span></b>':x.wp?'<b class="pin-w">✓</b>':'')+
       (x.badge?'<b class="pin-d">'+x.badge+'</b>':'')+(x.n?'<b class="pin-n">'+x.n+'</b>':'')+'<span class="pin-l">'+tip(x.it)+'</span>';
     var go=function(){window.open(gurl(p),'_blank','noopener');};
-    el.addEventListener('pointerdown',function(e){touch=e.pointerType!=='mouse';});
+    // open the label below the pin when there isn't room for it above
+    var room=function(){
+      var l=el.querySelector('.pin-l');
+      el.classList.toggle('flip',el.getBoundingClientRect().top-map.getContainer().getBoundingClientRect().top<(l.offsetHeight||170)+16);
+    };
+    el.addEventListener('mouseenter',room);el.addEventListener('focus',room);
+    el.addEventListener('pointerdown',function(e){touch=e.pointerType!=='mouse';room();});
     el.addEventListener('click',function(e){
       e.stopPropagation();
       var w=e.target.closest('.pin-wp');
@@ -2399,7 +2608,8 @@ var TRIPMAP=(function(){
   }
   // the pin's info label (hover on a computer, first tap on a phone)
   function tip(it){
-    var p=it.p,c=cat(p),d=selDay(),h='<b>'+esc(p.n)+'</b><br>',anchor=it.inst.some(function(s){return s.anchor;});
+    var p=it.p,c=cat(p),d=selDay(),anchor=it.inst.some(function(s){return s.anchor;});
+    var h=(photo(p)?img(photo(p),'pin-img',p.n):'')+'<b>'+esc(p.n)+'</b><br>';
     var wp=it.inst.some(function(s){return s.wp&&s.day===d;});
     if(p.extra)h+=c[1]+' · ✦ Extra'+(it.x&&it.x.near?' · '+dist(it.x.d)+' from '+esc(it.x.near.n):'')+'<br><span class="pin-note">'+esc(p.note)+'</span>';
     else h+=c[1]+' · '+it.inst.map(function(s){return dayName(s.day)+(s.t&&sel.day!=='all'?' '+esc(s.t):'');}).join(', ')+
@@ -2558,6 +2768,7 @@ var TRIPMAP=(function(){
   function render(refit){renderChips();renderExtrasRow();renderMap(refit);renderList();renderEdits();}
 
   renderSched();   // waypoints show on the day pages straight away, not only after opening the map
+  renderThumbs();
   var first=true;
   return {show:function(){
     build();render(false);
@@ -2572,6 +2783,138 @@ var TRIPMAP=(function(){
 })();
 </script>
 <script>
+/* ── Schedule view: List (the timeline) or Calendar (time blocks and the gaps between them) ──
+   Read from each day's timeline. A block's length comes from data-end="HH:MM" if set,
+   then from its text ("~2h52", "Allow ~1.5h", "full afternoon"), then a default for its type;
+   it never runs past the next block's start. */
+var SCHEDVIEW=(function(){
+  var KEY='et_sched_view',PX=1.15;   // pixels per minute
+  var TYPE={ta:'transit','type-arrive':'transit',ts:'see','type-see':'see',te:'eat','type-eat':'eat',
+    th:'stay','type-hotel':'stay',tn:'night','type-night':'night',tsh:'shop','type-shop':'shop'};
+  var DEF={transit:45,see:90,eat:60,stay:30,night:120,shop:90};
+  var view='list';try{view=localStorage.getItem(KEY)||'list';}catch(e){}
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function mins(t){var m=/(\d{1,2}):(\d{2})/.exec(t||'');return m?+m[1]*60+ +m[2]:null;}
+  function clock(m){m=Math.round(m);return ('0'+Math.floor(m/60)%24).slice(-2)+':'+('0'+m%60).slice(-2);}
+  function hm(m){m=Math.round(m);return m<60?m+'m':Math.floor(m/60)+'h'+(m%60?' '+m%60+'m':'');}
+  function txt(el){return el?el.textContent.replace(/\s+/g,' ').trim():'';}
+  function length(b,text,type){
+    var e=mins(b.getAttribute('data-end'));
+    if(e!=null)return {end:e};
+    if(/full (afternoon|day)/i.test(text))return {toNext:true};
+    var m=/(\d+)h(\d{2})/.exec(text);if(m&&type==='transit')return {dur:+m[1]*60+ +m[2]};
+    m=/allow ~?(\d+(?:\.\d+)?)h/i.exec(text);if(m)return {dur:Math.round(+m[1]*60)};
+    m=/~(\d+)h flight/i.exec(text);if(m)return {dur:+m[1]*60};
+    return {dur:DEF[type]||60};
+  }
+  // timeline blocks → events with start / end minutes
+  function events(pg){
+    var timed=[],tray=[];
+    pg.querySelectorAll('.tl .bl,.timeline .block').forEach(function(b,i){
+      var t=txt(b.querySelector('.bt,.block-time')),card=b.querySelector('.card');
+      var type='see';for(var k in TYPE)if(b.classList.contains(k)){type=TYPE[k];break;}
+      var title=txt(card.querySelector('.ct,.card-title'))||[].map.call(card.querySelectorAll('.on,.option-name,.son'),txt).join(' · ')||txt(card.querySelector('.cl,.card-label'));
+      var ev={b:b,i:i,type:type,title:title,label:txt(card.querySelector('.cl,.card-label')),
+        anchor:b.classList.contains('anchor'),wp:b.classList.contains('wp-on')||b.classList.contains('wpb'),t:t};
+      var s=mins(t);
+      if(s==null||/\+1/.test(t)||b.classList.contains('plan-b')){tray.push(ev);return;}
+      ev.s=s;ev.len=length(b,txt(card),type);
+      timed.push(ev);
+    });
+    // "Late" sorts after everything else
+    timed.forEach(function(ev){if(/late/i.test(ev.t))ev.s=Math.max(ev.s||0,22*60);});
+    var starts=timed.map(function(e){return e.s;}).sort(function(a,b){return a-b;});
+    timed.forEach(function(ev){
+      var next=starts.filter(function(x){return x>ev.s;})[0];
+      var e=ev.len.end!=null?ev.len.end:ev.len.toNext?(next||ev.s+180):ev.s+ev.len.dur;
+      if(next!=null&&ev.len.end==null)e=Math.min(e,next);
+      ev.e=Math.min(Math.max(e,ev.s+20),24*60);
+    });
+    return {timed:timed.sort(function(a,b){return a.s-b.s||a.i-b.i;}),tray:tray};
+  }
+  // side-by-side columns for blocks that overlap (e.g. two options at 12:00)
+  function columns(evs){
+    var groups=[],cur=null;
+    evs.forEach(function(ev){
+      if(!cur||ev.s>=cur.end){cur={evs:[],end:0};groups.push(cur);}
+      cur.evs.push(ev);cur.end=Math.max(cur.end,ev.e);
+    });
+    groups.forEach(function(g){
+      var cols=[];
+      g.evs.forEach(function(ev){
+        var c=0;while(cols[c]!=null&&cols[c]>ev.s)c++;
+        cols[c]=ev.e;ev.col=c;
+      });
+      g.evs.forEach(function(ev){ev.cols=cols.length;});
+    });
+  }
+  function build(pg){
+    var cal=pg.querySelector('.cal');
+    var r=events(pg),evs=r.timed;
+    if(!evs.length){cal.innerHTML='<p class="cal-empty">No timed blocks today.</p>';return;}
+    columns(evs);
+    var from=Math.floor(Math.min.apply(null,evs.map(function(e){return e.s;}))/60)*60;
+    var to=Math.ceil(Math.max.apply(null,evs.map(function(e){return e.e;}))/60)*60;
+    to=Math.max(to,from+6*60);
+    var y=function(m){return Math.round((m-from)*PX);},h='';
+    if(r.tray.length)h+='<div class="cal-tray"><span>No set time</span>'+r.tray.map(function(ev){
+      return '<button type="button" class="cal-chip t-'+ev.type+'" data-i="'+ev.i+'">'+esc(ev.t?ev.t+' · ':'')+esc(ev.title)+'</button>';}).join('')+'</div>';
+    h+='<div class="cal-grid" style="height:'+y(to)+'px">';
+    for(var m=from;m<=to;m+=60)h+='<div class="cal-hr" style="top:'+y(m)+'px"><span>'+clock(m)+'</span></div>';
+    // gaps of 30 min or more between busy stretches
+    var busyTo=evs[0].s;
+    evs.forEach(function(ev){
+      if(ev.s-busyTo>=30)h+='<div class="cal-free" style="top:'+y(busyTo)+'px;height:'+(y(ev.s)-y(busyTo))+'px"><span>Free · '+hm(ev.s-busyTo)+'</span></div>';
+      busyTo=Math.max(busyTo,ev.e);
+    });
+    evs.forEach(function(ev){
+      var top=y(ev.s),ht=Math.max(y(ev.e)-top-3,22),w='(100% - var(--cal-gut)) / '+ev.cols;
+      h+='<button type="button" class="cal-ev t-'+ev.type+(ev.anchor?' anchor':'')+(ev.wp&&!ev.anchor?' wp':'')+(ht<44?' short':'')+'" data-i="'+ev.i+'"'+
+        ' style="top:'+top+'px;height:'+ht+'px;left:calc(var(--cal-gut) + '+w+' * '+ev.col+');width:calc('+w+' - 4px)">'+
+        '<b>'+(ev.anchor?'★ ':ev.wp?'✓ ':'')+esc(ev.title)+'</b><small>'+clock(ev.s)+'–'+clock(ev.e)+(ev.label?' · '+esc(ev.label):'')+'</small></button>';
+    });
+    // a "now" line on the day itself
+    var eye=pg.querySelector('.header-eyebrow,.eye'),dm=/(\d{1,2}) (Oct|Nov) (\d{4})/.exec(eye?eye.textContent:''),now=new Date();
+    if(dm&&now.getDate()===+dm[1]&&now.getMonth()===(dm[2]==='Oct'?9:10)&&now.getFullYear()===+dm[3]){
+      var nm=now.getHours()*60+now.getMinutes();
+      if(nm>=from&&nm<=to)h+='<div class="cal-now" style="top:'+y(nm)+'px"></div>';
+    }
+    cal.innerHTML=h+'</div>';
+  }
+  function apply(){
+    document.querySelectorAll('.page[id^="day"]').forEach(function(pg){
+      pg.classList.toggle('cal-on',view==='cal');
+      pg.querySelectorAll('.vt button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.v===view);});
+      if(view==='cal'&&pg.classList.contains('active'))build(pg);
+    });
+  }
+  // a List / Calendar switch under each day's header
+  document.querySelectorAll('.page[id^="day"]').forEach(function(pg){
+    var hdr=pg.querySelector('.hdr,.header'),tl=pg.querySelector('.tl,.timeline');
+    hdr.insertAdjacentHTML('afterend','<div class="vt" role="tablist" aria-label="Schedule view">'+
+      '<button type="button" role="tab" data-v="list"><span class="ms">view_agenda</span>List</button>'+
+      '<button type="button" role="tab" data-v="cal"><span class="ms">calendar_view_day</span>Calendar</button></div>');
+    var cal=document.createElement('div');cal.className='cal';tl.parentNode.insertBefore(cal,tl.nextSibling);
+    pg.querySelector('.vt').addEventListener('click',function(e){
+      var b=e.target.closest('[data-v]');if(!b||b.dataset.v===view)return;
+      view=b.dataset.v;try{localStorage.setItem(KEY,view);}catch(x){}
+      apply();
+    });
+    // tapping a block opens it in the list view
+    cal.addEventListener('click',function(e){
+      var b=e.target.closest('[data-i]');if(!b)return;
+      var blk=pg.querySelectorAll('.tl .bl,.timeline .block')[+b.dataset.i];
+      view='list';try{localStorage.setItem(KEY,view);}catch(x){}
+      apply();
+      blk.scrollIntoView({block:'center'});
+      blk.classList.remove('flash');void blk.offsetWidth;blk.classList.add('flash');
+    });
+  });
+  apply();
+  return {refresh:apply};
+})();
+</script>
+<script>
 (function(){
   var days = document.querySelectorAll('.page');
   var tabs = document.querySelectorAll('.nav-tab');
@@ -2579,6 +2922,7 @@ var TRIPMAP=(function(){
   function show(n){
     var id = n==='map' ? 'map' : 'day'+n;
     days.forEach(function(d){ d.classList.toggle('active', d.id===id); });
+    if(window.SCHEDVIEW) SCHEDVIEW.refresh();
     tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.day===String(n)); });
     // scroll active tab into view
     var at = document.querySelector('.nav-tab.active');
